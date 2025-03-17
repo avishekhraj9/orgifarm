@@ -1,13 +1,238 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { ChevronRight, ShoppingBag } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { categories, getFeaturedProducts } from '@/data/products';
+import ProductCard from '@/components/ProductCard';
+import PageLayout from '@/components/PageLayout';
 
 const Index = () => {
+  // Add animations to elements on page load
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-slide-up');
+            entry.target.classList.remove('opacity-0');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    document.querySelectorAll('.animate-on-scroll').forEach((element) => {
+      observer.observe(element);
+    });
+
+    return () => {
+      document.querySelectorAll('.animate-on-scroll').forEach((element) => {
+        observer.unobserve(element);
+      });
+    };
+  }, []);
+
+  const featuredProducts = getFeaturedProducts();
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <PageLayout fullWidth>
+      {/* Hero Section */}
+      <section className="min-h-[90vh] flex items-center justify-center bg-gradient-to-b from-white to-accent">
+        <div className="container mx-auto px-4 py-20 flex flex-col lg:flex-row items-center">
+          <div className="lg:w-1/2 lg:pr-10 mb-10 lg:mb-0">
+            <span className="inline-block bg-secondary text-sm px-4 py-1 rounded-full mb-3 animate-fade-in">
+              Minimalist design for modern living
+            </span>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight animate-slide-up">
+              Products designed with 
+              <span className="text-primary"> simplicity</span> in mind
+            </h1>
+            <p className="text-lg text-muted-foreground mb-8 max-w-lg animate-slide-up opacity-0" style={{ animationDelay: '100ms' }}>
+              Discover our collection of thoughtfully crafted products that combine form and function in perfect harmony.
+            </p>
+            <div className="flex flex-wrap gap-4 animate-slide-up opacity-0" style={{ animationDelay: '200ms' }}>
+              <Button size="lg" className="rounded-full" asChild>
+                <Link to="/products">
+                  Shop Now <ShoppingBag className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" className="rounded-full" asChild>
+                <Link to="/about">Learn More</Link>
+              </Button>
+            </div>
+          </div>
+          <div className="lg:w-1/2 relative animate-scale-in">
+            <div className="relative rounded-2xl overflow-hidden shadow-xl">
+              <img
+                src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+                alt="Beautiful minimalist products"
+                className="w-full h-auto object-cover rounded-2xl"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+            </div>
+            <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-xl shadow-lg w-48 md:w-64 glass-card animate-fade-in opacity-0" style={{ animationDelay: '400ms' }}>
+              <p className="text-sm font-medium mb-1">Smart Watch Series 5</p>
+              <p className="text-primary-foreground font-bold">$429.99</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Categories Section */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12 animate-on-scroll opacity-0">
+            <h2 className="text-3xl font-bold mb-4">Shop by Category</h2>
+            <p className="text-muted-foreground max-w-lg mx-auto">
+              Browse our curated collections of minimal products across various categories
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {categories.map((category, index) => (
+              <Link 
+                key={category.id} 
+                to={`/products?category=${category.id}`}
+                className="animate-on-scroll opacity-0 group"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className="relative rounded-xl overflow-hidden aspect-[4/3] group-hover:shadow-md transition-all duration-300">
+                  <img
+                    src={category.imageUrl}
+                    alt={category.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <h3 className="text-xl font-semibold mb-1">{category.name}</h3>
+                    <p className="text-sm text-white/80 mb-3">{category.description}</p>
+                    <span className="inline-flex items-center text-sm font-medium text-white/90 group-hover:text-white transition-colors">
+                      Shop now 
+                      <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Products Section */}
+      <section className="py-20 bg-secondary/50">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-end mb-12">
+            <div className="animate-on-scroll opacity-0">
+              <h2 className="text-3xl font-bold mb-4">Featured Products</h2>
+              <p className="text-muted-foreground max-w-lg">
+                Our most popular products chosen for their exceptional design and quality
+              </p>
+            </div>
+            <Link 
+              to="/products" 
+              className="hidden md:inline-flex items-center text-sm font-medium text-primary hover:text-primary/80 animate-on-scroll opacity-0"
+            >
+              View all products <ChevronRight className="ml-1 h-4 w-4" />
+            </Link>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {featuredProducts.map((product, index) => (
+              <div 
+                key={product.id} 
+                className="animate-on-scroll opacity-0"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <ProductCard product={product} />
+              </div>
+            ))}
+          </div>
+          
+          <div className="mt-10 text-center md:hidden animate-on-scroll opacity-0">
+            <Button variant="outline" asChild>
+              <Link to="/products">View all products</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonial Section */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center animate-on-scroll opacity-0">
+            <h2 className="text-3xl font-bold mb-12">What Our Customers Say</h2>
+            
+            <div className="bg-white p-8 rounded-xl shadow-sm border border-border relative">
+              <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-primary text-white h-10 w-10 rounded-full flex items-center justify-center">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9.13456 9H5.37965C5.17485 9 5 8.83043 5 8.63203V5.36797C5 5.16957 5.17485 5 5.37965 5H9.13456C9.33936 5 9.51421 5.16957 9.51421 5.36797V8.63203C9.51421 8.83043 9.33936 9 9.13456 9Z" fill="currentColor"/>
+                  <path d="M9.13456 19H5.37965C5.17485 19 5 18.8304 5 18.632V15.368C5 15.1696 5.17485 15 5.37965 15H9.13456C9.33936 15 9.51421 15.1696 9.51421 15.368V18.632C9.51421 18.8304 9.33936 19 9.13456 19Z" fill="currentColor"/>
+                  <path d="M18.6204 9H14.8654C14.6606 9 14.4858 8.83043 14.4858 8.63203V5.36797C14.4858 5.16957 14.6606 5 14.8654 5H18.6204C18.8252 5 19 5.16957 19 5.36797V8.63203C19 8.83043 18.8252 9 18.6204 9Z" fill="currentColor"/>
+                  <path d="M18.6204 19H14.8654C14.6606 19 14.4858 18.8304 14.4858 18.632V15.368C14.4858 15.1696 14.6606 15 14.8654 15H18.6204C18.8252 15 19 15.1696 19 15.368V18.632C19 18.8304 18.8252 19 18.6204 19Z" fill="currentColor"/>
+                </svg>
+              </div>
+              
+              <blockquote className="text-lg md:text-xl italic text-gray-700 mb-6">
+                "The minimalist design of these products has transformed my living space. The attention to detail and quality is unmatched. I've never been happier with a purchase."
+              </blockquote>
+              
+              <div className="flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
+                  <img 
+                    src="https://randomuser.me/api/portraits/women/45.jpg" 
+                    alt="Customer" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="text-left">
+                  <p className="font-medium">Sarah Johnson</p>
+                  <p className="text-sm text-muted-foreground">Product Designer</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex justify-center mt-8 space-x-2">
+              <span className="w-2 h-2 rounded-full bg-primary"></span>
+              <span className="w-2 h-2 rounded-full bg-gray-300"></span>
+              <span className="w-2 h-2 rounded-full bg-gray-300"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className="py-20 bg-primary text-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center animate-on-scroll opacity-0">
+            <h2 className="text-3xl font-bold mb-4">Join Our Newsletter</h2>
+            <p className="mb-8 text-white/80">
+              Subscribe to get special offers, free giveaways, and product launches.
+            </p>
+            
+            <form className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+              <input
+                type="email"
+                placeholder="Your email address"
+                className="flex-grow py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/30 text-gray-900"
+                required
+              />
+              <Button 
+                type="submit" 
+                variant="secondary" 
+                className="py-3 px-6 font-medium"
+              >
+                Subscribe
+              </Button>
+            </form>
+            <p className="mt-4 text-sm text-white/60">
+              We respect your privacy. Unsubscribe at any time.
+            </p>
+          </div>
+        </div>
+      </section>
+    </PageLayout>
   );
 };
 
