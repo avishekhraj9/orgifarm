@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight, ShoppingBag } from 'lucide-react';
@@ -43,14 +42,14 @@ const Index = () => {
         <div className="container mx-auto px-4 py-20 flex flex-col lg:flex-row items-center">
           <div className="lg:w-1/2 lg:pr-10 mb-10 lg:mb-0">
             <span className="inline-block bg-secondary text-sm px-4 py-1 rounded-full mb-3 animate-fade-in">
-              Minimalist design for modern living
+              Traditional & Organic Products
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight animate-slide-up">
-              Products designed with 
-              <span className="text-primary"> simplicity</span> in mind
+              Authentic Indian 
+              <span className="text-primary"> flavors</span> for your kitchen
             </h1>
             <p className="text-lg text-muted-foreground mb-8 max-w-lg animate-slide-up opacity-0" style={{ animationDelay: '100ms' }}>
-              Discover our collection of thoughtfully crafted products that combine form and function in perfect harmony.
+              Discover our collection of handcrafted pickles, pure ghee, and homemade jams prepared using traditional recipes.
             </p>
             <div className="flex flex-wrap gap-4 animate-slide-up opacity-0" style={{ animationDelay: '200ms' }}>
               <Button size="lg" className="rounded-full" asChild>
@@ -59,22 +58,22 @@ const Index = () => {
                 </Link>
               </Button>
               <Button size="lg" variant="outline" className="rounded-full" asChild>
-                <Link to="/about">Learn More</Link>
+                <Link to="/products">Explore Products</Link>
               </Button>
             </div>
           </div>
           <div className="lg:w-1/2 relative animate-scale-in">
             <div className="relative rounded-2xl overflow-hidden shadow-xl">
               <img
-                src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-                alt="Beautiful minimalist products"
+                src="https://images.unsplash.com/photo-1590674899484-8da3b9f7c5f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+                alt="Traditional Indian Pickles"
                 className="w-full h-auto object-cover rounded-2xl"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
             </div>
             <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-xl shadow-lg w-48 md:w-64 glass-card animate-fade-in opacity-0" style={{ animationDelay: '400ms' }}>
-              <p className="text-sm font-medium mb-1">Smart Watch Series 5</p>
-              <p className="text-primary-foreground font-bold">$429.99</p>
+              <p className="text-sm font-medium mb-1">Mango Pickle</p>
+              <p className="text-primary-foreground font-bold">₹299.99</p>
             </div>
           </div>
         </div>
@@ -175,7 +174,7 @@ const Index = () => {
               </div>
               
               <blockquote className="text-lg md:text-xl italic text-gray-700 mb-6">
-                "The minimalist design of these products has transformed my living space. The attention to detail and quality is unmatched. I've never been happier with a purchase."
+                "The traditional mango pickle from Orgifarm brings back childhood memories. The authentic taste and quality ingredients make it stand out from store-bought options. I'm a customer for life!"
               </blockquote>
               
               <div className="flex items-center justify-center">
@@ -187,8 +186,8 @@ const Index = () => {
                   />
                 </div>
                 <div className="text-left">
-                  <p className="font-medium">Sarah Johnson</p>
-                  <p className="text-sm text-muted-foreground">Product Designer</p>
+                  <p className="font-medium">Priya Sharma</p>
+                  <p className="text-sm text-muted-foreground">Home Chef</p>
                 </div>
               </div>
             </div>
@@ -208,7 +207,7 @@ const Index = () => {
           <div className="max-w-3xl mx-auto text-center animate-on-scroll opacity-0">
             <h2 className="text-3xl font-bold mb-4">Join Our Newsletter</h2>
             <p className="mb-8 text-white/80">
-              Subscribe to get special offers, free giveaways, and product launches.
+              Subscribe to get special offers, traditional recipe ideas, and updates on new product launches.
             </p>
             
             <form className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
@@ -237,3 +236,4 @@ const Index = () => {
 };
 
 export default Index;
+

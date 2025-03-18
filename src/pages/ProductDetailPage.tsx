@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ProductCard from '@/components/ProductCard';
 import PageLayout from '@/components/PageLayout';
 import QuantityInput from '@/components/QuantityInput';
-import { getProductById, products } from '@/data/products';
+import { getProductById, products, categories } from '@/data/products';
 import { useCart } from '@/context/CartContext';
 import { toast } from 'sonner';
 
@@ -100,7 +100,7 @@ const ProductDetailPage = () => {
               </div>
               <span className="text-sm text-muted-foreground">({product.rating} stars)</span>
             </div>
-            <p className="text-2xl font-bold">₹{(product.price * 75).toFixed(2)}</p>
+            <p className="text-2xl font-bold">₹{product.price.toFixed(2)}</p>
           </div>
           
           <div className="border-t border-b py-6 border-border">
@@ -178,9 +178,9 @@ const ProductDetailPage = () => {
             <h3 className="text-lg font-medium mb-4">Product Details</h3>
             <div className="space-y-4">
               <p>
-                Experience the perfect blend of form and function with our {product.name}.
-                Crafted with premium materials and attention to detail, this product
-                is designed to enhance your everyday life while maintaining a minimalist aesthetic.
+                Experience authentic flavors with our {product.name}.
+                Crafted with traditional recipes and premium ingredients, this product
+                brings the taste of homemade goodness to your table.
               </p>
               <div className="grid grid-cols-2 gap-x-6 gap-y-3">
                 <div>
@@ -204,7 +204,7 @@ const ProductDetailPage = () => {
             <h3 className="text-lg font-medium mb-4">Shipping Information</h3>
             <div className="space-y-4">
               <p>
-                We offer free standard shipping on all orders over $50. Orders typically ship within
+                We offer free shipping on all orders over ₹500. Orders typically ship within
                 1-2 business days and arrive within 3-5 business days depending on your location.
               </p>
               <div className="space-y-3">
@@ -216,10 +216,10 @@ const ProductDetailPage = () => {
                     <span className="font-medium">Express Shipping:</span> 1-2 business days
                   </div>
                   <div>
-                    <span className="font-medium">Free Shipping:</span> Orders over $50
+                    <span className="font-medium">Free Shipping:</span> Orders over ₹500
                   </div>
                   <div>
-                    <span className="font-medium">International:</span> 7-14 business days
+                    <span className="font-medium">International:</span> Currently unavailable
                   </div>
                 </div>
               </div>
@@ -258,10 +258,10 @@ const ProductDetailPage = () => {
                         />
                       ))}
                     </div>
-                    <span className="font-medium">Alex M.</span>
+                    <span className="font-medium">Rahul M.</span>
                     <span className="text-sm text-muted-foreground ml-2">3 weeks ago</span>
                   </div>
-                  <p>Absolutely love this product! The minimalist design fits perfectly with my home decor, and the quality is outstanding.</p>
+                  <p>Absolutely love this product! The authentic taste reminds me of my grandmother's recipes. The quality is outstanding.</p>
                 </div>
                 
                 <div className="border-b pb-4">
@@ -275,10 +275,10 @@ const ProductDetailPage = () => {
                         />
                       ))}
                     </div>
-                    <span className="font-medium">Jessica T.</span>
+                    <span className="font-medium">Anita T.</span>
                     <span className="text-sm text-muted-foreground ml-2">1 month ago</span>
                   </div>
-                  <p>Great product overall. The design is beautiful and it works exactly as described. Would definitely recommend.</p>
+                  <p>Great product overall. The taste is authentic and it works exactly as described. Would definitely recommend.</p>
                 </div>
               </div>
               
@@ -302,12 +302,5 @@ const ProductDetailPage = () => {
     </PageLayout>
   );
 };
-
-// Adding this at the top level to prevent reference errors
-const categories = [
-  { id: "cat1", name: "Electronics" },
-  { id: "cat2", name: "Home & Living" },
-  { id: "cat3", name: "Accessories" }
-];
 
 export default ProductDetailPage;
