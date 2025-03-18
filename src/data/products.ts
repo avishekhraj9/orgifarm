@@ -4,104 +4,104 @@ import { Product, Category } from '@/types/product';
 export const categories: Category[] = [
   {
     id: "cat1",
-    name: "Electronics",
-    description: "The latest in tech innovation",
-    imageUrl: "https://images.unsplash.com/photo-1498049794561-7780e7231661?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    name: "Pickles",
+    description: "Traditional handcrafted Indian pickles",
+    imageUrl: "https://images.unsplash.com/photo-1590674899484-8da3b9f7c5f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
   },
   {
     id: "cat2",
-    name: "Home & Living",
-    description: "Premium home essentials",
-    imageUrl: "https://images.unsplash.com/photo-1518051870910-a46e30d9db16?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    name: "Ghee",
+    description: "Pure organic traditional ghee",
+    imageUrl: "https://images.unsplash.com/photo-1631633123000-d24861360a33?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
   },
   {
     id: "cat3",
-    name: "Accessories",
-    description: "Complete your look",
-    imageUrl: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    name: "Jams",
+    description: "Homemade preserves and fruit jams",
+    imageUrl: "https://images.unsplash.com/photo-1597314040916-84b439aebac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
   }
 ];
 
 export const products: Product[] = [
   {
     id: "1",
-    name: "Premium Wireless Headphones",
-    description: "Experience crystal-clear sound with our premium wireless headphones. Featuring active noise cancellation, 30-hour battery life, and premium materials for all-day comfort.",
-    price: 349.99,
-    imageUrl: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    name: "Mango Pickle",
+    description: "Traditional handcrafted mango pickle made with organic raw mangoes, premium spices, and cold-pressed mustard oil. A perfect blend of tangy and spicy flavors.",
+    price: 299.99,
+    imageUrl: "https://images.unsplash.com/photo-1590674899484-8da3b9f7c5f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
     category: "cat1",
     rating: 4.8,
-    stock: 15
+    stock: 25
   },
   {
     id: "2",
-    name: "Smart Watch Series 5",
-    description: "Stay connected with our latest smartwatch. Track your fitness, monitor your heart rate, and receive notifications right on your wrist.",
-    price: 429.99,
-    imageUrl: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    name: "Lemon Pickle",
+    description: "Tangy and zesty lemon pickle prepared with organic lemons and traditional spices. Perfect accompaniment for Indian meals and snacks.",
+    price: 249.99,
+    imageUrl: "https://images.unsplash.com/photo-1564193945699-23d43b8d505b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
     category: "cat1",
     rating: 4.7,
-    stock: 8
+    stock: 18
   },
   {
     id: "3",
-    name: "Minimalist Table Lamp",
-    description: "Add a touch of elegance to your home with our minimalist table lamp. Features a dimming function and warm, ambient lighting.",
-    price: 129.99,
-    imageUrl: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    category: "cat2",
+    name: "Chilly Pickle",
+    description: "Spicy and flavorful chilly pickle made with fresh green chilies, aromatic spices, and pure mustard oil. Adds a fiery kick to any meal.",
+    price: 199.99,
+    imageUrl: "https://images.unsplash.com/photo-1631237563973-4c8c1836148d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    category: "cat1",
     rating: 4.5,
-    stock: 12
+    stock: 22
   },
   {
     id: "4",
-    name: "Ceramic Plant Pot",
-    description: "Handcrafted ceramic pot perfect for indoor plants. Each piece is unique with a modern, minimalist design.",
-    price: 49.99,
-    imageUrl: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    name: "Pure Cow Ghee",
+    description: "Traditional A2 cow ghee made using the ancient bilona method. Rich in aroma and essential nutrients with a golden hue and nutty flavor.",
+    price: 749.99,
+    imageUrl: "https://images.unsplash.com/photo-1631633123000-d24861360a33?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
     category: "cat2",
+    rating: 4.9,
+    stock: 15
+  },
+  {
+    id: "5",
+    name: "Buffalo Ghee",
+    description: "Premium buffalo ghee with rich texture and authentic flavor. Made through slow cooking process to retain all natural nutrients and aroma.",
+    price: 699.99,
+    imageUrl: "https://images.unsplash.com/photo-1631633144046-d37f18d36618?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    category: "cat2",
+    rating: 4.7,
+    stock: 12
+  },
+  {
+    id: "6",
+    name: "Mixed Fruit Jam",
+    description: "Delicious homemade jam with a blend of seasonal fruits. No artificial preservatives or colors, just pure fruit goodness in every spoon.",
+    price: 349.99,
+    imageUrl: "https://images.unsplash.com/photo-1597314040916-84b439aebac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    category: "cat3",
     rating: 4.6,
     stock: 20
   },
   {
-    id: "5",
-    name: "Leather Watch Strap",
-    description: "Premium handcrafted leather watch strap. Made from full-grain Italian leather that ages beautifully over time.",
-    price: 79.99,
-    imageUrl: "https://images.unsplash.com/photo-1612817159949-195b6eb9e31a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    category: "cat3",
-    rating: 4.9,
-    stock: 7
-  },
-  {
-    id: "6",
-    name: "Wireless Charging Pad",
-    description: "Sleek, minimalist charging pad compatible with all Qi-enabled devices. Features fast charging and a non-slip surface.",
-    price: 59.99,
-    imageUrl: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    category: "cat1",
-    rating: 4.4,
-    stock: 25
-  },
-  {
     id: "7",
-    name: "Minimalist Wall Clock",
-    description: "Simple, elegant wall clock with a silent sweep mechanism. Perfect for the modern home or office.",
-    price: 89.99,
-    imageUrl: "https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    category: "cat2",
-    rating: 4.7,
-    stock: 10
+    name: "Strawberry Jam",
+    description: "Sweet and luscious strawberry jam made with handpicked organic strawberries. Perfect for breakfast spreads and dessert toppings.",
+    price: 399.99,
+    imageUrl: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    category: "cat3",
+    rating: 4.8,
+    stock: 16
   },
   {
     id: "8",
-    name: "Premium Sunglasses",
-    description: "Polarized sunglasses with UV protection and a lightweight, durable frame. Stylish design for everyday wear.",
-    price: 159.99,
-    imageUrl: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    name: "Orange Marmalade",
+    description: "Tangy and sweet orange marmalade with bits of orange zest. Handcrafted in small batches to ensure finest quality and flavor.",
+    price: 379.99,
+    imageUrl: "https://images.unsplash.com/photo-1591994843349-f415893b3a6b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
     category: "cat3",
-    rating: 4.8,
-    stock: 9
+    rating: 4.7,
+    stock: 14
   }
 ];
 
