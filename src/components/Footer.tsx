@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Minimal</h3>
+            <h3 className="text-lg font-semibold">Orgifarm</h3>
             <p className="text-sm text-muted-foreground max-w-xs">
               Our mission is to provide minimalist, high-quality products that enhance your everyday life.
             </p>
@@ -76,7 +76,7 @@ const Footer: React.FC = () => {
                 San Francisco, CA 94103
               </li>
               <li className="text-sm text-muted-foreground">
-                contact@minimal.store
+                contact@orgifarm.store
               </li>
               <li className="text-sm text-muted-foreground">
                 +1 (555) 123-4567
@@ -88,7 +88,7 @@ const Footer: React.FC = () => {
         <div className="mt-12 pt-8 border-t border-border">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} Minimal. All rights reserved.
+              © {new Date().getFullYear()} Orgifarm. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
