@@ -100,7 +100,7 @@ const ProductDetailPage = () => {
               </div>
               <span className="text-sm text-muted-foreground">({product.rating} stars)</span>
             </div>
-            <p className="text-2xl font-bold">${product.price.toFixed(2)}</p>
+            <p className="text-2xl font-bold">₹{(product.price * 75).toFixed(2)}</p>
           </div>
           
           <div className="border-t border-b py-6 border-border">

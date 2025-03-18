@@ -82,7 +82,7 @@ const CartPage = () => {
                     {/* Price */}
                     <div className="col-span-2 text-center md:text-center">
                       <div className="md:hidden inline-block font-medium mr-2">Price:</div>
-                      ${item.product.price.toFixed(2)}
+                      ₹{(item.product.price * 75).toFixed(2)}
                     </div>
                     
                     {/* Quantity */}
@@ -99,7 +99,7 @@ const CartPage = () => {
                     {/* Total */}
                     <div className="col-span-2 md:text-right font-semibold">
                       <div className="md:hidden inline-block font-medium mr-2">Total:</div>
-                      ${(item.product.price * item.quantity).toFixed(2)}
+                      ₹{(item.product.price * item.quantity * 75).toFixed(2)}
                     </div>
                   </div>
                 </div>
@@ -115,7 +115,7 @@ const CartPage = () => {
                   <div className="space-y-2 mb-4">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Subtotal</span>
-                      <span>${total.toFixed(2)}</span>
+                      <span>₹{(total * 75).toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Shipping</span>
@@ -127,7 +127,7 @@ const CartPage = () => {
                   
                   <div className="flex justify-between font-semibold text-lg mb-6">
                     <span>Total</span>
-                    <span>${total.toFixed(2)}</span>
+                    <span>₹{(total * 75).toFixed(2)}</span>
                   </div>
                   
                   <div className="space-y-4">

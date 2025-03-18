@@ -256,7 +256,7 @@ const CheckoutPage = () => {
                           </div>
                         </div>
                         <div className="text-sm font-medium">
-                          ${(item.product.price * item.quantity).toFixed(2)}
+                          ₹{(item.product.price * item.quantity * 75).toFixed(2)}
                         </div>
                       </div>
                     ))}
@@ -267,7 +267,7 @@ const CheckoutPage = () => {
                   <div className="space-y-2 mb-4">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Subtotal</span>
-                      <span>${total.toFixed(2)}</span>
+                      <span>₹{(total * 75).toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Shipping</span>
@@ -275,7 +275,7 @@ const CheckoutPage = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Tax</span>
-                      <span>${(total * 0.08).toFixed(2)}</span>
+                      <span>₹{(total * 0.08 * 75).toFixed(2)}</span>
                     </div>
                   </div>
                   
@@ -283,7 +283,7 @@ const CheckoutPage = () => {
                   
                   <div className="flex justify-between font-semibold text-lg mb-6">
                     <span>Total</span>
-                    <span>${(total + total * 0.08).toFixed(2)}</span>
+                    <span>₹{(total * 1.08 * 75).toFixed(2)}</span>
                   </div>
                   
                   <Button 
