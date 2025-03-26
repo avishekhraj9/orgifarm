@@ -6,7 +6,7 @@ export const categories: Category[] = [
     id: "cat1",
     name: "Pickles",
     description: "Traditional handcrafted Indian pickles",
-    imageUrl: "https://images.unsplash.com/photo-1590674899484-8da3b9f7c5f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    imageUrl: "/img/diced_mango_prickle.jpg"
   },
   {
     id: "cat2",
@@ -28,7 +28,7 @@ export const products: Product[] = [
     name: "Mango Pickle",
     description: "Traditional handcrafted mango pickle made with organic raw mangoes, premium spices, and cold-pressed mustard oil. A perfect blend of tangy and spicy flavors.",
     price: 299.99,
-    imageUrl: "https://images.unsplash.com/photo-1590674899484-8da3b9f7c5f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    imageUrl: "/img/diced_mango_prickle.jpg",
     category: "cat1",
     rating: 4.8,
     stock: 25
@@ -48,7 +48,7 @@ export const products: Product[] = [
     name: "Chilly Pickle",
     description: "Spicy and flavorful chilly pickle made with fresh green chilies, aromatic spices, and pure mustard oil. Adds a fiery kick to any meal.",
     price: 199.99,
-    imageUrl: "https://images.unsplash.com/photo-1631237563973-4c8c1836148d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    imageUrl: "/img/greem_chilli_pickle.jpg",
     category: "cat1",
     rating: 4.5,
     stock: 22
