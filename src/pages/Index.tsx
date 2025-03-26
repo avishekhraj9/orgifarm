@@ -65,7 +65,7 @@ const Index = () => {
           <div className="lg:w-1/2 relative animate-scale-in">
             <div className="relative rounded-2xl overflow-hidden shadow-xl">
               <img
-                src="https://images.unsplash.com/photo-1590674899484-8da3b9f7c5f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+                src="https://savithrammas.com/site/image/cache/catalog/A-Guide-to-Savithrammas-Exotic-Pickles-and-Spices-1080x540.jpg"
                 alt="Traditional Indian Pickles"
                 className="w-full h-auto object-cover rounded-2xl"
               />
