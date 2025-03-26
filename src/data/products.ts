@@ -6,7 +6,7 @@ export const categories: Category[] = [
     id: "cat1",
     name: "Pickles",
     description: "Traditional handcrafted Indian pickles",
-    imageUrl: "./img/diced_mango_prickle.jpg"
+    imageUrl: "/img/diced_mango_prickle.jpg"
   },
   {
     id: "cat2",
