@@ -55,10 +55,10 @@ export const products: Product[] = [
   },
   {
     id: "4",
-    name: "Pure Cow Ghee",
-    description: "Traditional A2 cow ghee made using the ancient bilona method. Rich in aroma and essential nutrients with a golden hue and nutty flavor.",
+    name: "Sumeet Law gate wali",
+    description: "availale full night",
     price: 9.99,
-    imageUrl: "https://images.unsplash.com/photo-1631633123000-d24861360a33?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    imageUrl: "/img/sumeet.jpg",
     category: "cat2",
     rating: 4.9,
     stock: 15
