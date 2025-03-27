@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Search, X, Filter, Check } from 'lucide-react';
+import { Search, X, Filter, Check, IndianRupee } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
@@ -30,16 +29,13 @@ const ProductsPage = () => {
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   
-  // Filter states
   const [searchQuery, setSearchQuery] = useState(queryParams.get('search') || '');
   const [selectedCategory, setSelectedCategory] = useState(queryParams.get('category') || '');
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
   const [sortBy, setSortBy] = useState('featured');
   
-  // Filtered products
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
 
-  // Update URL when filters change
   useEffect(() => {
     const params = new URLSearchParams();
     
@@ -54,11 +50,9 @@ const ProductsPage = () => {
     navigate({ pathname: location.pathname, search: params.toString() }, { replace: true });
   }, [searchQuery, selectedCategory, navigate, location.pathname]);
 
-  // Apply filters
   useEffect(() => {
     let result = [...products];
     
-    // Search filter
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       result = result.filter(
@@ -68,17 +62,14 @@ const ProductsPage = () => {
       );
     }
     
-    // Category filter
     if (selectedCategory) {
       result = result.filter(product => product.category === selectedCategory);
     }
     
-    // Price filter
     result = result.filter(
       product => product.price >= priceRange[0] && product.price <= priceRange[1]
     );
     
-    // Sort
     switch (sortBy) {
       case 'price-asc':
         result.sort((a, b) => a.price - b.price);
@@ -111,7 +102,6 @@ const ProductsPage = () => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // The search is already applied through the useEffect
   };
 
   return (
@@ -124,7 +114,6 @@ const ProductsPage = () => {
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8">
-        {/* Mobile Filters Button */}
         <div className="lg:hidden mb-4">
           <Sheet>
             <SheetTrigger asChild>
@@ -137,7 +126,6 @@ const ProductsPage = () => {
                 <SheetTitle>Filters</SheetTitle>
               </SheetHeader>
               <div className="py-6">
-                {/* Categories */}
                 <div className="mb-6">
                   <h3 className="font-medium mb-3">Categories</h3>
                   <div className="space-y-2">
@@ -163,7 +151,6 @@ const ProductsPage = () => {
                   </div>
                 </div>
 
-                {/* Price Range */}
                 <div className="mb-6">
                   <h3 className="font-medium mb-3">Price Range</h3>
                   <div className="px-1">
@@ -176,8 +163,12 @@ const ProductsPage = () => {
                       className="mb-6"
                     />
                     <div className="flex items-center justify-between">
-                      <span>${priceRange[0]}</span>
-                      <span>${priceRange[1]}</span>
+                      <span className="flex items-center">
+                        <IndianRupee className="h-3 w-3 mr-1" />{priceRange[0]}
+                      </span>
+                      <span className="flex items-center">
+                        <IndianRupee className="h-3 w-3 mr-1" />{priceRange[1]}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -190,7 +181,6 @@ const ProductsPage = () => {
           </Sheet>
         </div>
 
-        {/* Desktop Sidebar Filters */}
         <div className="hidden lg:block w-64 shrink-0">
           <div className="sticky top-24 space-y-6">
             <div>
@@ -228,8 +218,12 @@ const ProductsPage = () => {
                   className="mb-6"
                 />
                 <div className="flex items-center justify-between">
-                  <span>${priceRange[0]}</span>
-                  <span>${priceRange[1]}</span>
+                  <span className="flex items-center">
+                    <IndianRupee className="h-3 w-3 mr-1" />{priceRange[0]}
+                  </span>
+                  <span className="flex items-center">
+                    <IndianRupee className="h-3 w-3 mr-1" />{priceRange[1]}
+                  </span>
                 </div>
               </div>
             </div>
@@ -242,10 +236,8 @@ const ProductsPage = () => {
           </div>
         </div>
 
-        {/* Product Grid */}
         <div className="flex-1">
           <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            {/* Search */}
             <form onSubmit={handleSearch} className="relative w-full sm:w-64">
               <Input
                 type="search"
@@ -263,7 +255,6 @@ const ProductsPage = () => {
               </button>
             </form>
 
-            {/* Sort */}
             <div className="w-full sm:w-auto">
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger className="w-full sm:w-[180px]">
@@ -283,7 +274,6 @@ const ProductsPage = () => {
             </div>
           </div>
 
-          {/* Results */}
           {filteredProducts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProducts.map((product) => (
