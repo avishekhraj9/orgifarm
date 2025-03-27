@@ -33,7 +33,7 @@ const ProductsPage = () => {
   // Filter states
   const [searchQuery, setSearchQuery] = useState(queryParams.get('search') || '');
   const [selectedCategory, setSelectedCategory] = useState(queryParams.get('category') || '');
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 500]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
   const [sortBy, setSortBy] = useState('featured');
   
   // Filtered products
@@ -104,7 +104,7 @@ const ProductsPage = () => {
   const clearFilters = () => {
     setSearchQuery('');
     setSelectedCategory('');
-    setPriceRange([0, 500]);
+    setPriceRange([0, 1000]);
     setSortBy('featured');
     navigate('/products');
   };
@@ -295,6 +295,7 @@ const ProductsPage = () => {
               <h3 className="text-lg font-medium mb-2">No products found</h3>
               <p className="text-muted-foreground mb-4">
                 Try adjusting your filters or search query
+                
               </p>
               <Button onClick={clearFilters}>Clear all filters</Button>
             </div>
@@ -304,5 +305,6 @@ const ProductsPage = () => {
     </PageLayout>
   );
 };
+
 
 export default ProductsPage;

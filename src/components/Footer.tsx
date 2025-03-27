@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Orgifarm</h3>
             <p className="text-sm text-muted-foreground max-w-xs">
-              Our mission is to provide minimalist, high-quality products that enhance your everyday life.
+              Our mission is to provide yummy, high-quality products that enhance your taste of food.
             </p>
           </div>
           
@@ -24,17 +24,17 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link to="/products?category=cat1" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Electronics
+                  Pickle
                 </Link>
               </li>
               <li>
                 <Link to="/products?category=cat2" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Home & Living
+                  Ghee
                 </Link>
               </li>
               <li>
                 <Link to="/products?category=cat3" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Accessories
+                  Jams
                 </Link>
               </li>
             </ul>
@@ -70,16 +70,16 @@ const Footer: React.FC = () => {
             <h4 className="text-sm font-semibold mb-4">Contact</h4>
             <ul className="space-y-2">
               <li className="text-sm text-muted-foreground">
-                1234 Minimal Street
+              ORGIFARM (OPC) PRIVATE LIMITED
               </li>
               <li className="text-sm text-muted-foreground">
-                San Francisco, CA 94103
+              VILL-BIRODIH, TOLA-BIRODIH PANCH-BISENI KALA,GOLA,ROHTAS, Bihar, India - 821310.
               </li>
               <li className="text-sm text-muted-foreground">
-                contact@orgifarm.store
+              +91 8969143072
               </li>
               <li className="text-sm text-muted-foreground">
-                +1 (555) 123-4567
+              orgifarmcare@gmail.com
               </li>
             </ul>
           </div>
