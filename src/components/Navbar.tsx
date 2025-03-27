@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, User, Search, Menu, X } from 'lucide-react';
+import { ShoppingCart, User, Search, Menu, X, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useCart } from '@/context/CartContext';
@@ -76,12 +75,25 @@ const Navbar: React.FC = () => {
           >
             Products
           </Link>
-          <Link
-            to="/about"
-            className="text-sm font-medium text-gray-800 hover:text-primary transition-colors"
-          >
-            About
-          </Link>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="text-sm font-medium text-gray-800 hover:text-primary transition-colors flex items-center gap-1">
+              Company <ChevronDown className="h-4 w-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem asChild>
+                <Link to="/about">About Us</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/contact">Contact</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/privacy-policy">Privacy Policy</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/terms">Terms of Service</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </nav>
 
         {/* Desktop Actions */}
@@ -230,7 +242,28 @@ const Navbar: React.FC = () => {
                 className="text-base font-medium p-2 hover:bg-secondary rounded-md"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                About
+                About Us
+              </Link>
+              <Link
+                to="/contact"
+                className="text-base font-medium p-2 hover:bg-secondary rounded-md"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Contact
+              </Link>
+              <Link
+                to="/privacy-policy"
+                className="text-base font-medium p-2 hover:bg-secondary rounded-md"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Privacy Policy
+              </Link>
+              <Link
+                to="/terms"
+                className="text-base font-medium p-2 hover:bg-secondary rounded-md"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Terms of Service
               </Link>
             </nav>
 
