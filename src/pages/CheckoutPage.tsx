@@ -59,6 +59,11 @@ const CheckoutPage = () => {
     return null;
   }
   
+  // Convert price to Rupees
+  const totalInRupees = total * 75;
+  const taxInRupees = totalInRupees * 0.08;
+  const grandTotalInRupees = totalInRupees + taxInRupees;
+  
   return (
     <RequireAuth>
       <PageLayout>
@@ -267,7 +272,7 @@ const CheckoutPage = () => {
                   <div className="space-y-2 mb-4">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Subtotal</span>
-                      <span>₹{(total * 75).toFixed(2)}</span>
+                      <span>₹{totalInRupees.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Shipping</span>
@@ -275,7 +280,7 @@ const CheckoutPage = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Tax</span>
-                      <span>₹{(total * 0.08 * 75).toFixed(2)}</span>
+                      <span>₹{taxInRupees.toFixed(2)}</span>
                     </div>
                   </div>
                   
@@ -283,7 +288,7 @@ const CheckoutPage = () => {
                   
                   <div className="flex justify-between font-semibold text-lg mb-6">
                     <span>Total</span>
-                    <span>₹{(total * 1.08 * 75).toFixed(2)}</span>
+                    <span>₹{grandTotalInRupees.toFixed(2)}</span>
                   </div>
                   
                   <Button 
