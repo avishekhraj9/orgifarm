@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -17,9 +16,6 @@ const LoginPage = () => {
   const location = useLocation();
   const { login } = useAuth();
 
-  // Get the intended destination from location state, or default to homepage
-  const from = location.state?.from?.pathname || '/';
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -32,6 +28,7 @@ const LoginPage = () => {
     
     try {
       await login(email, password);
+      const from = location.state?.from?.pathname || "/";
       navigate(from, { replace: true });
     } catch (error) {
       console.error('Login failed:', error);
@@ -44,9 +41,9 @@ const LoginPage = () => {
       <div className="flex items-center justify-center py-12">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle className="text-2xl text-center">Login</CardTitle>
+            <CardTitle className="text-2xl text-center">Welcome Back</CardTitle>
             <CardDescription className="text-center">
-              Enter your credentials to access your account
+              Enter your credentials to sign in to your account
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -64,12 +61,7 @@ const LoginPage = () => {
                   />
                 </div>
                 <div className="grid gap-2">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="password">Password</Label>
-                    <Link to="/forgot-password" className="text-sm text-primary hover:underline">
-                      Forgot password?
-                    </Link>
-                  </div>
+                  <Label htmlFor="password">Password</Label>
                   <Input
                     id="password"
                     type="password"
@@ -79,7 +71,7 @@ const LoginPage = () => {
                   />
                 </div>
                 <Button type="submit" disabled={isLoading}>
-                  {isLoading ? 'Logging in...' : 'Login'}
+                  {isLoading ? 'Logging in...' : 'Log In'}
                 </Button>
               </div>
             </form>
@@ -92,15 +84,6 @@ const LoginPage = () => {
               </Link>
             </p>
           </CardFooter>
-          
-          {/* Demo account info */}
-          <div className="px-6 pb-6">
-            <div className="rounded-md bg-muted p-4">
-              <div className="text-sm font-medium mb-2">Demo Account</div>
-              <p className="text-xs text-muted-foreground">Email: test@example.com</p>
-              <p className="text-xs text-muted-foreground">Password: password123</p>
-            </div>
-          </div>
         </Card>
       </div>
     </PageLayout>
