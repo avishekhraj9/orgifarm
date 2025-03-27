@@ -295,6 +295,7 @@ const CheckoutPage = () => {
                     type="submit" 
                     className="w-full" 
                     size="lg"
+                    
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? 'Processing...' : 'Place Order'}
