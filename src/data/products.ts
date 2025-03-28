@@ -1,4 +1,3 @@
-
 import { Product, Category } from '@/types/product';
 
 export const categories: Category[] = [
@@ -19,6 +18,12 @@ export const categories: Category[] = [
     name: "Jams",
     description: "Homemade preserves and fruit jams",
     imageUrl: "/img/litchi_honey.jpg"
+  },
+  {
+    id: "cat4",
+    name: "Honey",
+    description: "Pure organic natural honey varieties",
+    imageUrl: "/img/himalyan_multi_floral_honey.jpg"
   }
 ];
 
@@ -103,6 +108,36 @@ export const products: Product[] = [
     category: "cat3",
     rating: 4.7,
     stock: 14
+  },
+  {
+    id: "9",
+    name: "Himalayan Multi Floral Honey",
+    description: "Pure and natural honey harvested from the pristine Himalayan mountains. This multi-floral honey offers complex flavors and rich nutritional benefits from diverse wildflowers.",
+    price: 11.99,
+    imageUrl: "/img/himalyan_multi_floral_honey.jpg",
+    category: "cat4",
+    rating: 4.9,
+    stock: 20
+  },
+  {
+    id: "10",
+    name: "Litchi Honey",
+    description: "Exquisite monofloral honey produced from litchi blossoms. Features a delicate floral aroma with distinctive fruity notes and a smooth, light amber color.",
+    price: 9.99,
+    imageUrl: "/img/litchi_honey.jpg",
+    category: "cat4",
+    rating: 4.8,
+    stock: 15
+  },
+  {
+    id: "11",
+    name: "Berry Honey",
+    description: "Premium honey collected from bees that predominantly pollinate berry flowers. Offers a unique berry-infused sweetness with subtle tartness and a rich amber hue.",
+    price: 10.99,
+    imageUrl: "/img/Berry_honey.jpg",
+    category: "cat4",
+    rating: 4.7,
+    stock: 18
   }
 ];
 
