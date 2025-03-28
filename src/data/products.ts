@@ -64,7 +64,7 @@ export const products: Product[] = [
     description: "Pure cow ghee made from the milk of grass-fed cows. Rich in nutrients and flavor, perfect for cooking and enhancing the taste of your dishes.",
     
     price: 9.99,
-    imageUrl: "/img/sumeet.jpg",
+    imageUrl: "#",
     category: "cat2",
     rating: 4.9,
     stock: 15
