@@ -55,8 +55,9 @@ export const products: Product[] = [
   },
   {
     id: "4",
-    name: "Sumeet Law gate wali",
-    description: "availale full night",
+    name: "Cow Ghee",
+    description: "Pure cow ghee made from the milk of grass-fed cows. Rich in nutrients and flavor, perfect for cooking and enhancing the taste of your dishes.",
+    
     price: 9.99,
     imageUrl: "/img/sumeet.jpg",
     category: "cat2",
