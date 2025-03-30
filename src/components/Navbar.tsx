@@ -55,11 +55,17 @@ const Navbar: React.FC = () => {
       )}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <div className="flex items-center">
+        {/* <div className="flex items-center">
           <Link to="/" className="font-semibold text-xl tracking-tight">
             Orgifarm
           </Link>
-        </div>
+        </div> */}
+        <div className="flex items-center">
+  <Link to="/">
+    <img src="/img/Orgifarm_logo.png" alt="Orgifarm Logo" className="h-20 w-auto" />
+  </Link>
+</div>
+
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex space-x-8 items-center">
