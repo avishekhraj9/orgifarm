@@ -19,6 +19,8 @@ import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import TermsPage from "./pages/TermsPage";
+import AccountPage from "./pages/AccountPage";
+import OrdersPage from "./pages/OrdersPage";
 import RequireAuth from "./components/RequireAuth";
 
 const queryClient = new QueryClient();
@@ -42,6 +44,16 @@ const App = () => (
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
               <Route path="/terms" element={<TermsPage />} />
+              <Route path="/account" element={
+                <RequireAuth>
+                  <AccountPage />
+                </RequireAuth>
+              } />
+              <Route path="/orders" element={
+                <RequireAuth>
+                  <OrdersPage />
+                </RequireAuth>
+              } />
               <Route path="/checkout" element={
                 <RequireAuth>
                   <CheckoutPage />
