@@ -180,13 +180,13 @@ const Index = () => {
               <div className="flex items-center justify-center">
                 <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
                   <img 
-                    src="https://randomuser.me/api/portraits/women/45.jpg" 
+                    src="/img/avishekh1.jpg" 
                     alt="Customer" 
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="text-left">
-                  <p className="font-medium">Priya Sharma</p>
+                  <p className="font-medium">Avishekh Raj</p>
                   <p className="text-sm text-muted-foreground">Home Chef</p>
                 </div>
               </div>
