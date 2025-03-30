@@ -14,13 +14,43 @@ const AccountPage = () => {
   const { user } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [street, setStreet] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [postalCode, setPostalCode] = useState('');
+  const [country, setCountry] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (user) {
-      setName(user.name || '');
-      setEmail(user.email || '');
-    }
+    const fetchUserProfile = async () => {
+      if (!user) return;
+      
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+        
+        if (error) throw error;
+        
+        if (data) {
+          setName(data.name || '');
+          setEmail(user.email || '');
+          setMobileNumber(data.mobile_number || '');
+          setStreet(data.address_street || '');
+          setCity(data.address_city || '');
+          setState(data.address_state || '');
+          setPostalCode(data.address_postal_code || '');
+          setCountry(data.address_country || '');
+        }
+      } catch (error: any) {
+        console.error('Error fetching profile:', error);
+      }
+    };
+
+    fetchUserProfile();
   }, [user]);
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
@@ -33,7 +63,15 @@ const AccountPage = () => {
     try {
       const { error } = await supabase
         .from('profiles')
-        .update({ name })
+        .update({ 
+          name,
+          mobile_number: mobileNumber,
+          address_street: street,
+          address_city: city,
+          address_state: state,
+          address_postal_code: postalCode,
+          address_country: country
+        })
         .eq('id', user.id);
       
       if (error) throw error;
@@ -89,16 +127,88 @@ const AccountPage = () => {
                 <p className="text-xs text-muted-foreground">Email cannot be changed</p>
               </div>
               
-              <Button type="submit" disabled={isLoading}>
-                {isLoading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Saving...
-                  </>
-                ) : (
-                  'Save Changes'
-                )}
-              </Button>
+              <div className="space-y-2">
+                <Label htmlFor="mobileNumber">Mobile Number</Label>
+                <Input 
+                  id="mobileNumber"
+                  value={mobileNumber}
+                  onChange={(e) => setMobileNumber(e.target.value)}
+                  placeholder="Enter your mobile number"
+                />
+              </div>
+              
+              <div className="pt-4 border-t">
+                <h3 className="font-medium text-lg mb-4">Address Information</h3>
+                
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="street">Street Address</Label>
+                    <Input 
+                      id="street"
+                      value={street}
+                      onChange={(e) => setStreet(e.target.value)}
+                      placeholder="Enter your street address"
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="city">City</Label>
+                      <Input 
+                        id="city"
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                        placeholder="Enter your city"
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="state">State/Province</Label>
+                      <Input 
+                        id="state"
+                        value={state}
+                        onChange={(e) => setState(e.target.value)}
+                        placeholder="Enter your state/province"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="postalCode">Postal Code</Label>
+                      <Input 
+                        id="postalCode"
+                        value={postalCode}
+                        onChange={(e) => setPostalCode(e.target.value)}
+                        placeholder="Enter your postal code"
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="country">Country</Label>
+                      <Input 
+                        id="country"
+                        value={country}
+                        onChange={(e) => setCountry(e.target.value)}
+                        placeholder="Enter your country"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="pt-4">
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    'Save Changes'
+                  )}
+                </Button>
+              </div>
             </form>
           </CardContent>
         </Card>
