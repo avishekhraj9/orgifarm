@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from 'sonner';
-import { supabase } from '@/lib/supabase';
+import { supabase, shouldUseMockAuth } from '@/lib/supabase';
 import { User as SupabaseUser } from '@supabase/supabase-js';
 
 type User = {
@@ -40,6 +40,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIsLoading(true);
       
       try {
+        // If we should use mock auth, don't even try Supabase
+        if (shouldUseMockAuth) {
+          throw new Error('Using mock authentication');
+        }
+        
         // Try to get the session from Supabase
         const { data: { session }, error } = await supabase.auth.getSession();
         
@@ -103,6 +108,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true);
     
     try {
+      // Skip Supabase if we're using mock auth
+      if (shouldUseMockAuth) {
+        throw new Error('Using mock authentication');
+      }
+      
       // Try to login with Supabase
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
@@ -138,8 +148,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch (error: any) {
       console.error('Login error:', error);
       
-      // Fallback to mock login if Supabase is not configured
-      if (error.message?.includes('not configured') || !supabase) {
+      // Fallback to mock login if using mock auth
+      if (shouldUseMockAuth || error.message?.includes('mock authentication')) {
         console.log('Falling back to mock login');
         const foundUser = MOCK_USERS.find(u => u.email === email && u.password === password);
         
@@ -165,6 +175,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true);
     
     try {
+      // Skip Supabase if we're using mock auth
+      if (shouldUseMockAuth) {
+        throw new Error('Using mock authentication');
+      }
+      
       // Try to sign up with Supabase
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -211,8 +226,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch (error: any) {
       console.error('Signup error:', error);
       
-      // Fallback to mock signup if Supabase is not configured
-      if (error.message?.includes('not configured') || !supabase) {
+      // Fallback to mock signup if using mock auth
+      if (shouldUseMockAuth || error.message?.includes('mock authentication')) {
         console.log('Falling back to mock signup');
         // Check if user already exists
         if (MOCK_USERS.some(u => u.email === email)) {
@@ -247,11 +262,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true);
     
     try {
-      // Try to logout with Supabase
-      const { error } = await supabase.auth.signOut();
-      
-      if (error) {
-        throw error;
+      // Only try Supabase logout if not using mock auth
+      if (!shouldUseMockAuth) {
+        // Try to logout with Supabase
+        const { error } = await supabase.auth.signOut();
+        
+        if (error) {
+          throw error;
+        }
       }
     } catch (error) {
       console.error('Error during logout:', error);
