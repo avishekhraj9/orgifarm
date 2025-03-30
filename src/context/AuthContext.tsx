@@ -1,8 +1,8 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from 'sonner';
-import { supabase, shouldUseMockAuth } from '@/lib/supabase';
-import { User as SupabaseUser } from '@supabase/supabase-js';
+import { supabase } from '@/integrations/supabase/client';
+import { User as SupabaseUser, Session } from '@supabase/supabase-js';
 
 type User = {
   id: string;
@@ -20,100 +20,54 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// For fallback when Supabase is not configured
-const MOCK_USERS = [
-  {
-    id: '1',
-    name: 'Test User',
-    email: 'test@example.com',
-    password: 'password123'
-  }
-];
-
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // Check for existing session on mount
+  // Set up auth state listener and check for existing session
   useEffect(() => {
-    const checkSession = async () => {
-      setIsLoading(true);
-      
-      try {
-        // If we should use mock auth, don't even try Supabase
-        if (shouldUseMockAuth) {
-          throw new Error('Using mock authentication');
-        }
-        
-        // Try to get the session from Supabase
-        const { data: { session }, error } = await supabase.auth.getSession();
-        
-        if (error) {
-          console.error('Error fetching session:', error);
-          throw error;
-        }
+    // Set up auth state listener FIRST
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setSession(session);
         
         if (session?.user) {
-          // Get user metadata
-          const { data: userData, error: profileError } = await supabase
-            .from('profiles')
-            .select('name')
-            .eq('id', session.user.id)
-            .single();
-            
-          if (profileError) {
-            console.error('Error fetching user profile:', profileError);
-          }
-          
           setUser({
             id: session.user.id,
-            name: userData?.name || session.user.email?.split('@')[0] || 'User',
+            name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'User',
             email: session.user.email || '',
           });
         } else {
-          // Fallback to localStorage if no session
-          const storedUser = localStorage.getItem('user');
-          if (storedUser) {
-            try {
-              setUser(JSON.parse(storedUser));
-            } catch (error) {
-              console.error('Failed to parse stored user:', error);
-              localStorage.removeItem('user');
-            }
-          } else {
-            setUser(null);
-          }
+          setUser(null);
         }
-      } catch (error) {
-        console.error('Session check failed:', error);
-        // Fallback to localStorage
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-          try {
-            setUser(JSON.parse(storedUser));
-          } catch (error) {
-            console.error('Failed to parse stored user:', error);
-            localStorage.removeItem('user');
-          }
-        }
-      } finally {
-        setIsLoading(false);
       }
-    };
+    );
 
-    checkSession();
+    // THEN check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      
+      if (session?.user) {
+        setUser({
+          id: session.user.id,
+          name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'User',
+          email: session.user.email || '',
+        });
+      }
+      
+      setIsLoading(false);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     
     try {
-      // Skip Supabase if we're using mock auth
-      if (shouldUseMockAuth) {
-        throw new Error('Using mock authentication');
-      }
-      
-      // Try to login with Supabase
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -124,48 +78,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       if (data.user) {
-        // Get user metadata
-        const { data: userData, error: profileError } = await supabase
-          .from('profiles')
-          .select('name')
-          .eq('id', data.user.id)
-          .single();
-          
-        if (profileError) {
-          console.error('Error fetching user profile:', profileError);
-        }
-        
-        const userObj = {
-          id: data.user.id,
-          name: userData?.name || data.user.email?.split('@')[0] || 'User',
-          email: data.user.email || '',
-        };
-        
-        setUser(userObj);
-        localStorage.setItem('user', JSON.stringify(userObj));
         toast.success('Logged in successfully!');
       }
     } catch (error: any) {
       console.error('Login error:', error);
-      
-      // Fallback to mock login if using mock auth
-      if (shouldUseMockAuth || error.message?.includes('mock authentication')) {
-        console.log('Falling back to mock login');
-        const foundUser = MOCK_USERS.find(u => u.email === email && u.password === password);
-        
-        if (!foundUser) {
-          toast.error('Invalid email or password');
-          throw new Error('Invalid credentials');
-        }
-        
-        const { password: _, ...userWithoutPassword } = foundUser;
-        setUser(userWithoutPassword);
-        localStorage.setItem('user', JSON.stringify(userWithoutPassword));
-        toast.success('Logged in successfully! (Mock)');
-      } else {
-        toast.error('Invalid email or password');
-        throw error;
-      }
+      toast.error(error.message || 'Invalid email or password');
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -175,12 +93,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true);
     
     try {
-      // Skip Supabase if we're using mock auth
-      if (shouldUseMockAuth) {
-        throw new Error('Using mock authentication');
-      }
-      
-      // Try to sign up with Supabase
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -196,63 +108,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       if (data.user) {
-        // Create a profile for the user
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert([
-            { 
-              id: data.user.id,
-              name,
-              email,
-              created_at: new Date().toISOString(),
-            }
-          ]);
-          
-        if (profileError) {
-          console.error('Error creating profile:', profileError);
-          // Continue anyway, as the auth account was created
-        }
-        
-        const userObj = {
-          id: data.user.id,
-          name,
-          email: data.user.email || '',
-        };
-        
-        setUser(userObj);
-        localStorage.setItem('user', JSON.stringify(userObj));
         toast.success('Account created successfully! Please check your email to confirm your account.');
       }
     } catch (error: any) {
       console.error('Signup error:', error);
-      
-      // Fallback to mock signup if using mock auth
-      if (shouldUseMockAuth || error.message?.includes('mock authentication')) {
-        console.log('Falling back to mock signup');
-        // Check if user already exists
-        if (MOCK_USERS.some(u => u.email === email)) {
-          toast.error('User already exists');
-          throw new Error('User already exists');
-        }
-        
-        // Create new user
-        const newUser = {
-          id: (MOCK_USERS.length + 1).toString(),
-          name,
-          email,
-          password
-        };
-        
-        MOCK_USERS.push(newUser);
-        
-        const { password: _, ...userWithoutPassword } = newUser;
-        setUser(userWithoutPassword);
-        localStorage.setItem('user', JSON.stringify(userWithoutPassword));
-        toast.success('Account created successfully! (Mock)');
-      } else {
-        toast.error('Failed to create account. Email might already be taken.');
-        throw error;
-      }
+      toast.error(error.message || 'Failed to create account');
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -262,23 +123,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true);
     
     try {
-      // Only try Supabase logout if not using mock auth
-      if (!shouldUseMockAuth) {
-        // Try to logout with Supabase
-        const { error } = await supabase.auth.signOut();
-        
-        if (error) {
-          throw error;
-        }
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        throw error;
       }
+      
+      toast.success('Logged out successfully');
     } catch (error) {
       console.error('Error during logout:', error);
-      // Continue with local logout even if Supabase fails
     } finally {
-      // Always clear local state
       setUser(null);
-      localStorage.removeItem('user');
-      toast.success('Logged out successfully');
+      setSession(null);
       setIsLoading(false);
     }
   };
