@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingCart, User, Search, Menu, X, ChevronDown } from 'lucide-react';
@@ -93,12 +92,6 @@ const Navbar: React.FC = () => {
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to="/contact">Contact</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/privacy-policy">Privacy Policy</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/terms">Terms of Service</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -265,20 +258,6 @@ const Navbar: React.FC = () => {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Contact
-              </Link>
-              <Link
-                to="/privacy-policy"
-                className="text-base font-medium p-2 hover:bg-secondary rounded-md"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Privacy Policy
-              </Link>
-              <Link
-                to="/terms"
-                className="text-base font-medium p-2 hover:bg-secondary rounded-md"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Terms of Service
               </Link>
             </nav>
 
