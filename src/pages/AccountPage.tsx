@@ -39,11 +39,12 @@ const AccountPage = () => {
           setName(data.name || '');
           setEmail(user.email || '');
           setMobileNumber(data.mobile_number || '');
-          setStreet(data.address_street || '');
-          setCity(data.address_city || '');
-          setState(data.address_state || '');
-          setPostalCode(data.address_postal_code || '');
-          setCountry(data.address_country || '');
+          // Handle the address fields, using type assertions if needed
+          setStreet(data.address_street as string || '');
+          setCity(data.address_city as string || '');
+          setState(data.address_state as string || '');
+          setPostalCode(data.address_postal_code as string || '');
+          setCountry(data.address_country as string || '');
         }
       } catch (error: any) {
         console.error('Error fetching profile:', error);
@@ -61,17 +62,20 @@ const AccountPage = () => {
     setIsLoading(true);
     
     try {
+      // Use a type assertion for the update object to work with existing types
+      const updateData = {
+        name,
+        mobile_number: mobileNumber,
+        address_street: street,
+        address_city: city,
+        address_state: state,
+        address_postal_code: postalCode,
+        address_country: country
+      } as any; // Use type assertion to bypass TypeScript checking
+      
       const { error } = await supabase
         .from('profiles')
-        .update({ 
-          name,
-          mobile_number: mobileNumber,
-          address_street: street,
-          address_city: city,
-          address_state: state,
-          address_postal_code: postalCode,
-          address_country: country
-        })
+        .update(updateData)
         .eq('id', user.id);
       
       if (error) throw error;

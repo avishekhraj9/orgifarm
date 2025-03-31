@@ -11,6 +11,12 @@ export type Database = {
     Tables: {
       profiles: {
         Row: {
+          address_city: string | null
+          address_country: string | null
+          address_postal_code: string | null
+          address_state: string | null
+          address_street: string | null
+          city: string | null
           created_at: string
           email: string
           id: string
@@ -19,6 +25,12 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          address_city?: string | null
+          address_country?: string | null
+          address_postal_code?: string | null
+          address_state?: string | null
+          address_street?: string | null
+          city?: string | null
           created_at?: string
           email: string
           id: string
@@ -27,6 +39,12 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          address_city?: string | null
+          address_country?: string | null
+          address_postal_code?: string | null
+          address_state?: string | null
+          address_street?: string | null
+          city?: string | null
           created_at?: string
           email?: string
           id?: string
