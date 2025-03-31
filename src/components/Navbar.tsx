@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingCart, User, Search, Menu, X, ChevronDown } from 'lucide-react';
@@ -50,20 +51,20 @@ const Navbar: React.FC = () => {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-apple px-4 md:px-8',
         isScrolled
-          ? 'bg-white/80 backdrop-blur-lg shadow-sm py-3'
-          : 'bg-transparent py-5'
+          ? 'bg-white/80 backdrop-blur-lg shadow-sm py-2'
+          : 'bg-transparent py-3'
       )}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center">
           <Link to="/">
-            <img src="/img/Orgifarm_logo.png" alt="Orgifarm Logo" className="h-20 w-auto" />
+            <img src="/img/Orgifarm_logo.png" alt="Orgifarm Logo" className="h-14 w-auto" />
           </Link>
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex space-x-8 items-center">
+        <nav className="hidden md:flex space-x-6 items-center">
           <Link
             to="/"
             className="text-sm font-medium text-gray-800 hover:text-primary transition-colors"
@@ -98,12 +99,12 @@ const Navbar: React.FC = () => {
         </nav>
 
         {/* Desktop Actions */}
-        <div className="hidden md:flex items-center space-x-4">
+        <div className="hidden md:flex items-center space-x-3">
           <form onSubmit={handleSearch} className="relative">
             <Input
               type="search"
               placeholder="Search..."
-              className="w-[180px] lg:w-[220px] rounded-full bg-secondary/50"
+              className="w-[160px] lg:w-[200px] h-9 rounded-full bg-secondary/50"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -122,9 +123,9 @@ const Navbar: React.FC = () => {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="rounded-full hover:bg-secondary"
+                  className="rounded-full h-9 w-9 hover:bg-secondary"
                 >
-                  <User className="h-5 w-5" />
+                  <User className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-[200px]">
@@ -150,7 +151,7 @@ const Navbar: React.FC = () => {
               variant="ghost"
               size="sm"
               onClick={() => navigate('/login')}
-              className="rounded-full hover:bg-secondary"
+              className="h-9 rounded-full hover:bg-secondary"
             >
               Login
             </Button>
@@ -159,12 +160,12 @@ const Navbar: React.FC = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="rounded-full hover:bg-secondary relative"
+            className="rounded-full h-9 w-9 hover:bg-secondary relative"
             onClick={() => navigate('/cart')}
           >
-            <ShoppingCart className="h-5 w-5" />
+            <ShoppingCart className="h-4 w-4" />
             {itemCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-primary text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-primary text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center">
                 {itemCount}
               </span>
             )}
@@ -172,16 +173,16 @@ const Navbar: React.FC = () => {
         </div>
 
         {/* Mobile Menu Button */}
-        <div className="flex md:hidden items-center space-x-4">
+        <div className="flex md:hidden items-center space-x-3">
           <Button
             variant="ghost"
             size="icon"
-            className="rounded-full hover:bg-secondary relative"
+            className="rounded-full h-9 w-9 hover:bg-secondary relative"
             onClick={() => navigate('/cart')}
           >
-            <ShoppingCart className="h-5 w-5" />
+            <ShoppingCart className="h-4 w-4" />
             {itemCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-primary text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-primary text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center">
                 {itemCount}
               </span>
             )}
@@ -190,13 +191,13 @@ const Navbar: React.FC = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="rounded-full hover:bg-secondary"
+            className="rounded-full h-9 w-9 hover:bg-secondary"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? (
-              <X className="h-5 w-5" />
+              <X className="h-4 w-4" />
             ) : (
-              <Menu className="h-5 w-5" />
+              <Menu className="h-4 w-4" />
             )}
           </Button>
         </div>
