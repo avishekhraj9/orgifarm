@@ -9,3 +9,11 @@ export const supabase = supabaseClient;
 
 // Export flag for components to know if they should use fallback auth
 export const shouldUseMockAuth = false;
+
+// Re-export Profile type for use in components
+export { Profile } from '@/types/profile';
+
+// Helper function to handle profile data with proper types
+export const getTypedProfile = <T>(data: any): T => {
+  return data as unknown as T;
+};
