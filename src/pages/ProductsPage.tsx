@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Search, X, Filter, Check, IndianRupee } from 'lucide-react';
@@ -8,6 +9,7 @@ import PageLayout from '@/components/PageLayout';
 import ProductCard from '@/components/ProductCard';
 import { products, categories } from '@/data/products';
 import { Product } from '@/types/product';
+import { useIsMobile } from '@/hooks/use-mobile';
 import {
   Sheet,
   SheetContent,
@@ -27,6 +29,7 @@ import {
 const ProductsPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const queryParams = new URLSearchParams(location.search);
   
   const [searchQuery, setSearchQuery] = useState(queryParams.get('search') || '');
@@ -275,9 +278,13 @@ const ProductsPage = () => {
           </div>
 
           {filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard 
+                  key={product.id} 
+                  product={product} 
+                  className={isMobile ? "product-card-mobile" : ""}
+                />
               ))}
             </div>
           ) : (

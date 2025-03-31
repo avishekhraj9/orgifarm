@@ -3,9 +3,12 @@ import React from 'react';
 import PageLayout from '@/components/PageLayout';
 import { blogPosts } from '@/data/blog-posts';
 import BlogCard from '@/components/BlogCard';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 
 const BlogPage: React.FC = () => {
+  const isMobile = useIsMobile();
+  
   return (
     <PageLayout>
       <div className="max-w-7xl mx-auto py-12 px-4">
@@ -16,7 +19,7 @@ const BlogPage: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <div className={`grid grid-cols-${isMobile ? '2' : '1'} md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12`}>
           {blogPosts.map(post => (
             <BlogCard key={post.id} post={post} />
           ))}
