@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingCart, User, Search, Menu, X, ChevronDown } from 'lucide-react';
@@ -55,17 +56,12 @@ const Navbar: React.FC = () => {
       )}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        {/* <div className="flex items-center">
-          <Link to="/" className="font-semibold text-xl tracking-tight">
-            Orgifarm
-          </Link>
-        </div> */}
+        {/* Logo */}
         <div className="flex items-center">
-  <Link to="/">
-    <img src="/img/Orgifarm_logo.png" alt="Orgifarm Logo" className="h-20 w-auto" />
-  </Link>
-</div>
-
+          <Link to="/">
+            <img src="/img/Orgifarm_logo.png" alt="Orgifarm Logo" className="h-20 w-auto" />
+          </Link>
+        </div>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex space-x-8 items-center">
@@ -80,6 +76,12 @@ const Navbar: React.FC = () => {
             className="text-sm font-medium text-gray-800 hover:text-primary transition-colors"
           >
             Products
+          </Link>
+          <Link
+            to="/blog"
+            className="text-sm font-medium text-gray-800 hover:text-primary transition-colors"
+          >
+            Blog
           </Link>
           <DropdownMenu>
             <DropdownMenuTrigger className="text-sm font-medium text-gray-800 hover:text-primary transition-colors flex items-center gap-1">
@@ -242,6 +244,13 @@ const Navbar: React.FC = () => {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Products
+              </Link>
+              <Link
+                to="/blog"
+                className="text-base font-medium p-2 hover:bg-secondary rounded-md"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Blog
               </Link>
               <Link
                 to="/about"
