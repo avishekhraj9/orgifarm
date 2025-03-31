@@ -8,7 +8,7 @@ import { useAuth } from '@/context/AuthContext';
 import PageLayout from '@/components/PageLayout';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { supabase, Profile, getTypedProfile } from '@/lib/supabase';
 
 const AccountPage = () => {
   const { user } = useAuth();
@@ -36,15 +36,17 @@ const AccountPage = () => {
         if (error) throw error;
         
         if (data) {
-          setName(data.name || '');
+          // Use our utility function to get properly typed profile data
+          const profile = getTypedProfile<Profile>(data);
+          
+          setName(profile.name || '');
           setEmail(user.email || '');
-          setMobileNumber(data.mobile_number || '');
-          // Handle the address fields, using type assertions if needed
-          setStreet(data.address_street as string || '');
-          setCity(data.address_city as string || '');
-          setState(data.address_state as string || '');
-          setPostalCode(data.address_postal_code as string || '');
-          setCountry(data.address_country as string || '');
+          setMobileNumber(profile.mobile_number || '');
+          setStreet(profile.address_street || '');
+          setCity(profile.address_city || '');
+          setState(profile.address_state || '');
+          setPostalCode(profile.address_postal_code || '');
+          setCountry(profile.address_country || '');
         }
       } catch (error: any) {
         console.error('Error fetching profile:', error);
@@ -62,8 +64,8 @@ const AccountPage = () => {
     setIsLoading(true);
     
     try {
-      // Use a type assertion for the update object to work with existing types
-      const updateData = {
+      // Create an update object with our custom type
+      const updateData: Partial<Profile> = {
         name,
         mobile_number: mobileNumber,
         address_street: street,
@@ -71,7 +73,7 @@ const AccountPage = () => {
         address_state: state,
         address_postal_code: postalCode,
         address_country: country
-      } as any; // Use type assertion to bypass TypeScript checking
+      };
       
       const { error } = await supabase
         .from('profiles')
