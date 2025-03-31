@@ -11,7 +11,8 @@ export const supabase = supabaseClient;
 export const shouldUseMockAuth = false;
 
 // Re-export Profile type for use in components
-export { Profile } from '@/types/profile';
+// Using 'export type' instead of just 'export' to fix the isolatedModules error
+export type { Profile } from '@/types/profile';
 
 // Helper function to handle profile data with proper types
 export const getTypedProfile = <T>(data: any): T => {
