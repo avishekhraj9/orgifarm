@@ -19,7 +19,7 @@ const PageLayout: React.FC<PageLayoutProps> = ({
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <main className={cn(
-        "flex-grow pt-24 animate-fade-in", 
+        "flex-grow pt-20 animate-fade-in", 
         fullWidth ? "" : "container px-4",
         className
       )}>
