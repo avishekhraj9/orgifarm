@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -39,49 +38,79 @@ const SavedAddressesPage = () => {
     is_default: false,
   });
 
-  // Fetch addresses query
+  useEffect(() => {
+    console.log('Current auth user:', user);
+  }, [user]);
+
   const { data: addresses = [], isLoading } = useQuery({
     queryKey: ['user-addresses', user?.id],
     queryFn: async () => {
-      if (!user) return [];
+      if (!user) {
+        console.log('No user found, returning empty addresses array');
+        return [];
+      }
       
-      const { data, error } = await supabase
-        .from('user_addresses')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('is_default', { ascending: false })
-        .order('created_at', { ascending: false });
+      console.log('Fetching addresses for user:', user.id);
       
-      if (error) throw error;
-      return data as UserAddress[];
+      try {
+        const { data, error } = await supabase
+          .from('user_addresses')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('is_default', { ascending: false })
+          .order('created_at', { ascending: false });
+        
+        if (error) {
+          console.error('Error fetching addresses:', error);
+          throw error;
+        }
+        
+        console.log('Fetched addresses:', data);
+        return data as UserAddress[];
+      } catch (err) {
+        console.error('Exception during address fetch:', err);
+        throw err;
+      }
     },
     enabled: !!user,
   });
 
-  // Create address mutation
   const createAddressMutation = useMutation({
     mutationFn: async (newAddress: NewUserAddress) => {
-      if (!user) throw new Error('User not authenticated');
+      if (!user) {
+        console.error('Cannot create address: User not authenticated');
+        throw new Error('User not authenticated');
+      }
       
-      // If this is the first address or is_default is true, ensure it's set as default
+      console.log('Creating new address for user:', user.id, 'Address data:', newAddress);
+      
       if (addresses.length === 0 || newAddress.is_default) {
         newAddress.is_default = true;
       }
       
-      const { data, error } = await supabase
-        .from('user_addresses')
-        .insert({ ...newAddress, user_id: user.id })
-        .select('*')
-        .single();
-      
-      if (error) throw error;
-      
-      // If setting as default, update other addresses
-      if (newAddress.is_default) {
-        await updateOtherAddressesDefaultStatus((data as UserAddress).id);
+      try {
+        const { data, error } = await supabase
+          .from('user_addresses')
+          .insert({ ...newAddress, user_id: user.id })
+          .select('*')
+          .single();
+        
+        if (error) {
+          console.error('Error creating address:', error);
+          throw error;
+        }
+        
+        console.log('New address created:', data);
+        
+        if (newAddress.is_default) {
+          await updateOtherAddressesDefaultStatus((data as UserAddress).id);
+        }
+        
+        return data;
+      } catch (err) {
+        console.error('Exception during address creation:', err);
+        throw err;
       }
-      
-      return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user-addresses', user?.id] });
@@ -90,11 +119,11 @@ const SavedAddressesPage = () => {
       resetForm();
     },
     onError: (error) => {
+      console.error('Mutation error in create address:', error);
       toast.error(`Error adding address: ${error.message}`);
     },
   });
 
-  // Update address mutation
   const updateAddressMutation = useMutation({
     mutationFn: async ({ id, address }: { id: string; address: NewUserAddress }) => {
       if (!user) throw new Error('User not authenticated');
@@ -109,7 +138,6 @@ const SavedAddressesPage = () => {
       
       if (error) throw error;
       
-      // If setting as default, update other addresses
       if (address.is_default) {
         await updateOtherAddressesDefaultStatus(id);
       }
@@ -127,7 +155,6 @@ const SavedAddressesPage = () => {
     },
   });
 
-  // Delete address mutation
   const deleteAddressMutation = useMutation({
     mutationFn: async (id: string) => {
       if (!user) throw new Error('User not authenticated');
@@ -142,7 +169,6 @@ const SavedAddressesPage = () => {
       
       if (error) throw error;
       
-      // If deleted address was default, set another as default if available
       if (data.is_default && addresses.length > 1) {
         const remainingAddresses = addresses.filter(addr => addr.id !== id);
         if (remainingAddresses.length > 0) {
@@ -167,12 +193,10 @@ const SavedAddressesPage = () => {
     },
   });
 
-  // Set as default address mutation
   const setAsDefaultMutation = useMutation({
     mutationFn: async (id: string) => {
       if (!user) throw new Error('User not authenticated');
       
-      // Set the selected address as default
       const { error } = await supabase
         .from('user_addresses')
         .update({ is_default: true })
@@ -181,7 +205,6 @@ const SavedAddressesPage = () => {
       
       if (error) throw error;
       
-      // Update other addresses to not be default
       await updateOtherAddressesDefaultStatus(id);
       
       return id;
@@ -195,18 +218,25 @@ const SavedAddressesPage = () => {
     },
   });
 
-  // Helper function to update other addresses' default status
   const updateOtherAddressesDefaultStatus = async (currentAddressId: string) => {
     if (!user) return;
     
-    await supabase
-      .from('user_addresses')
-      .update({ is_default: false })
-      .eq('user_id', user.id)
-      .neq('id', currentAddressId);
+    try {
+      console.log('Updating other addresses to non-default for address ID:', currentAddressId);
+      const { error } = await supabase
+        .from('user_addresses')
+        .update({ is_default: false })
+        .eq('user_id', user.id)
+        .neq('id', currentAddressId);
+        
+      if (error) {
+        console.error('Error updating other addresses default status:', error);
+      }
+    } catch (err) {
+      console.error('Exception updating other addresses:', err);
+    }
   };
 
-  // Handle form input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
@@ -215,7 +245,6 @@ const SavedAddressesPage = () => {
     }));
   };
 
-  // Edit address
   const handleEditAddress = (address: UserAddress) => {
     setCurrentAddress(address);
     setFormData({
@@ -230,13 +259,11 @@ const SavedAddressesPage = () => {
     setIsEditDialogOpen(true);
   };
 
-  // Delete address
   const handleDeleteAddress = (address: UserAddress) => {
     setCurrentAddress(address);
     setIsDeleteDialogOpen(true);
   };
 
-  // Reset form
   const resetForm = () => {
     setFormData({
       address_name: '',
@@ -250,7 +277,6 @@ const SavedAddressesPage = () => {
     setCurrentAddress(null);
   };
 
-  // Submit form
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -261,18 +287,16 @@ const SavedAddressesPage = () => {
     }
   };
 
-  // Check if user is authenticated
   useEffect(() => {
     if (!user && !isLoading) {
+      console.log('No authenticated user, redirecting to login');
       navigate('/login');
     }
   }, [user, navigate]);
 
-  // Open add dialog handler
   const handleOpenAddDialog = () => {
     resetForm();
     if (addresses.length === 0) {
-      // Set default to true for the first address
       setFormData(prev => ({ ...prev, is_default: true }));
     }
     setIsAddDialogOpen(true);
@@ -345,7 +369,6 @@ const SavedAddressesPage = () => {
           </div>
         )}
 
-        {/* Add Address Dialog */}
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
@@ -465,7 +488,6 @@ const SavedAddressesPage = () => {
           </DialogContent>
         </Dialog>
 
-        {/* Edit Address Dialog */}
         <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
@@ -585,7 +607,6 @@ const SavedAddressesPage = () => {
           </DialogContent>
         </Dialog>
 
-        {/* Delete Address Confirmation Dialog */}
         <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>

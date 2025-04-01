@@ -4,6 +4,9 @@ import { createClient } from '@supabase/supabase-js';
 // Get Supabase URL and anon key from the client.ts file
 import { supabase as supabaseClient } from '@/integrations/supabase/client';
 
+// Log Supabase configuration for debugging
+console.log('Supabase client setup with URL from client.ts');
+
 // Export the supabase client directly
 export const supabase = supabaseClient;
 
