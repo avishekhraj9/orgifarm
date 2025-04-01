@@ -37,4 +37,4 @@ This project is built with .
 - Tailwind CSS
 
 created by avishekh raj
-assisted by sumeet maurya
+assisted by sumeet maurya, Fouziya Shaik
