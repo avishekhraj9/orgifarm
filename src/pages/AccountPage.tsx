@@ -7,8 +7,9 @@ import { Label } from '@/components/ui/label';
 import { useAuth } from '@/context/AuthContext';
 import PageLayout from '@/components/PageLayout';
 import { toast } from 'sonner';
-import { Loader2 } from 'lucide-react';
+import { Loader2, MapPin } from 'lucide-react';
 import { supabase, Profile, getTypedProfile } from '@/lib/supabase';
+import { Link } from 'react-router-dom';
 
 const AccountPage = () => {
   const { user } = useAuth();
@@ -106,6 +107,23 @@ const AccountPage = () => {
       <div className="max-w-3xl mx-auto py-8">
         <h1 className="text-3xl font-bold mb-6">My Account</h1>
         
+        <div className="mb-6 flex items-center justify-between">
+          <h2 className="text-xl font-semibold">Account Management</h2>
+          <div className="flex space-x-4">
+            <Button variant="outline" asChild>
+              <Link to="/orders">
+                My Orders
+              </Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link to="/addresses">
+                <MapPin className="mr-2 h-4 w-4" />
+                Saved Addresses
+              </Link>
+            </Button>
+          </div>
+        </div>
+        
         <Card className="mb-8">
           <CardHeader>
             <CardTitle>Profile Information</CardTitle>
@@ -144,7 +162,11 @@ const AccountPage = () => {
               </div>
               
               <div className="pt-4 border-t">
-                <h3 className="font-medium text-lg mb-4">Address Information</h3>
+                <h3 className="font-medium text-lg mb-4">Default Address</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  This address will be used as your default shipping address. 
+                  To manage multiple addresses, go to <Link to="/addresses" className="text-primary hover:underline">Saved Addresses</Link>.
+                </p>
                 
                 <div className="space-y-4">
                   <div className="space-y-2">

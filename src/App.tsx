@@ -21,6 +21,7 @@ import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import TermsPage from "./pages/TermsPage";
 import AccountPage from "./pages/AccountPage";
 import OrdersPage from "./pages/OrdersPage";
+import SavedAddressesPage from "./pages/SavedAddressesPage";
 import BlogPage from "./pages/BlogPage";
 import BlogPostPage from "./pages/BlogPostPage";
 import RequireAuth from "./components/RequireAuth";
@@ -56,6 +57,11 @@ const App = () => (
               <Route path="/orders" element={
                 <RequireAuth>
                   <OrdersPage />
+                </RequireAuth>
+              } />
+              <Route path="/addresses" element={
+                <RequireAuth>
+                  <SavedAddressesPage />
                 </RequireAuth>
               } />
               <Route path="/checkout" element={
