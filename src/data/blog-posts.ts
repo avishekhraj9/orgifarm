@@ -32,41 +32,9 @@ export const blogPosts: BlogPost[] = [
     slug: 'benefits-of-organic-farming',
     tags: ['organic', 'sustainability', 'environment']
   },
+  
   {
     id: '2',
-    title: 'Seasonal Eating: Why It Matters',
-    excerpt: 'Learn why eating seasonally is better for your health, the environment, and your taste buds.',
-    content: `
-      <p>In today's globalized world, we've become accustomed to having access to virtually any fruit or vegetable year-round. However, this convenience comes at a cost to both our health and the environment.</p>
-      
-      <p>Eating seasonally means consuming foods that are naturally grown and harvested during their appropriate seasons in your local area. This practice offers numerous benefits that extend beyond just fresher taste.</p>
-      
-      <h2>Peak Nutrition</h2>
-      <p>Fruits and vegetables contain the most nutrients when they're allowed to ripen naturally and are consumed shortly after harvest. Seasonal produce doesn't need to travel long distances or sit in storage for extended periods, which can lead to nutrient degradation.</p>
-      
-      <p>Studies have shown that produce can lose up to 30% of its nutrients within three days of harvesting. By choosing seasonal options, you're more likely to get the maximum nutritional benefit from your food.</p>
-      
-      <h2>Environmental Impact</h2>
-      <p>Out-of-season produce often travels thousands of miles before reaching your plate, contributing significantly to carbon emissions. Additionally, growing crops in artificial conditions often requires more resources like water, energy, and sometimes chemical inputs to mimic natural growing conditions.</p>
-      
-      <p>By choosing seasonal foods, you're supporting farming practices that work with nature's cycles rather than against them, reducing your overall environmental footprint.</p>
-      
-      <h2>Supporting Local Economy</h2>
-      <p>Seasonal eating often goes hand-in-hand with buying locally. When you purchase seasonal produce from local farmers, you're helping to sustain local agriculture and keep money within your community.</p>
-      
-      <h2>Enhanced Flavor</h2>
-      <p>Perhaps the most immediately noticeable benefit of seasonal eating is the superior taste. Produce that's harvested at its peak and hasn't traveled far simply tastes better. Think of the difference between a tomato picked ripe from the vine in summer versus one purchased at a supermarket in winter.</p>
-      
-      <p>At Orgifarm, we follow nature's calendar and offer the freshest seasonal products throughout the year. We believe that working with the seasons rather than against them results in better food for our customers and a healthier planet for all.</p>
-    `,
-    author: 'Team Orgifarm',
-    date: '2024-06-10',
-    coverImage: '/img/IMG-20250326-WA0011.jpg',
-    slug: 'seasonal-eating-why-it-matters',
-    tags: ['seasonal', 'local', 'nutrition']
-  },
-  {
-    id: '3',
     title: 'Understanding Food Labels: Organic vs. Natural',
     excerpt: 'Confused by food labels? Learn the difference between "organic" and "natural" claims on food products.',
     content: `
@@ -112,8 +80,36 @@ export const blogPosts: BlogPost[] = [
     coverImage: '/img/IMG-20250326-WA0007.jpg',
     slug: 'understanding-food-labels',
     tags: ['organic', 'food labels', 'consumer education']
+  },
+  {
+    id: '3',
+    title: 'The Importance of Sustainable Agriculture',
+    excerpt: 'Explore the significance of sustainable agriculture in ensuring food security and protecting the environment.',
+    content: `
+      <p>Sustainable agriculture is a holistic approach to farming that focuses on producing food in a way that is environmentally friendly, economically viable, and socially responsible. It aims to meet the needs of the present without compromising the ability of future generations to meet their own needs.</p>
+      
+      <h2>Why Sustainable Agriculture Matters</h2>
+      <p>As the global population continues to grow, the demand for food increases. However, conventional farming practices often lead to soil degradation, water scarcity, and loss of biodiversity. Sustainable agriculture seeks to address these challenges by promoting practices that enhance soil health, conserve water, and protect ecosystems.</p>
+      
+      <p>By using techniques such as crop rotation, cover cropping, and integrated pest management, sustainable farmers can produce food while minimizing their environmental impact. This not only helps preserve natural resources but also contributes to healthier ecosystems and communities.</p>
+      
+      <h2>Benefits of Sustainable Agriculture</h2>
+      <ul>
+        <li><strong>Environmental Protection:</strong> Sustainable practices reduce pollution, conserve water, and promote biodiversity.</li>
+        <li><strong>Economic Viability:</strong> By focusing on local markets and sustainable practices, farmers can create resilient economies.</li>
+        <li><strong>Social Responsibility:</strong> Sustainable agriculture supports fair labor practices and promotes community well-being.</li>
+      </ul>
+      
+      <p>At Orgifarm, we are committed to sustainable agriculture. Our farming practices prioritize environmental health and community welfare, ensuring that we produce high-quality organic products while protecting our planet for future generations.</p>
+    `,
+    author: 'Team Orgifarm',
+    date: '2024-06-10',
+    coverImage: '/img/IMG-20250326-WA0008.jpg',
+    slug: 'sustainable-agriculture',
+    tags: ['sustainable', 'agriculture', 'environment']
   }
 ];
+
 
 export const getBlogPostBySlug = (slug: string): BlogPost | undefined => {
   return blogPosts.find(post => post.slug === slug);

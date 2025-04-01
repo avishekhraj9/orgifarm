@@ -7,18 +7,18 @@ export const categories: Category[] = [
     description: "Traditional handcrafted Indian pickles",
     imageUrl: "/img/diced_mango_prickle.jpg"
   },
-  {
-    id: "cat2",
-    name: "Ghee",
-    description: "Pure organic traditional ghee",
-    imageUrl: "https://images.unsplash.com/photo-1631633123000-d24861360a33?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-  },
-  {
-    id: "cat3",
-    name: "Jams",
-    description: "Homemade preserves and fruit jams",
-    imageUrl: "/img/litchi_honey.jpg"
-  },
+  // {
+  //   id: "cat2",
+  //   name: "Ghee",
+  //   description: "Pure organic traditional ghee",
+  //   imageUrl: "https://images.unsplash.com/photo-1631633123000-d24861360a33?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+  // },
+  // {
+  //   id: "cat3",
+  //   name: "Jams",
+  //   description: "Homemade preserves and fruit jams",
+  //   imageUrl: "/img/litchi_honey.jpg"
+  // },
   {
     id: "cat4",
     name: "Honey",
@@ -58,57 +58,57 @@ export const products: Product[] = [
     rating: 4.5,
     stock: 22
   },
-  {
-    id: "4",
-    name: "Cow Ghee",
-    description: "Pure cow ghee made from the milk of grass-fed cows. Rich in nutrients and flavor, perfect for cooking and enhancing the taste of your dishes.",
+  // {
+  //   id: "4",
+  //   name: "Cow Ghee",
+  //   description: "Pure cow ghee made from the milk of grass-fed cows. Rich in nutrients and flavor, perfect for cooking and enhancing the taste of your dishes.",
     
-    price: 9.99,
-    imageUrl: "#",
-    category: "cat2",
-    rating: 4.9,
-    stock: 15
-  },
-  {
-    id: "5",
-    name: "Buffalo Ghee",
-    description: "Premium buffalo ghee with rich texture and authentic flavor. Made through slow cooking process to retain all natural nutrients and aroma.",
-    price: 6.99,
-    imageUrl: "https://images.unsplash.com/photo-1631633144046-d37f18d36618?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    category: "cat2",
-    rating: 4.7,
-    stock: 12
-  },
-  {
-    id: "6",
-    name: "Mixed Fruit Jam",
-    description: "Delicious homemade jam with a blend of seasonal fruits. No artificial preservatives or colors, just pure fruit goodness in every spoon.",
-    price: 3.99,
-    imageUrl: "https://images.unsplash.com/photo-1597314040916-84b439aebac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    category: "cat3",
-    rating: 4.6,
-    stock: 20
-  },
-  {
-    id: "7",
-    name: "Strawberry Jam",
-    description: "Sweet and luscious strawberry jam made with handpicked organic strawberries. Perfect for breakfast spreads and dessert toppings.",
-    price: 3.99,
-    imageUrl: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    category: "cat3",
-    rating: 4.8,
-    stock: 16
-  },
-  {
-    id: "8",
-    name: "Orange Marmalade",
-    description: "Tangy and sweet orange marmalade with bits of orange zest. Handcrafted in small batches to ensure finest quality and flavor.",
-    price: 3.99,
-    imageUrl: "https://images.unsplash.com/photo-1591994843349-f415893b3a6b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    category: "cat3",
-    rating: 4.7,
-    stock: 14
-  },
+  //   price: 9.99,
+  //   imageUrl: "#",
+  //   category: "cat2",
+  //   rating: 4.9,
+  //   stock: 15
+  // },
+  // {
+  //   id: "5",
+  //   name: "Buffalo Ghee",
+  //   description: "Premium buffalo ghee with rich texture and authentic flavor. Made through slow cooking process to retain all natural nutrients and aroma.",
+  //   price: 6.99,
+  //   imageUrl: "https://images.unsplash.com/photo-1631633144046-d37f18d36618?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+  //   category: "cat2",
+  //   rating: 4.7,
+  //   stock: 12
+  // },
+  // {
+  //   id: "6",
+  //   name: "Mixed Fruit Jam",
+  //   description: "Delicious homemade jam with a blend of seasonal fruits. No artificial preservatives or colors, just pure fruit goodness in every spoon.",
+  //   price: 3.99,
+  //   imageUrl: "https://images.unsplash.com/photo-1597314040916-84b439aebac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+  //   category: "cat3",
+  //   rating: 4.6,
+  //   stock: 20
+  // },
+  // {
+  //   id: "7",
+  //   name: "Strawberry Jam",
+  //   description: "Sweet and luscious strawberry jam made with handpicked organic strawberries. Perfect for breakfast spreads and dessert toppings.",
+  //   price: 3.99,
+  //   imageUrl: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+  //   category: "cat3",
+  //   rating: 4.8,
+  //   stock: 16
+  // },
+  // {
+  //   id: "8",
+  //   name: "Orange Marmalade",
+  //   description: "Tangy and sweet orange marmalade with bits of orange zest. Handcrafted in small batches to ensure finest quality and flavor.",
+  //   price: 3.99,
+  //   imageUrl: "https://images.unsplash.com/photo-1591994843349-f415893b3a6b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+  //   category: "cat3",
+  //   rating: 4.7,
+  //   stock: 14
+  // },
   {
     id: "9",
     name: "Himalayan Multi Floral Honey",
