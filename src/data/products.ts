@@ -138,6 +138,17 @@ export const products: Product[] = [
     category: "cat4",
     rating: 4.7,
     stock: 18
+  },
+  {
+    id: "12",
+    name: "Boiled Gooseberry Pickle",
+    description: "Traditional Indian pickle made with boiled gooseberries, spices, and mustard oil. A tangy and spicy condiment that pairs well with rice and roti.",
+    price: 2.49,
+    imageUrl: "/img/boiled_gooseberry_pickle.png",
+    category: "cat1",
+    rating: 4.6,
+    stock: 22
+    
   }
 ];
 
