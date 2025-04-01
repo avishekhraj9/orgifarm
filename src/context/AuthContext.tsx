@@ -38,6 +38,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'User',
             email: session.user.email || '',
           });
+          
+          // Handle email verification success
+          if (event === 'SIGNED_IN' && window.location.hash.includes('#access_token=')) {
+            // Redirect to the verification success page
+            window.location.href = '/email-verification-success';
+          }
         } else {
           setUser(null);
         }
@@ -100,6 +106,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           data: {
             name,
           },
+          // Set email confirmation redirect URL
+          emailRedirectTo: `${window.location.origin}/email-verification-success`,
         },
       });
 
