@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { Product } from '@/types/product';
+import { useAuth } from '@/context/AuthContext';
 
 type CartItem = {
   product: Product;
@@ -22,24 +23,32 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [items, setItems] = useState<CartItem[]>([]);
-  
-  // Load cart from localStorage on mount
+  const { user } = useAuth();
+
+  // Load cart from localStorage on mount and when user changes
   useEffect(() => {
-    const storedCart = localStorage.getItem('cart');
+    // Define the storage key based on whether user is logged in
+    const storageKey = user ? `cart_${user.id}` : 'cart_guest';
+    
+    const storedCart = localStorage.getItem(storageKey);
     if (storedCart) {
       try {
         setItems(JSON.parse(storedCart));
       } catch (error) {
         console.error('Failed to parse stored cart:', error);
-        localStorage.removeItem('cart');
+        localStorage.removeItem(storageKey);
       }
     }
-  }, []);
+  }, [user]); // Re-run when user changes (login/logout)
   
   // Update localStorage when cart changes
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(items));
-  }, [items]);
+    if (items) {
+      // Define the storage key based on whether user is logged in
+      const storageKey = user ? `cart_${user.id}` : 'cart_guest';
+      localStorage.setItem(storageKey, JSON.stringify(items));
+    }
+  }, [items, user]);
 
   const addToCart = (product: Product, quantity = 1) => {
     setItems(prevItems => {
