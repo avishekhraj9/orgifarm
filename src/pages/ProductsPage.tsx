@@ -166,10 +166,10 @@ const ProductsPage = () => {
                       className="mb-6"
                     />
                     <div className="flex items-center justify-between">
-                      <span className="flex items-center">
+                      <span className="flex items-center dark:text-gray-300">
                         <IndianRupee className="h-3 w-3 mr-1" />{priceRange[0]}
                       </span>
-                      <span className="flex items-center">
+                      <span className="flex items-center dark:text-gray-300">
                         <IndianRupee className="h-3 w-3 mr-1" />{priceRange[1]}
                       </span>
                     </div>
@@ -190,7 +190,7 @@ const ProductsPage = () => {
               <h3 className="font-medium mb-3">Categories</h3>
               <div className="space-y-2">
                 <div 
-                  className={`flex items-center rounded-md px-3 py-2 text-sm cursor-pointer transition-colors ${!selectedCategory ? 'bg-primary text-white' : 'hover:bg-secondary'}`}
+                  className={`flex items-center rounded-md px-3 py-2 text-sm cursor-pointer transition-colors ${!selectedCategory ? 'bg-primary text-white' : 'hover:bg-secondary dark:hover:bg-gray-700'}`}
                   onClick={() => setSelectedCategory('')}
                 >
                   {!selectedCategory && <Check className="mr-2 h-4 w-4" />}
@@ -199,7 +199,7 @@ const ProductsPage = () => {
                 {categories.map((category) => (
                   <div 
                     key={category.id}
-                    className={`flex items-center rounded-md px-3 py-2 text-sm cursor-pointer transition-colors ${selectedCategory === category.id ? 'bg-primary text-white' : 'hover:bg-secondary'}`}
+                    className={`flex items-center rounded-md px-3 py-2 text-sm cursor-pointer transition-colors ${selectedCategory === category.id ? 'bg-primary text-white' : 'hover:bg-secondary dark:hover:bg-gray-700'}`}
                     onClick={() => setSelectedCategory(category.id)}
                   >
                     {selectedCategory === category.id && <Check className="mr-2 h-4 w-4" />}
@@ -221,10 +221,10 @@ const ProductsPage = () => {
                   className="mb-6"
                 />
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center">
+                  <span className="flex items-center dark:text-gray-300">
                     <IndianRupee className="h-3 w-3 mr-1" />{priceRange[0]}
                   </span>
-                  <span className="flex items-center">
+                  <span className="flex items-center dark:text-gray-300">
                     <IndianRupee className="h-3 w-3 mr-1" />{priceRange[1]}
                   </span>
                 </div>
@@ -288,7 +288,7 @@ const ProductsPage = () => {
               ))}
             </div>
           ) : (
-            <div className="p-12 text-center bg-secondary/50 rounded-lg">
+            <div className="p-12 text-center bg-secondary/50 dark:bg-secondary/20 rounded-lg">
               <h3 className="text-lg font-medium mb-2">No products found</h3>
               <p className="text-muted-foreground mb-4">
                 Try adjusting your filters or search query

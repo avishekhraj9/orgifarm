@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingCart, User, Search, Menu, X, ChevronDown } from 'lucide-react';
@@ -67,24 +68,24 @@ const Navbar: React.FC = () => {
         <nav className="hidden md:flex space-x-6 items-center">
           <Link
             to="/"
-            className="text-sm font-medium text-gray-800 hover:text-primary transition-colors"
+            className="text-sm font-medium text-gray-800 dark:text-gray-200 hover:text-primary transition-colors"
           >
             Home
           </Link>
           <Link
             to="/products"
-            className="text-sm font-medium text-gray-800 hover:text-primary transition-colors"
+            className="text-sm font-medium text-gray-800 dark:text-gray-200 hover:text-primary transition-colors"
           >
             Products
           </Link>
           <Link
             to="/blog"
-            className="text-sm font-medium text-gray-800 hover:text-primary transition-colors"
+            className="text-sm font-medium text-gray-800 dark:text-gray-200 hover:text-primary transition-colors"
           >
             Blog
           </Link>
           <DropdownMenu>
-            <DropdownMenuTrigger className="text-sm font-medium text-gray-800 hover:text-primary transition-colors flex items-center gap-1">
+            <DropdownMenuTrigger className="text-sm font-medium text-gray-800 dark:text-gray-200 hover:text-primary transition-colors flex items-center gap-1">
               Company <ChevronDown className="h-4 w-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
@@ -231,35 +232,35 @@ const Navbar: React.FC = () => {
             <nav className="flex flex-col space-y-3">
               <Link
                 to="/"
-                className="text-base font-medium p-2 hover:bg-secondary rounded-md"
+                className="text-base font-medium p-2 hover:bg-secondary rounded-md dark:text-gray-200"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Home
               </Link>
               <Link
                 to="/products"
-                className="text-base font-medium p-2 hover:bg-secondary rounded-md"
+                className="text-base font-medium p-2 hover:bg-secondary rounded-md dark:text-gray-200"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Products
               </Link>
               <Link
                 to="/blog"
-                className="text-base font-medium p-2 hover:bg-secondary rounded-md"
+                className="text-base font-medium p-2 hover:bg-secondary rounded-md dark:text-gray-200"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Blog
               </Link>
               <Link
                 to="/about"
-                className="text-base font-medium p-2 hover:bg-secondary rounded-md"
+                className="text-base font-medium p-2 hover:bg-secondary rounded-md dark:text-gray-200"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 About Us
               </Link>
               <Link
                 to="/contact"
-                className="text-base font-medium p-2 hover:bg-secondary rounded-md"
+                className="text-base font-medium p-2 hover:bg-secondary rounded-md dark:text-gray-200"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Contact
@@ -270,21 +271,21 @@ const Navbar: React.FC = () => {
               {user ? (
                 <div className="space-y-3">
                   <div className="px-2">
-                    <p className="text-sm font-medium">{user.name}</p>
+                    <p className="text-sm font-medium dark:text-gray-200">{user.name}</p>
                     <p className="text-xs text-muted-foreground truncate">
                       {user.email}
                     </p>
                   </div>
                   <Link
                     to="/account"
-                    className="block text-base font-medium p-2 hover:bg-secondary rounded-md"
+                    className="block text-base font-medium p-2 hover:bg-secondary rounded-md dark:text-gray-200"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Account
                   </Link>
                   <Link
                     to="/orders"
-                    className="block text-base font-medium p-2 hover:bg-secondary rounded-md"
+                    className="block text-base font-medium p-2 hover:bg-secondary rounded-md dark:text-gray-200"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Orders

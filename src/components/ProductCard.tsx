@@ -20,7 +20,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, className }) => {
   return (
     <div 
       className={cn(
-        "product-card bg-white rounded-xl overflow-hidden border border-border shadow-sm h-full flex flex-col",
+        "product-card bg-white dark:bg-card rounded-xl overflow-hidden border border-border shadow-sm h-full flex flex-col",
         isMobile && "product-card-mobile",
         className
       )}
@@ -34,7 +34,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, className }) => {
       </Link>
       <div className={cn("p-5 flex flex-col flex-grow", isMobile && "p-3")}>
         <Link to={`/product/${product.id}`} className="block">
-          <h3 className={cn("font-medium hover:text-primary transition-colors", isMobile ? "text-sm mb-0.5 line-clamp-1" : "text-lg mb-1 truncate")}>{product.name}</h3>
+          <h3 className={cn("font-medium hover:text-primary dark:text-white transition-colors", isMobile ? "text-sm mb-0.5 line-clamp-1" : "text-lg mb-1 truncate")}>{product.name}</h3>
         </Link>
         <div className={cn("flex items-center", isMobile ? "mb-1.5" : "mb-3")}>
           <div className="flex text-yellow-400 mr-2">
@@ -45,17 +45,17 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, className }) => {
                     <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z" />
                   </svg>
                 ) : (
-                  <svg className={cn(isMobile ? "w-3 h-3" : "w-4 h-4", "fill-current text-gray-300")} viewBox="0 0 24 24">
+                  <svg className={cn(isMobile ? "w-3 h-3" : "w-4 h-4", "fill-current text-gray-300 dark:text-gray-600")} viewBox="0 0 24 24">
                     <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z" />
                   </svg>
                 )}
               </span>
             ))}
           </div>
-          <span className="text-xs text-gray-500">({product.rating})</span>
+          <span className="text-xs text-gray-500 dark:text-gray-400">({product.rating})</span>
         </div>
-        <p className={cn("font-semibold", isMobile ? "text-sm mb-1.5" : "text-lg mb-3")}>₹{(product.price * 75).toFixed(2)}</p>
-        <p className={cn("text-muted-foreground line-clamp-2 flex-grow", isMobile ? "text-xs mb-2" : "text-sm mb-4")}>
+        <p className={cn("font-semibold dark:text-white", isMobile ? "text-sm mb-1.5" : "text-lg mb-3")}>₹{(product.price * 75).toFixed(2)}</p>
+        <p className={cn("text-muted-foreground dark:text-gray-300 line-clamp-2 flex-grow", isMobile ? "text-xs mb-2" : "text-sm mb-4")}>
           {product.description}
         </p>
         <div className="mt-auto">
