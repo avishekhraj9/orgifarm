@@ -35,12 +35,12 @@ const QuantityInput: React.FC<QuantityInputProps> = ({
   };
 
   return (
-    <div className={cn("flex items-center border border-input rounded-md h-10", className)}>
+    <div className={cn("flex items-center border border-input rounded-md h-10 dark:border-border", className)}>
       <Button 
         type="button"
         variant="ghost" 
         size="icon" 
-        className="h-full rounded-none rounded-l-md border-r border-input"
+        className="h-full rounded-none rounded-l-md border-r border-input dark:border-border dark:hover:bg-secondary/20"
         onClick={decrement}
         disabled={quantity <= 1}
       >
@@ -53,14 +53,14 @@ const QuantityInput: React.FC<QuantityInputProps> = ({
         max={max}
         value={quantity}
         onChange={handleInputChange}
-        className="h-full w-12 text-center focus:outline-none bg-transparent"
+        className="h-full w-12 text-center focus:outline-none bg-transparent dark:text-gray-300"
       />
       
       <Button 
         type="button"
         variant="ghost" 
         size="icon" 
-        className="h-full rounded-none rounded-r-md border-l border-input"
+        className="h-full rounded-none rounded-r-md border-l border-input dark:border-border dark:hover:bg-secondary/20"
         onClick={increment}
         disabled={quantity >= max}
       >
