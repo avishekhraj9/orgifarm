@@ -104,7 +104,7 @@ export const blogPosts: BlogPost[] = [
     `,
     author: 'Team Orgifarm',
     date: '2024-06-10',
-    coverImage: '/img/IMG-20250326-WA0008.jpg',
+    coverImage: '/img/Sustainable_Agriculture.png',
     slug: 'sustainable-agriculture',
     tags: ['sustainable', 'agriculture', 'environment']
   }
