@@ -30,7 +30,7 @@ export const categories: Category[] = [
 export const products: Product[] = [
   {
     id: "1",
-    name: "Mango Pickle",
+    name: "Diced Mango Pickle",
     description: "Traditional handcrafted mango pickle made with organic raw mangoes, premium spices, and cold-pressed mustard oil. A perfect blend of tangy and spicy flavors.",
     price: 2.99,
     imageUrl: "/img/diced_mango_prickle.jpg",
@@ -40,10 +40,10 @@ export const products: Product[] = [
   },
   {
     id: "2",
-    name: "Lemon Pickle",
+    name: "Spicy Lemon Pickle",
     description: "Tangy and zesty lemon pickle prepared with organic lemons and traditional spices. Perfect accompaniment for Indian meals and snacks.",
     price: 2.89,
-    imageUrl: "https://images.unsplash.com/photo-1564193945699-23d43b8d505b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    imageUrl: "/img/spicy_lemon_pickle.jpg",
     category: "cat1",
     rating: 4.7,
     stock: 18
@@ -53,7 +53,7 @@ export const products: Product[] = [
     name: "Chilly Pickle",
     description: "Spicy and flavorful chilly pickle made with fresh green chilies, aromatic spices, and pure mustard oil. Adds a fiery kick to any meal.",
     price: 1.99,
-    imageUrl: "/img/greem_chilli_pickle.jpg",
+    imageUrl: "/img/green_chilli_pickle.jpg",
     category: "cat1",
     rating: 4.5,
     stock: 22
@@ -149,7 +149,70 @@ export const products: Product[] = [
     rating: 4.6,
     stock: 22
     
-  }
+  },
+  {
+    id: "13",
+    name: "Aswagandha Honey",
+    description: "Unique honey infused with ashwagandha, known for its adaptogenic properties. Offers a rich, earthy flavor with potential health benefits.",
+    price: 8.99,
+    imageUrl: "/img/ashwagandh_honey.jpg",
+    category: "cat4",
+    rating: 4.8,
+    stock: 12
+  },
+  {
+    id: "14",
+    name: "Crushed Mango Pickle",
+    description: "Sweet and tangy Indian pickle made with crushed mango, spices, and mustard oil. A delightful condiment that adds flavor to any meal.",
+    price: 2.99,
+    imageUrl: "/img/crushed_mango_pickle.jpg",
+    category: "cat1",
+    rating: 4.7,
+    stock: 16
+  },
+  {
+    id: "15",
+    name: "Ginger Garlic Pickle",
+    description: "Spicy and aromatic ginger garlic pickle made with fresh ginger, garlic, and traditional spices. A perfect accompaniment for Indian meals.",
+    price: 2.99,
+    imageUrl: "/img/ginger_garlic_pickle.jpg",
+    category: "cat1",
+    rating: 4.5,
+    stock: 20
+  },
+  {
+    id: "16",
+    name: "Green Chilli Pickle",
+    description: "Spicy and tangy green chilli pickle made with fresh green chilies, spices, and mustard oil. Adds a fiery kick to your meals.",
+    price: 2.49,
+    imageUrl: "/img/green_chilli_pickle.jpg",
+    category: "cat1",
+    rating: 4.6,
+    stock: 18
+  },
+  {
+    id: "17",
+    name: "Jackfruit Pickle",
+    description: "Tangy and zesty jackfruit pickle made with raw jackfruit, spices, and mustard oil. A unique and flavorful condiment for Indian meals.",
+    price: 2.99,
+    imageUrl: "/img/jackfruit_pickle.jpg",
+    category: "cat1",
+    rating: 4.7,
+    stock: 22
+  },
+  {
+    id: "18",
+    name: "Red Chilli Pickle",
+    description: "Spicy and tangy red chilli pickle made with dried red chilies, spices, and mustard oil. A perfect condiment for adding heat to your meals.",
+    price: 2.49,
+    imageUrl: "/img/red_chilli_pickle.jpg",
+    category: "cat1",
+    rating: 4.5,
+    stock: 15},
+  
+  
+  
+    
 ];
 
 export const getProductById = (id: string): Product | undefined => {
