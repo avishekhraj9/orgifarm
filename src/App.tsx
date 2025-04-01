@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -25,6 +26,7 @@ import SavedAddressesPage from "./pages/SavedAddressesPage";
 import BlogPage from "./pages/BlogPage";
 import BlogPostPage from "./pages/BlogPostPage";
 import RequireAuth from "./components/RequireAuth";
+import EmailVerificationSuccessPage from "./pages/EmailVerificationSuccessPage";
 
 const queryClient = new QueryClient();
 
@@ -71,6 +73,7 @@ const App = () => (
                   </RequireAuth>
                 } />
                 <Route path="/order-success" element={<OrderSuccessPage />} />
+                <Route path="/email-verification-success" element={<EmailVerificationSuccessPage />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
