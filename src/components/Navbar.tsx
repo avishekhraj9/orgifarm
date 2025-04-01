@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingCart, User, Search, Menu, X, ChevronDown } from 'lucide-react';
@@ -6,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
+import ThemeToggle from './ThemeToggle';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -51,7 +51,7 @@ const Navbar: React.FC = () => {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-apple px-4 md:px-8',
         isScrolled
-          ? 'bg-white/80 backdrop-blur-lg shadow-sm py-2'
+          ? 'bg-background/80 backdrop-blur-lg shadow-sm py-2'
           : 'bg-transparent py-3'
       )}
     >
@@ -117,6 +117,8 @@ const Navbar: React.FC = () => {
             </button>
           </form>
 
+          <ThemeToggle />
+
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -174,6 +176,8 @@ const Navbar: React.FC = () => {
 
         {/* Mobile Menu Button */}
         <div className="flex md:hidden items-center space-x-3">
+          <ThemeToggle />
+
           <Button
             variant="ghost"
             size="icon"
@@ -205,7 +209,7 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg border-t animate-slide-down">
+        <div className="md:hidden absolute top-full left-0 right-0 bg-background shadow-lg border-t animate-slide-down">
           <div className="p-4 space-y-4">
             <form onSubmit={handleSearch} className="relative mb-4">
               <Input
