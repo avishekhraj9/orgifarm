@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -16,7 +17,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/context/AuthContext';
 import PageLayout from '@/components/PageLayout';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from '@/integrations/supabase/client'; // Direct import from client
 import { UserAddress, NewUserAddress } from '@/types/address';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -39,7 +40,15 @@ const SavedAddressesPage = () => {
   });
 
   useEffect(() => {
-    console.log('Current auth user:', user);
+    console.log('SavedAddressesPage mounted, current auth user:', user);
+    
+    // Check authentication directly
+    const checkAuthentication = async () => {
+      const { data } = await supabase.auth.getSession();
+      console.log('Direct auth check:', data.session ? `User ${data.session.user.id} authenticated` : 'No session found');
+    };
+    
+    checkAuthentication();
   }, [user]);
 
   const { data: addresses = [], isLoading } = useQuery({
@@ -89,6 +98,12 @@ const SavedAddressesPage = () => {
       }
       
       try {
+        // Log the exact request being made
+        console.log('Supabase insert request:', {
+          table: 'user_addresses',
+          data: { ...newAddress, user_id: user.id }
+        });
+        
         const { data, error } = await supabase
           .from('user_addresses')
           .insert({ ...newAddress, user_id: user.id })
@@ -97,6 +112,7 @@ const SavedAddressesPage = () => {
         
         if (error) {
           console.error('Error creating address:', error);
+          toast.error(`Error: ${error.message}`);
           throw error;
         }
         

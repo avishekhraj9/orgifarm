@@ -6,11 +6,8 @@ import type { Database } from './types';
 const SUPABASE_URL = "https://gioyluxjweuicdlcknyv.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdpb3lsdXhqd2V1aWNkbGNrbnl2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMzMzc3NjcsImV4cCI6MjA1ODkxMzc2N30.dl5U8K6cyZ5k8QvhGHZ-DRFlVUHAIA5j61iwpWaKI0A";
 
-// Log client configuration for debugging
+// Log key information for debugging (safe to log anon key, not service key)
 console.log('Creating Supabase client with URL:', SUPABASE_URL);
-
-// Import the supabase client like this:
-// import { supabase } from "@/integrations/supabase/client";
 
 export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
@@ -23,4 +20,22 @@ export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABL
 // Add a listener to debug auth state changes
 supabase.auth.onAuthStateChange((event, session) => {
   console.log('Auth state changed:', event, 'User ID:', session?.user?.id || 'No user');
+  
+  // Log additional details about current session
+  if (session?.user) {
+    console.log('User logged in:', {
+      id: session.user.id,
+      email: session.user.email,
+      metadata: session.user.user_metadata
+    });
+  }
 });
+
+// Add a debugging function to check if we're authenticated
+export const checkAuth = async () => {
+  const { data, error } = await supabase.auth.getSession();
+  console.log('Current auth session:', data.session ? 'Active' : 'None', 
+              'User:', data.session?.user?.id || 'Not logged in');
+  if (error) console.error('Auth check error:', error);
+  return data.session;
+};
