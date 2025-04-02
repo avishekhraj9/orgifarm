@@ -7,18 +7,17 @@ export const categories: Category[] = [
     description: "Traditional handcrafted Indian pickles",
     imageUrl: "/img/diced_mango_prickle.jpg"
   },
-  // {
-  //   id: "cat2",
-  //   name: "Ghee",
-  //   description: "Pure organic traditional ghee",
-  //   imageUrl: "https://images.unsplash.com/photo-1631633123000-d24861360a33?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-  // },
-  // {
-  //   id: "cat3",
-  //   name: "Jams",
-  //   description: "Homemade preserves and fruit jams",
-  //   imageUrl: "/img/litchi_honey.jpg"
-  // },
+  {
+    id: "cat2",
+    name: "Ghee",
+    description: "Pure organic traditional ghee",
+    imageUrl: "/img/cow_ghee.png"},
+  {
+    id: "cat3",
+    name: "Jams",
+    description: "Homemade preserves and fruit jams",
+    imageUrl: "/img/litchi_honey.jpg"
+  },
   {
     id: "cat4",
     name: "Honey",
@@ -58,17 +57,17 @@ export const products: Product[] = [
     rating: 4.5,
     stock: 22
   },
-  // {
-  //   id: "4",
-  //   name: "Cow Ghee",
-  //   description: "Pure cow ghee made from the milk of grass-fed cows. Rich in nutrients and flavor, perfect for cooking and enhancing the taste of your dishes.",
+  {
+    id: "4",
+    name: "Cow Ghee",
+    description: "Pure cow ghee made from the milk of grass-fed cows. Rich in nutrients and flavor, perfect for cooking and enhancing the taste of your dishes.",
     
-  //   price: 9.99,
-  //   imageUrl: "#",
-  //   category: "cat2",
-  //   rating: 4.9,
-  //   stock: 15
-  // },
+    price: 9.99,
+    imageUrl: "img/cow_ghee.png",
+    category: "cat2",
+    rating: 4.9,
+    stock: 15
+  },
   // {
   //   id: "5",
   //   name: "Buffalo Ghee",
