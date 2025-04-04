@@ -12,12 +12,12 @@ export const categories: Category[] = [
     name: "Ghee",
     description: "Pure organic traditional ghee",
     imageUrl: "/img/cow_ghee.png"},
-  {
-    id: "cat3",
-    name: "Jams",
-    description: "Homemade preserves and fruit jams",
-    imageUrl: "/img/litchi_honey.jpg"
-  },
+  // {
+  //   id: "cat3",
+  //   name: "Jams",
+  //   description: "Homemade preserves and fruit jams",
+  //   imageUrl: "/img/litchi_honey.jpg"
+  // },
   {
     id: "cat4",
     name: "Honey",
@@ -208,6 +208,189 @@ export const products: Product[] = [
     category: "cat1",
     rating: 4.5,
     stock: 15},
+    {
+      id: "19",
+      name: "Ajwain Honey",
+      description: "Unique honey infused with ajwain, known for its digestive properties. Offers a rich, earthy flavor with potential health benefits.",
+      price: 8.99,
+      imageUrl: "/img/ajwain_honey.png",
+      category: "cat4",
+      rating: 4.8,
+      stock: 12
+    },
+    {
+      id: "20",
+      name: "Amla Honey",
+      description: "Unique honey infused with amla, known for its antioxidant properties. Offers a rich, earthy flavor with potential health benefits.",
+      price: 8.99,
+      imageUrl: "/img/amla_honey.png",
+      category: "cat4",
+      rating: 4.8,
+      stock: 12
+    },
+    {
+      id: "21",
+      name: "Babool Honey",
+      description: "Unique honey infused with babool, known for its anti-inflammatory properties. Offers a rich, earthy flavor with potential health benefits.",
+      price: 8.99,
+      imageUrl: "/img/babool_honey.png",
+      category: "cat4",
+      rating: 4.8,
+      stock: 12
+    },
+    {
+      id: "22",
+      name: "Black Forest Honey",
+      description: "Unique honey infused with black forest, known for its antioxidant properties. Offers a rich, earthy flavor with potential health benefits.",
+      price: 8.99,
+      imageUrl: "/img/black_forest_honey.png",
+      category: "cat4",
+      rating: 4.8,
+      stock: 12
+
+    },
+    {
+      id: "23",
+      name: "Brankut Honey",
+      description: "Unique honey infused with brankut, known for its anti-inflammatory properties. Offers a rich, earthy flavor with potential health benefits.",
+      price: 8.99,
+      imageUrl: "/img/brankut_honey.png",
+      category: "cat4",
+      rating: 4.8,
+      stock: 12
+      
+    },
+    { 
+      id: "24",
+      name: "Chococlate Honey",
+      description: "Unique honey infused with chococlate, known for its antioxidant properties. Offers a rich, earthy flavor with potential health benefits.",
+      price: 8.99,
+      imageUrl: "/img/chocolate_honey.png",
+      category: "cat4",
+      rating: 4.8,
+      stock: 12
+      
+    },
+    {
+      id: "25",
+      name: "Cinnamon Honey",
+      description: "Unique honey infused with cinnamon, known for its anti-inflammatory properties. Offers a rich, earthy flavor with potential health benefits.",
+      price: 8.99,
+      imageUrl: "/img/cinnamon_honey.png",
+      category: "cat4",
+      rating: 4.8,
+      stock: 12
+      
+    },
+    {
+      id: "26",
+      name: "Clove Honey",
+      description: "Unique honey infused with clove, known for its antioxidant properties. Offers a rich, earthy flavor with potential health benefits.",
+      price: 8.99,
+      imageUrl: "/img/clover_honey.png",
+      category: "cat4",
+      rating: 4.8,
+      stock: 12     
+
+    },
+    {
+      id: "27",
+      name: "Coffee Honey",
+      description: "Unique honey infused with coffee, known for its antioxidant properties. Offers a rich, earthy flavor with potential health benefits.",
+      price: 8.99,
+      imageUrl: "/img/coffee_honey.png",
+      category: "cat4",
+      rating: 4.8,
+      stock: 12
+      
+    },
+    {
+      id: "28",
+      name: "Coriander Honey",
+      description: "Unique honey infused with coriander, known for its antioxidant properties. Offers a rich, earthy flavor with potential health benefits.",
+      price: 8.99,
+      imageUrl: "/img/coriander_honey.png",
+      category: "cat4",
+      rating: 4.8,
+      stock: 12
+      
+    },
+    {
+      id: "29",
+      name: "Eucalyptus Honey",
+      description: "Unique honey infused with eucalyptus, known for its anti-inflammatory properties. Offers a rich, earthy flavor with potential health benefits.",
+      price: 8.99,
+      imageUrl: "/img/eucalyptus_honey.png",
+      category: "cat4",
+      rating: 4.8,
+      stock: 12
+      
+    },
+    {
+      id: "30",
+      name: "Ginger Honey",
+      description: "Unique honey infused with ginger, known for its antioxidant properties. Offers a rich, earthy flavor with potential health benefits.",
+      price: 8.99,
+      imageUrl: "/img/ginger_honey.png",
+      category: "cat4",
+      rating: 4.8,
+      stock: 12
+    },
+    {
+      id: "31",
+      name: "Karanj Honey",
+      description: "Unique honey infused with karanj, known for its anti-inflammatory properties. Offers a rich, earthy flavor with potential health benefits.",
+      price: 8.99,
+      imageUrl: "/img/karanj_honey.png",
+      category: "cat4",
+      rating: 4.8,
+      stock: 12
+    },
+    {
+      id: "32",
+      name: "Lemon Honey",
+      description: "Unique honey infused with lemon, known for its antioxidant properties. Offers a rich, earthy flavor with potential health benefits.",
+      price: 8.99,
+      imageUrl: "/img/lemon_honey.png",
+      category: "cat4",
+      rating: 4.8,
+      stock: 12
+    },
+    {
+      id: "33",
+      name: "Keekar Honey",
+      description: "Unique honey infused with keekar, known for its anti-inflammatory properties. Offers a rich, earthy flavor with potential health benefits.",
+      price: 8.99,
+      imageUrl: "/img/keekar_honey.png",
+      category: "cat4",
+      rating: 4.8,
+      stock: 12
+      
+    },
+    {
+      id: "34",
+      name: "Lichi Honey",
+      description: "Unique honey infused with lichi, known for its antioxidant properties. Offers a rich, earthy flavor with potential health benefits.",
+      price: 8.99,
+      imageUrl: "/img/lichi_honey.png",
+      category: "cat4",
+      rating: 4.8,
+      stock: 12
+    },
+    {
+      id: "35",
+      name: "Mangrove Honey",
+      description: "Unique honey infused with mangrove, known for its anti-inflammatory properties. Offers a rich, earthy flavor with potential health benefits.",
+      price: 8.99,
+      imageUrl: "/img/mangrove_honey.png",
+      category: "cat4",
+      rating: 4.8,
+      stock: 12
+    }
+    
+      
+    
+  
   
   
   
