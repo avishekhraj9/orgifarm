@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Product } from '@/types/product';
 import { Button } from '@/components/ui/button';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Package } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -54,7 +54,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, className }) => {
           </div>
           <span className="text-xs text-gray-500 dark:text-gray-400">({product.rating})</span>
         </div>
-        <p className={cn("font-semibold dark:text-white", isMobile ? "text-sm mb-1.5" : "text-lg mb-3")}>₹{(product.price * 75).toFixed(2)}</p>
+        <p className={cn("font-semibold dark:text-white", isMobile ? "text-sm mb-1.5" : "text-lg mb-3")}>
+          ₹{(product.price * 75).toLocaleString('en-IN', { maximumFractionDigits: 2 })}
+        </p>
+        <div className={cn("flex items-center text-xs mb-2", product.stock > 10 ? "text-green-600" : product.stock > 0 ? "text-amber-500" : "text-red-500")}>
+          <Package className={cn(isMobile ? "h-3 w-3 mr-1" : "h-4 w-4 mr-2")} /> 
+          {product.stock > 10 ? (
+            <span>In Stock</span>
+          ) : product.stock > 0 ? (
+            <span>Low Stock: {product.stock} left</span>
+          ) : (
+            <span>Out of Stock</span>
+          )}
+        </div>
         <p className={cn("text-muted-foreground dark:text-gray-300 line-clamp-2 flex-grow", isMobile ? "text-xs mb-2" : "text-sm mb-4")}>
           {product.description}
         </p>
@@ -63,6 +75,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, className }) => {
             onClick={() => addToCart(product)}
             className="w-full group"
             size={isMobile ? "sm" : "default"}
+            disabled={product.stock === 0}
           >
             <ShoppingCart className={cn("group-hover:animate-pulse", isMobile ? "h-3 w-3 mr-1" : "h-4 w-4 mr-2")} /> 
             Add to Cart
