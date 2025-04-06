@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight, ShoppingBag } from 'lucide-react';
@@ -51,7 +52,8 @@ const Index = () => {
             <p className="text-lg text-muted-foreground mb-8 max-w-lg animate-slide-up opacity-0" style={{ animationDelay: '100ms' }}>
               Discover our collection of handcrafted pickles, pure ghee, and homemade jams prepared using traditional recipes.
             </p>
-            <div className="flex flex-wrap gap-4 animate-slide-up opacity-0" style={{ animationDelay: '200ms' }}>
+            {/* Removed opacity-0 class from the div below to ensure buttons are visible from the start */}
+            <div className="flex flex-wrap gap-4 animate-slide-up" style={{ animationDelay: '200ms' }}>
               <Button size="lg" className="rounded-full" asChild>
                 <Link to="/products">
                   Shop Now <ShoppingBag className="ml-2 h-4 w-4" />
@@ -236,4 +238,3 @@ const Index = () => {
 };
 
 export default Index;
-
