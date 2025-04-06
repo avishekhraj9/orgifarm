@@ -22,12 +22,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       return storedTheme;
     }
     
-    // If no theme in localStorage, check system preference
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'system';
-    }
-    
-    // Default to light
+    // Default to light instead of checking system preference
     return 'light';
   });
 
