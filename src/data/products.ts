@@ -320,7 +320,7 @@ export const products: Product[] = [
       name: "Eucalyptus Honey",
       description: "Unique honey infused with eucalyptus, known for its anti-inflammatory properties. Offers a rich, earthy flavor with potential health benefits.",
       price: 8.99,
-      imageUrl: "/img/eucalyptus_honey.png",
+      imageUrl: "/img/eucalptus_honey.png",
       category: "cat4",
       rating: 4.8,
       stock: 12
