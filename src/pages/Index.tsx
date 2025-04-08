@@ -1,13 +1,22 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight, ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { categories, getFeaturedProducts } from '@/data/products';
 import ProductCard from '@/components/ProductCard';
 import PageLayout from '@/components/PageLayout';
+import { 
+  Carousel, 
+  CarouselContent, 
+  CarouselItem, 
+  CarouselNext, 
+  CarouselPrevious 
+} from '@/components/ui/carousel';
 
 const Index = () => {
+  const [activeTestimonial, setActiveTestimonial] = useState(0);
+  
   // Add animations to elements on page load
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -162,43 +171,110 @@ const Index = () => {
       {/* Testimonial Section */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center animate-on-scroll opacity-0">
+          <div className="max-w-5xl mx-auto text-center animate-on-scroll opacity-0">
             <h2 className="text-3xl font-bold mb-12">What Our Customers Say</h2>
             
-            <div className="bg-white p-8 rounded-xl shadow-sm border border-border relative">
-              <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-primary text-white h-10 w-10 rounded-full flex items-center justify-center">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M9.13456 9H5.37965C5.17485 9 5 8.83043 5 8.63203V5.36797C5 5.16957 5.17485 5 5.37965 5H9.13456C9.33936 5 9.51421 5.16957 9.51421 5.36797V8.63203C9.51421 8.83043 9.33936 9 9.13456 9Z" fill="currentColor"/>
-                  <path d="M9.13456 19H5.37965C5.17485 19 5 18.8304 5 18.632V15.368C5 15.1696 5.17485 15 5.37965 15H9.13456C9.33936 15 9.51421 15.1696 9.51421 15.368V18.632C9.51421 18.8304 9.33936 19 9.13456 19Z" fill="currentColor"/>
-                  <path d="M18.6204 9H14.8654C14.6606 9 14.4858 8.83043 14.4858 8.63203V5.36797C14.4858 5.16957 14.6606 5 14.8654 5H18.6204C18.8252 5 19 5.16957 19 5.36797V8.63203C19 8.83043 18.8252 9 18.6204 9Z" fill="currentColor"/>
-                  <path d="M18.6204 19H14.8654C14.6606 19 14.4858 18.8304 14.4858 18.632V15.368C14.4858 15.1696 14.6606 15 14.8654 15H18.6204C18.8252 15 19 15.1696 19 15.368V18.632C19 18.8304 18.8252 19 18.6204 19Z" fill="currentColor"/>
-                </svg>
+            <Carousel className="w-full">
+              <CarouselContent>
+                {/* First Testimonial */}
+                <CarouselItem>
+                  <div className="bg-white p-8 rounded-xl shadow-sm border border-border relative mx-4">
+                    <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-primary text-white h-10 w-10 rounded-full flex items-center justify-center">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9.13456 9H5.37965C5.17485 9 5 8.83043 5 8.63203V5.36797C5 5.16957 5.17485 5 5.37965 5H9.13456C9.33936 5 9.51421 5.16957 9.51421 5.36797V8.63203C9.51421 8.83043 9.33936 9 9.13456 9Z" fill="currentColor"/>
+                        <path d="M9.13456 19H5.37965C5.17485 19 5 18.8304 5 18.632V15.368C5 15.1696 5.17485 15 5.37965 15H9.13456C9.33936 15 9.51421 15.1696 9.51421 15.368V18.632C9.51421 18.8304 9.33936 19 9.13456 19Z" fill="currentColor"/>
+                        <path d="M18.6204 9H14.8654C14.6606 9 14.4858 8.83043 14.4858 8.63203V5.36797C14.4858 5.16957 14.6606 5 14.8654 5H18.6204C18.8252 5 19 5.16957 19 5.36797V8.63203C19 8.83043 18.8252 9 18.6204 9Z" fill="currentColor"/>
+                        <path d="M18.6204 19H14.8654C14.6606 19 14.4858 18.8304 14.4858 18.632V15.368C14.4858 15.1696 14.6606 15 14.8654 15H18.6204C18.8252 15 19 15.1696 19 15.368V18.632C19 18.8304 18.8252 19 18.6204 19Z" fill="currentColor"/>
+                      </svg>
+                    </div>
+                    
+                    <blockquote className="text-lg md:text-xl italic text-gray-700 mb-6">
+                      "The traditional mango pickle from Orgifarm brings back childhood memories. The authentic taste and quality ingredients make it stand out from store-bought options. I'm a customer for life!"
+                    </blockquote>
+                    
+                    <div className="flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
+                        <img 
+                          src="/img/avishekh1.jpg" 
+                          alt="Customer" 
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="text-left">
+                        <p className="font-medium">Avishekh Raj</p>
+                        <p className="text-sm text-muted-foreground">Home Chef</p>
+                      </div>
+                    </div>
+                  </div>
+                </CarouselItem>
+                
+                {/* Second Testimonial */}
+                <CarouselItem>
+                  <div className="bg-white p-8 rounded-xl shadow-sm border border-border relative mx-4">
+                    <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-primary text-white h-10 w-10 rounded-full flex items-center justify-center">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9.13456 9H5.37965C5.17485 9 5 8.83043 5 8.63203V5.36797C5 5.16957 5.17485 5 5.37965 5H9.13456C9.33936 5 9.51421 5.16957 9.51421 5.36797V8.63203C9.51421 8.83043 9.33936 9 9.13456 9Z" fill="currentColor"/>
+                        <path d="M9.13456 19H5.37965C5.17485 19 5 18.8304 5 18.632V15.368C5 15.1696 5.17485 15 5.37965 15H9.13456C9.33936 15 9.51421 15.1696 9.51421 15.368V18.632C9.51421 18.8304 9.33936 19 9.13456 19Z" fill="currentColor"/>
+                        <path d="M18.6204 9H14.8654C14.6606 9 14.4858 8.83043 14.4858 8.63203V5.36797C14.4858 5.16957 14.6606 5 14.8654 5H18.6204C18.8252 5 19 5.16957 19 5.36797V8.63203C19 8.83043 18.8252 9 18.6204 9Z" fill="currentColor"/>
+                        <path d="M18.6204 19H14.8654C14.6606 19 14.4858 18.8304 14.4858 18.632V15.368C14.4858 15.1696 14.6606 15 14.8654 15H18.6204C18.8252 15 19 15.1696 19 15.368V18.632C19 18.8304 18.8252 19 18.6204 19Z" fill="currentColor"/>
+                      </svg>
+                    </div>
+                    
+                    <blockquote className="text-lg md:text-xl italic text-gray-700 mb-6">
+                      "I've been using Orgifarm's pure cow ghee for the past year, and the difference in flavor is remarkable. It adds a rich, authentic taste to my dishes that store-bought varieties simply can't match. Highly recommended!"
+                    </blockquote>
+                    
+                    <div className="flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
+                        <img 
+                          src="/img/sumeet.jpg" 
+                          alt="Sumeet Customer" 
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="text-left">
+                        <p className="font-medium">Sumeet Kumar</p>
+                        <p className="text-sm text-muted-foreground">Food Blogger</p>
+                      </div>
+                    </div>
+                  </div>
+                </CarouselItem>
+                
+                {/* Third Testimonial */}
+                <CarouselItem>
+                  <div className="bg-white p-8 rounded-xl shadow-sm border border-border relative mx-4">
+                    <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-primary text-white h-10 w-10 rounded-full flex items-center justify-center">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9.13456 9H5.37965C5.17485 9 5 8.83043 5 8.63203V5.36797C5 5.16957 5.17485 5 5.37965 5H9.13456C9.33936 5 9.51421 5.16957 9.51421 5.36797V8.63203C9.51421 8.83043 9.33936 9 9.13456 9Z" fill="currentColor"/>
+                        <path d="M9.13456 19H5.37965C5.17485 19 5 18.8304 5 18.632V15.368C5 15.1696 5.17485 15 5.37965 15H9.13456C9.33936 15 9.51421 15.1696 9.51421 15.368V18.632C9.51421 18.8304 9.33936 19 9.13456 19Z" fill="currentColor"/>
+                        <path d="M18.6204 9H14.8654C14.6606 9 14.4858 8.83043 14.4858 8.63203V5.36797C14.4858 5.16957 14.6606 5 14.8654 5H18.6204C18.8252 5 19 5.16957 19 5.36797V8.63203C19 8.83043 18.8252 9 18.6204 9Z" fill="currentColor"/>
+                        <path d="M18.6204 19H14.8654C14.6606 19 14.4858 18.8304 14.4858 18.632V15.368C14.4858 15.1696 14.6606 15 14.8654 15H18.6204C18.8252 15 19 15.1696 19 15.368V18.632C19 18.8304 18.8252 19 18.6204 19Z" fill="currentColor"/>
+                      </svg>
+                    </div>
+                    
+                    <blockquote className="text-lg md:text-xl italic text-gray-700 mb-6">
+                      "The wild honey collection from Orgifarm is exceptional! It's pure, raw, and has a complex flavor profile that mass-produced honey lacks. I appreciate their commitment to sustainable sourcing and supporting local communities."
+                    </blockquote>
+                    
+                    <div className="flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
+                        <div className="w-full h-full bg-secondary flex items-center justify-center text-primary font-bold text-lg">
+                          PK
+                        </div>
+                      </div>
+                      <div className="text-left">
+                        <p className="font-medium">Priya Kaur</p>
+                        <p className="text-sm text-muted-foreground">Nutritionist</p>
+                      </div>
+                    </div>
+                  </div>
+                </CarouselItem>
+              </CarouselContent>
+              <div className="flex justify-center mt-8">
+                <CarouselPrevious className="relative static left-0 translate-y-0 mr-2" />
+                <CarouselNext className="relative static right-0 translate-y-0 ml-2" />
               </div>
-              
-              <blockquote className="text-lg md:text-xl italic text-gray-700 mb-6">
-                "The traditional mango pickle from Orgifarm brings back childhood memories. The authentic taste and quality ingredients make it stand out from store-bought options. I'm a customer for life!"
-              </blockquote>
-              
-              <div className="flex items-center justify-center">
-                <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
-                  <img 
-                    src="/img/avishekh1.jpg" 
-                    alt="Customer" 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="text-left">
-                  <p className="font-medium">Avishekh Raj</p>
-                  <p className="text-sm text-muted-foreground">Home Chef</p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex justify-center mt-8 space-x-2">
-              <span className="w-2 h-2 rounded-full bg-primary"></span>
-              <span className="w-2 h-2 rounded-full bg-gray-300"></span>
-              <span className="w-2 h-2 rounded-full bg-gray-300"></span>
-            </div>
+            </Carousel>
           </div>
         </div>
       </section>
