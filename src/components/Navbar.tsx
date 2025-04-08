@@ -57,10 +57,10 @@ const Navbar: React.FC = () => {
       )}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        {/* Logo */}
+        {/* Logo - Increased size by 25% */}
         <div className="flex items-center">
           <Link to="/">
-            <img src="/img/Orgifarm_logo.png" alt="Orgifarm Logo" className="h-14 w-auto" />
+            <img src="/img/Orgifarm_logo.png" alt="Orgifarm Logo" className="h-[17.5px] w-auto" />
           </Link>
         </div>
 
