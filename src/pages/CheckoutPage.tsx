@@ -160,10 +160,10 @@ const CheckoutPage = () => {
                           <SelectValue placeholder="Select country" />
                         </SelectTrigger>
                         <SelectContent className="dark:bg-card dark:text-gray-200 dark:border-border">
-                          <SelectItem value="US">United States</SelectItem>
-                          <SelectItem value="CA">Canada</SelectItem>
+                          <SelectItem value="US">India</SelectItem>
+                          {/* <SelectItem value="CA">Canada</SelectItem>
                           <SelectItem value="UK">United Kingdom</SelectItem>
-                          <SelectItem value="AU">Australia</SelectItem>
+                          <SelectItem value="AU">Australia</SelectItem> */}
                         </SelectContent>
                       </Select>
                     </div>
