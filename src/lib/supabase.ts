@@ -23,19 +23,26 @@ export const getTypedProfile = <T>(data: any): T => {
 // Newsletter subscription helper
 export const subscribeToNewsletter = async (email: string): Promise<{ success: boolean; message: string }> => {
   try {
+    console.log('Attempting to subscribe email:', email);
+    
     // Using the raw query method to bypass TypeScript issues with the new table
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from('newsletter_subscribers')
       .insert({ email })
       .select();
     
     if (error) {
+      console.error('Subscription error:', error);
+      
+      // Check for unique constraint violation (email already exists)
       if (error.code === '23505') {
         return { success: true, message: 'You are already subscribed to our newsletter!' };
       }
+      
       throw error;
     }
     
+    console.log('Subscription successful:', data);
     return { success: true, message: 'Thank you for subscribing to our newsletter!' };
   } catch (error) {
     console.error('Error subscribing to newsletter:', error);

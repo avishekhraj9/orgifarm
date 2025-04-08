@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, Check, Star, ShoppingBag, ChevronRight } from 'lucide-react';
+import { ArrowRight, Check, Star, ShoppingBag as ShoppingBagIcon, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { categories, getFeaturedProducts } from '@/data/products';
 import ProductCard from '@/components/ProductCard';
@@ -65,7 +65,10 @@ const Index = () => {
     setIsSubmitting(true);
     
     try {
+      console.log("Submitting email for newsletter:", email);
       const result = await subscribeToNewsletter(email);
+      console.log("Newsletter subscription result:", result);
+      
       setEmail('');
       toast({
         title: result.success ? "Subscription successful!" : "Subscription failed",
@@ -103,7 +106,7 @@ const Index = () => {
             <div className="flex flex-wrap gap-4 animate-slide-up" style={{ animationDelay: '200ms' }}>
               <Button size="lg" className="rounded-full" asChild>
                 <Link to="/products">
-                  Shop Now <ShoppingBag className="ml-2 h-4 w-4" />
+                  Shop Now <ShoppingBagIcon className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
               <Button size="lg" variant="outline" className="rounded-full" asChild>

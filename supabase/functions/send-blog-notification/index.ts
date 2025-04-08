@@ -26,9 +26,10 @@ const handler = async (req: Request): Promise<Response> => {
   
   try {
     const { blogId, blogTitle, blogSlug } = await req.json() as BlogNotificationRequest;
+    console.log(`Processing notification for blog: ${blogTitle} (${blogId})`);
     
     // Store the notification in the database
-    const { error: insertError } = await supabase
+    const { data: insertData, error: insertError } = await supabase
       .from('blog_notifications')
       .insert({
         blog_id: blogId,
@@ -42,6 +43,8 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error("Failed to store blog notification");
     }
     
+    console.log("Blog notification record created:", insertData);
+    
     // Get all subscribers
     const { data: subscribers, error: subscribersError } = await supabase
       .from('newsletter_subscribers')
@@ -52,7 +55,7 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error("Failed to fetch subscribers");
     }
     
-    console.log(`Found ${subscribers.length} subscribers to notify about blog: ${blogTitle}`);
+    console.log(`Found ${subscribers?.length || 0} subscribers to notify about blog: ${blogTitle}`);
     
     // In a production environment, you would send actual emails here
     // For now, we'll just log the subscribers and update the notification status
@@ -60,9 +63,13 @@ const handler = async (req: Request): Promise<Response> => {
     const blogUrl = `${req.headers.get("origin") || "https://yourwebsite.com"}/blog/${blogSlug}`;
     
     // Log what would be sent to each subscriber
-    subscribers.forEach(subscriber => {
-      console.log(`Would send email to ${subscriber.email} about new blog: "${blogTitle}" - ${blogUrl}`);
-    });
+    if (subscribers && subscribers.length > 0) {
+      subscribers.forEach(subscriber => {
+        console.log(`Would send email to ${subscriber.email} about new blog: "${blogTitle}" - ${blogUrl}`);
+      });
+    } else {
+      console.log("No subscribers found to notify");
+    }
     
     // Update notification as sent
     const { error: updateError } = await supabase
@@ -77,7 +84,7 @@ const handler = async (req: Request): Promise<Response> => {
     return new Response(
       JSON.stringify({ 
         success: true, 
-        message: `Notification for "${blogTitle}" sent to ${subscribers.length} subscribers` 
+        message: `Notification for "${blogTitle}" sent to ${subscribers?.length || 0} subscribers` 
       }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
