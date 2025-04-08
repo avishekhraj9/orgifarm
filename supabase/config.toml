@@ -3,3 +3,6 @@ project_id = "gioyluxjweuicdlcknyv"
 
 [functions.send-blog-notification]
 verify_jwt = false
+
+[functions.add-newsletter-subscriber]
+verify_jwt = false

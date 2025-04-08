@@ -25,25 +25,31 @@ export const subscribeToNewsletter = async (email: string): Promise<{ success: b
   try {
     console.log('Attempting to subscribe email:', email);
     
-    // Using the raw query method to bypass TypeScript issues with the new table
+    // Using a direct SQL query to bypass TypeScript table schema issues
     const { data, error } = await supabase
-      .from('newsletter_subscribers')
-      .insert({ email })
-      .select();
+      .rpc('add_newsletter_subscriber', { subscriber_email: email });
+    
+    // Log the complete response for debugging
+    console.log('Subscription response:', { data, error });
     
     if (error) {
       console.error('Subscription error:', error);
       
       // Check for unique constraint violation (email already exists)
-      if (error.code === '23505') {
+      if (error.code === '23505' || error.message.includes('duplicate')) {
         return { success: true, message: 'You are already subscribed to our newsletter!' };
       }
       
       throw error;
     }
     
-    console.log('Subscription successful:', data);
-    return { success: true, message: 'Thank you for subscribing to our newsletter!' };
+    if (data === true) {
+      console.log('Subscription successful');
+      return { success: true, message: 'Thank you for subscribing to our newsletter!' };
+    } else {
+      console.error('Subscription failed with unknown error');
+      return { success: false, message: 'Failed to subscribe. Please try again later.' };
+    }
   } catch (error) {
     console.error('Error subscribing to newsletter:', error);
     return { success: false, message: 'Failed to subscribe. Please try again later.' };
