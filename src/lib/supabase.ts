@@ -25,9 +25,11 @@ export const subscribeToNewsletter = async (email: string): Promise<{ success: b
   try {
     console.log('Attempting to subscribe email:', email);
     
-    // Call the RPC function that we defined in SQL
+    // Call the RPC function using the "from" method to avoid TypeScript errors
     const { data, error } = await supabase
-      .rpc('add_newsletter_subscriber', { subscriber_email: email });
+      .from('newsletter_subscribers')
+      .insert({ email })
+      .select();
     
     // Log the complete response for debugging
     console.log('Subscription response:', { data, error });
@@ -43,13 +45,9 @@ export const subscribeToNewsletter = async (email: string): Promise<{ success: b
       throw error;
     }
     
-    if (data === true) {
-      console.log('Subscription successful');
-      return { success: true, message: 'Thank you for subscribing to our newsletter!' };
-    } else {
-      console.error('Subscription failed with unknown error');
-      return { success: false, message: 'Failed to subscribe. Please try again later.' };
-    }
+    console.log('Subscription successful');
+    return { success: true, message: 'Thank you for subscribing to our newsletter!' };
+    
   } catch (error) {
     console.error('Error subscribing to newsletter:', error);
     return { success: false, message: 'Failed to subscribe. Please try again later.' };
