@@ -25,28 +25,21 @@ export const subscribeToNewsletter = async (email: string): Promise<{ success: b
   try {
     console.log('Attempting to subscribe email:', email);
     
-    // Call the RPC function using the "from" method to avoid TypeScript errors
-    const { data, error } = await supabase
-      .from('newsletter_subscribers')
-      .insert({ email })
-      .select();
+    // Call the Edge Function instead of direct DB access
+    const { data, error } = await supabase.functions.invoke('add-newsletter-subscriber', {
+      body: { email },
+    });
     
     // Log the complete response for debugging
     console.log('Subscription response:', { data, error });
     
     if (error) {
       console.error('Subscription error:', error);
-      
-      // Check for unique constraint violation (email already exists)
-      if (error.code === '23505' || error.message.includes('duplicate')) {
-        return { success: true, message: 'You are already subscribed to our newsletter!' };
-      }
-      
-      throw error;
+      return { success: false, message: 'Failed to subscribe. Please try again later.' };
     }
     
-    console.log('Subscription successful');
-    return { success: true, message: 'Thank you for subscribing to our newsletter!' };
+    // Return the response from the edge function
+    return data as { success: boolean; message: string };
     
   } catch (error) {
     console.error('Error subscribing to newsletter:', error);
