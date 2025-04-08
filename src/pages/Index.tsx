@@ -263,7 +263,7 @@ const Index = () => {
                         </div>
                       </div>
                       <div className="text-left">
-                        <p className="font-medium">Priya Kaur</p>
+                        <p className="font-medium">Satyawan Singh</p>
                         <p className="text-sm text-muted-foreground">Nutritionist</p>
                       </div>
                     </div>
