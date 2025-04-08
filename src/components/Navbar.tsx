@@ -60,7 +60,7 @@ const Navbar: React.FC = () => {
         {/* Logo - Further increased size */}
         <div className="flex items-center">
           <Link to="/">
-            <img src="/img/Orgifarm_logo.png" alt="Orgifarm Logo" className="h-[90px] w-auto" />
+            <img src="/img/Orgifarm_logo.png" alt="Orgifarm Logo" className="h-[120px] w-auto" />
           </Link>
         </div>
 
