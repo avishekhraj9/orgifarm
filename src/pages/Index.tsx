@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { categories, getFeaturedProducts } from '@/data/products';
 import ProductCard from '@/components/ProductCard';
 import PageLayout from '@/components/PageLayout';
+import { useToast } from '@/hooks/use-toast';
+import { Input } from '@/components/ui/input';
 import { 
   Carousel, 
   CarouselContent, 
@@ -16,6 +18,9 @@ import {
 
 const Index = () => {
   const [activeTestimonial, setActiveTestimonial] = useState(0);
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
   
   // Add animations to elements on page load
   useEffect(() => {
@@ -44,6 +49,33 @@ const Index = () => {
   }, []);
 
   const featuredProducts = getFeaturedProducts();
+
+  const handleNewsletterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+      toast({
+        title: "Invalid email",
+        description: "Please enter a valid email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    // In a real application, this would call an API to handle the subscription
+    // Simulating API call with timeout
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setEmail('');
+      toast({
+        title: "Subscription successful!",
+        description: "Thank you for subscribing to our newsletter.",
+        variant: "default",
+      });
+    }, 1000);
+  };
 
   return (
     <PageLayout fullWidth>
@@ -288,19 +320,22 @@ const Index = () => {
               Subscribe to get special offers, traditional recipe ideas, and updates on new product launches.
             </p>
             
-            <form className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
-              <input
+            <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+              <Input
                 type="email"
                 placeholder="Your email address"
                 className="flex-grow py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/30 text-gray-900"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
               <Button 
                 type="submit" 
                 variant="secondary" 
                 className="py-3 px-6 font-medium"
+                disabled={isSubmitting}
               >
-                Subscribe
+                {isSubmitting ? "Subscribing..." : "Subscribe"}
               </Button>
             </form>
             <p className="mt-4 text-sm text-white/60">
