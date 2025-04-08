@@ -1,13 +1,14 @@
-
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ChevronRight, ShoppingBag } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { ArrowRight, Check, Star } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { categories, getFeaturedProducts } from '@/data/products';
 import ProductCard from '@/components/ProductCard';
 import PageLayout from '@/components/PageLayout';
 import { useToast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
+import { subscribeToNewsletter } from '@/lib/supabase';
 import { 
   Carousel, 
   CarouselContent, 
@@ -22,7 +23,6 @@ const Index = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   
-  // Add animations to elements on page load
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -50,7 +50,7 @@ const Index = () => {
 
   const featuredProducts = getFeaturedProducts();
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
@@ -64,17 +64,24 @@ const Index = () => {
     
     setIsSubmitting(true);
     
-    // In a real application, this would call an API to handle the subscription
-    // Simulating API call with timeout
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      const result = await subscribeToNewsletter(email);
       setEmail('');
       toast({
-        title: "Subscription successful!",
-        description: "Thank you for subscribing to our newsletter.",
-        variant: "default",
+        title: result.success ? "Subscription successful!" : "Subscription failed",
+        description: result.message,
+        variant: result.success ? "default" : "destructive",
       });
-    }, 1000);
+    } catch (error) {
+      console.error("Error during subscription:", error);
+      toast({
+        title: "Subscription failed",
+        description: "An unexpected error occurred. Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -93,7 +100,6 @@ const Index = () => {
             <p className="text-lg text-muted-foreground mb-8 max-w-lg animate-slide-up opacity-0" style={{ animationDelay: '100ms' }}>
               Discover our collection of handcrafted pickles, pure ghee, and homemade jams prepared using traditional recipes.
             </p>
-            {/* Removed opacity-0 class from the div below to ensure buttons are visible from the start */}
             <div className="flex flex-wrap gap-4 animate-slide-up" style={{ animationDelay: '200ms' }}>
               <Button size="lg" className="rounded-full" asChild>
                 <Link to="/products">
@@ -208,7 +214,6 @@ const Index = () => {
             
             <Carousel className="w-full">
               <CarouselContent>
-                {/* First Testimonial */}
                 <CarouselItem>
                   <div className="bg-white p-8 rounded-xl shadow-sm border border-border relative mx-4">
                     <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-primary text-white h-10 w-10 rounded-full flex items-center justify-center">
@@ -240,7 +245,6 @@ const Index = () => {
                   </div>
                 </CarouselItem>
                 
-                {/* Second Testimonial */}
                 <CarouselItem>
                   <div className="bg-white p-8 rounded-xl shadow-sm border border-border relative mx-4">
                     <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-primary text-white h-10 w-10 rounded-full flex items-center justify-center">
@@ -272,7 +276,6 @@ const Index = () => {
                   </div>
                 </CarouselItem>
                 
-                {/* Third Testimonial */}
                 <CarouselItem>
                   <div className="bg-white p-8 rounded-xl shadow-sm border border-border relative mx-4">
                     <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-primary text-white h-10 w-10 rounded-full flex items-center justify-center">
