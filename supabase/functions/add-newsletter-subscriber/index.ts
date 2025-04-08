@@ -7,6 +7,9 @@ const SUPABASE_URL = "https://gioyluxjweuicdlcknyv.supabase.co";
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") || "";
 
+// Debug log to ensure API key is loaded (redacted for security)
+console.log(`Resend API Key loaded: ${RESEND_API_KEY ? "Yes (redacted)" : "No"}`);
+
 const resend = new Resend(RESEND_API_KEY);
 
 const corsHeaders = {
@@ -61,6 +64,12 @@ const handler = async (req: Request): Promise<Response> => {
     
     // Send a thank you email
     try {
+      console.log("Attempting to send thank you email to:", email);
+      
+      if (!RESEND_API_KEY) {
+        throw new Error("RESEND_API_KEY is not configured");
+      }
+      
       const emailResult = await resend.emails.send({
         from: "Orgifarm <onboarding@resend.dev>", // You can update this once you verify your domain
         to: email,
@@ -92,10 +101,11 @@ const handler = async (req: Request): Promise<Response> => {
         `
       });
       
-      console.log("Thank you email sent successfully:", emailResult);
+      console.log("Thank you email sent successfully, details:", JSON.stringify(emailResult));
     } catch (emailError) {
       // Log email error but don't fail the subscription process
-      console.error("Error sending thank you email:", emailError);
+      console.error("Error sending thank you email:", emailError instanceof Error ? emailError.message : emailError);
+      console.error("Error details:", JSON.stringify(emailError));
     }
     
     return new Response(
