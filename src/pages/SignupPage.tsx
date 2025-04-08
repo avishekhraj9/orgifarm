@@ -88,7 +88,7 @@ const SignupPage = () => {
                   <Input
                     id="name"
                     type="text"
-                    placeholder="John Doe"
+                    placeholder="Avishekh Raj"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     disabled={isLoading}
