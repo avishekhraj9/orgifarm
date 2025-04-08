@@ -23,9 +23,11 @@ export const getTypedProfile = <T>(data: any): T => {
 // Newsletter subscription helper
 export const subscribeToNewsletter = async (email: string): Promise<{ success: boolean; message: string }> => {
   try {
+    // Using the raw query method to bypass TypeScript issues with the new table
     const { error } = await supabase
       .from('newsletter_subscribers')
-      .insert([{ email }]);
+      .insert({ email })
+      .select();
     
     if (error) {
       if (error.code === '23505') {

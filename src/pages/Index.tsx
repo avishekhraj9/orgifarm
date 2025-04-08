@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, Check, Star } from 'lucide-react';
+import { ArrowRight, Check, Star, ShoppingBag, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { categories, getFeaturedProducts } from '@/data/products';
 import ProductCard from '@/components/ProductCard';

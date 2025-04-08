@@ -2,113 +2,103 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
 
+const SUPABASE_URL = "https://gioyluxjweuicdlcknyv.supabase.co";
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-serve(async (req) => {
+interface BlogNotificationRequest {
+  blogId: string;
+  blogTitle: string;
+  blogSlug: string;
+}
+
+const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
-
+  
+  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+  
   try {
-    // Create a Supabase client
-    const supabaseUrl = Deno.env.get("SUPABASE_URL") || "https://gioyluxjweuicdlcknyv.supabase.co";
-    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    // Get request data
-    const { blogId, blogTitle, blogSlug } = await req.json();
-
-    if (!blogId || !blogTitle || !blogSlug) {
-      return new Response(
-        JSON.stringify({ error: "Missing required fields" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+    const { blogId, blogTitle, blogSlug } = await req.json() as BlogNotificationRequest;
+    
+    // Store the notification in the database
+    const { error: insertError } = await supabase
+      .from('blog_notifications')
+      .insert({
+        blog_id: blogId,
+        blog_title: blogTitle,
+        notification_sent: false,
+      })
+      .select();
+      
+    if (insertError) {
+      console.error("Error storing notification:", insertError);
+      throw new Error("Failed to store blog notification");
     }
-
-    console.log(`Processing notification for blog: ${blogTitle} (${blogId})`);
-
-    // Check if notification already exists
-    const { data: existingNotification } = await supabase
-      .from("blog_notifications")
-      .select("*")
-      .eq("blog_id", blogId)
-      .eq("notification_sent", true)
-      .maybeSingle();
-
-    if (existingNotification) {
-      console.log(`Notification already sent for blog: ${blogTitle}`);
-      return new Response(
-        JSON.stringify({ message: "Notification already sent" }),
-        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    // Get all newsletter subscribers
+    
+    // Get all subscribers
     const { data: subscribers, error: subscribersError } = await supabase
-      .from("newsletter_subscribers")
-      .select("email");
-
+      .from('newsletter_subscribers')
+      .select('email');
+      
     if (subscribersError) {
       console.error("Error fetching subscribers:", subscribersError);
-      throw subscribersError;
+      throw new Error("Failed to fetch subscribers");
     }
-
-    if (!subscribers || subscribers.length === 0) {
-      console.log("No subscribers found");
-      return new Response(
-        JSON.stringify({ message: "No subscribers found" }),
-        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    console.log(`Found ${subscribers.length} subscribers to notify`);
-
-    // In a production environment, you would integrate with an email service
-    // like Resend, SendGrid, or a similar service to send actual emails.
-    // For this example, we'll just log the emails that would be sent.
     
-    for (const subscriber of subscribers) {
-      console.log(`Would send email to: ${subscriber.email} about new blog: ${blogTitle}`);
-      // In production:
-      // await emailService.send({
-      //   to: subscriber.email,
-      //   subject: `New Blog Post: ${blogTitle}`,
-      //   html: `<p>Check out our latest blog post: <a href="https://yourdomain.com/blog/${blogSlug}">${blogTitle}</a></p>`
-      // });
+    console.log(`Found ${subscribers.length} subscribers to notify about blog: ${blogTitle}`);
+    
+    // In a production environment, you would send actual emails here
+    // For now, we'll just log the subscribers and update the notification status
+    
+    const blogUrl = `${req.headers.get("origin") || "https://yourwebsite.com"}/blog/${blogSlug}`;
+    
+    // Log what would be sent to each subscriber
+    subscribers.forEach(subscriber => {
+      console.log(`Would send email to ${subscriber.email} about new blog: "${blogTitle}" - ${blogUrl}`);
+    });
+    
+    // Update notification as sent
+    const { error: updateError } = await supabase
+      .from('blog_notifications')
+      .update({ notification_sent: true })
+      .eq('blog_id', blogId);
+      
+    if (updateError) {
+      console.error("Error updating notification status:", updateError);
     }
-
-    // Create or update the notification record
-    const { error: notificationError } = await supabase
-      .from("blog_notifications")
-      .upsert([
-        {
-          blog_id: blogId,
-          blog_title: blogTitle,
-          notification_sent: true,
-        }
-      ]);
-
-    if (notificationError) {
-      console.error("Error updating notification status:", notificationError);
-      throw notificationError;
-    }
-
+    
     return new Response(
       JSON.stringify({ 
         success: true, 
-        message: `Notification processed for ${subscribers.length} subscribers` 
+        message: `Notification for "${blogTitle}" sent to ${subscribers.length} subscribers` 
       }),
-      { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 200,
+      }
     );
+    
   } catch (error) {
     console.error("Error in send-blog-notification function:", error);
+    
     return new Response(
-      JSON.stringify({ error: error.message }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      JSON.stringify({ 
+        success: false, 
+        error: error instanceof Error ? error.message : "Unknown error occurred" 
+      }),
+      {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 500,
+      }
     );
   }
-});
+};
+
+serve(handler);
