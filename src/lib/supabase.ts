@@ -25,7 +25,7 @@ export const subscribeToNewsletter = async (email: string): Promise<{ success: b
   try {
     console.log('Attempting to subscribe email:', email);
     
-    // Using a direct SQL query to bypass TypeScript table schema issues
+    // Call the RPC function that we defined in SQL
     const { data, error } = await supabase
       .rpc('add_newsletter_subscriber', { subscriber_email: email });
     
