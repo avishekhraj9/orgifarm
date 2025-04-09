@@ -19,7 +19,7 @@ const PageLayout: React.FC<PageLayoutProps> = ({
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <main className={cn(
-        "flex-grow pt-32 md:pt-40 animate-fade-in", // Increased padding-top for both mobile and desktop
+        "flex-grow pt-24 md:pt-28 animate-fade-in", // Reduced padding-top for both mobile and desktop
         fullWidth ? "" : "container px-4",
         className
       )}>
