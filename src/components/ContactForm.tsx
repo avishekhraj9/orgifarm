@@ -37,6 +37,7 @@ const ContactForm: React.FC = () => {
       });
       
       if (error) {
+        console.error('Error submitting contact form:', error);
         throw error;
       }
       

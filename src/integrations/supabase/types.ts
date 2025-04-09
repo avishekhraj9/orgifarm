@@ -43,6 +43,7 @@ export type Database = {
           id: string
           message: string
           name: string
+          phone: string | null
           read: boolean
           subject: string
         }
@@ -52,6 +53,7 @@ export type Database = {
           id?: string
           message: string
           name: string
+          phone?: string | null
           read?: boolean
           subject: string
         }
@@ -61,6 +63,7 @@ export type Database = {
           id?: string
           message?: string
           name?: string
+          phone?: string | null
           read?: boolean
           subject?: string
         }
