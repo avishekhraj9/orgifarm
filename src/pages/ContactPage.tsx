@@ -33,7 +33,7 @@ const ContactPage: React.FC = () => {
   const onSubmit = async (data: ContactFormValues) => {
     setIsSubmitting(true);
     try {
-      const { error } = await supabase.functions.invoke('submit-contact-form', {
+      const { data: responseData, error } = await supabase.functions.invoke('submit-contact-form', {
         body: data
       });
       
