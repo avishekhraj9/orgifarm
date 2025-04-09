@@ -1,18 +1,65 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import PageLayout from '@/components/PageLayout';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { PhoneCall, Mail, MapPin } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { toast } from '@/hooks/use-toast';
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
+import { supabase } from '@/lib/supabase';
+
+interface ContactFormValues {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
 
 const ContactPage: React.FC = () => {
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // This would typically send the form data to a server
-    console.log('Form submitted');
-    // You could add toast notification here
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const form = useForm<ContactFormValues>({
+    defaultValues: {
+      name: '',
+      email: '',
+      subject: '',
+      message: ''
+    }
+  });
+
+  const onSubmit = async (data: ContactFormValues) => {
+    setIsSubmitting(true);
+    try {
+      const { error } = await supabase.functions.invoke('submit-contact-form', {
+        body: data
+      });
+      
+      if (error) {
+        throw error;
+      }
+      
+      // Show success message
+      toast({
+        title: "Message Sent",
+        description: "Thank you for your message. We'll get back to you shortly.",
+      });
+      
+      // Reset form
+      form.reset();
+      
+    } catch (error) {
+      console.error('Error submitting contact form:', error);
+      toast({
+        title: "Error",
+        description: "There was a problem sending your message. Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -61,38 +108,96 @@ const ContactPage: React.FC = () => {
 
           <div className="bg-secondary p-6 rounded-lg">
             <h2 className="text-xl font-semibold mb-6">Send Us a Message</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <Input 
-                  placeholder="Your Name" 
-                  className="bg-white" 
-                  required
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  rules={{ required: "Name is required" }}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          placeholder="Your Name"
+                          className="bg-white"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
-              <div>
-                <Input 
-                  type="email" 
-                  placeholder="Your Email" 
-                  className="bg-white" 
-                  required
+                
+                <FormField
+                  control={form.control}
+                  name="email"
+                  rules={{ 
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: "Invalid email address"
+                    }
+                  }}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          type="email"
+                          placeholder="Your Email"
+                          className="bg-white"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
-              <div>
-                <Input 
-                  placeholder="Subject" 
-                  className="bg-white" 
-                  required
+                
+                <FormField
+                  control={form.control}
+                  name="subject"
+                  rules={{ required: "Subject is required" }}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          placeholder="Subject"
+                          className="bg-white"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
-              <div>
-                <Textarea 
-                  placeholder="Your Message" 
-                  className="bg-white min-h-[150px]" 
-                  required
+                
+                <FormField
+                  control={form.control}
+                  name="message"
+                  rules={{ required: "Message is required" }}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Your Message"
+                          className="bg-white min-h-[150px]"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
-              <Button type="submit" className="w-full">Send Message</Button>
-            </form>
+                
+                <Button 
+                  type="submit" 
+                  className="w-full"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Sending..." : "Send Message"}
+                </Button>
+              </form>
+            </Form>
           </div>
         </div>
       </div>
