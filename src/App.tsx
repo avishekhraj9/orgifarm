@@ -16,6 +16,7 @@ import ProductDetailPage from "./pages/ProductDetailPage";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrderSuccessPage from "./pages/OrderSuccessPage";
+import PaymentCallbackPage from "./pages/PaymentCallbackPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
@@ -73,6 +74,7 @@ const App = () => (
                   </RequireAuth>
                 } />
                 <Route path="/order-success" element={<OrderSuccessPage />} />
+                <Route path="/payment-callback" element={<PaymentCallbackPage />} />
                 <Route path="/email-verification-success" element={<EmailVerificationSuccessPage />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
