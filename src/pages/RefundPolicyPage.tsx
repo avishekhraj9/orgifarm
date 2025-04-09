@@ -7,24 +7,24 @@ const RefundPolicyPage: React.FC = () => {
   return (
     <PageLayout className="py-12">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl md:text-4xl font-bold mb-6">Refund Policy</h1>
+        <h1 className="text-3xl md:text-4xl font-bold mb-6">Return & Refund Policy</h1>
         <Separator className="my-6" />
         
         <div className="prose prose-sm sm:prose lg:prose-lg max-w-none">
           <p className="text-muted-foreground">Last updated: {new Date().toLocaleDateString()}</p>
           
           <section className="mt-8">
-            <h2 className="text-2xl font-semibold mb-4">Return & Refund Policy</h2>
+            <h2 className="text-2xl font-semibold mb-4">Our Policy</h2>
             <p className="text-muted-foreground">
               Thank you for shopping at Orgifarm. If you are not entirely satisfied with your purchase, 
-              we're here to help.
+              we're here to help. This policy outlines how you can return items and request refunds.
             </p>
           </section>
           
-          <section className="mt-8">
-            <h2 className="text-2xl font-semibold mb-4">Returns</h2>
+          <section className="mt-8 bg-secondary/30 p-6 rounded-lg border border-border">
+            <h2 className="text-2xl font-semibold mb-4">Return Policy</h2>
             <p className="text-muted-foreground">
-              You have 7 calendar days to return an item from the date you received it. To be eligible for a return, 
+              You have <span className="font-medium">7 calendar days</span> to return an item from the date you received it. To be eligible for a return, 
               your item must be unused and in the same condition that you received it. Your item must be in the 
               original packaging. Your item needs to have the receipt or proof of purchase.
             </p>
@@ -36,18 +36,48 @@ const RefundPolicyPage: React.FC = () => {
               <li>If a product is received damaged or defective, please contact us within 24 hours of delivery.</li>
               <li>For honey products, please check for crystallization which is a natural process and not a defect.</li>
             </ul>
+            
+            <h3 className="text-xl font-medium mt-6 mb-3">Return Process</h3>
+            <ol className="list-decimal pl-6 space-y-2 text-muted-foreground">
+              <li>Contact our customer service team at orgifarmcare@gmail.com or +91 8969143072 to initiate a return.</li>
+              <li>You will receive return instructions and a return authorization number.</li>
+              <li>Pack the product securely in appropriate packaging.</li>
+              <li>Include your order number and return authorization number with the return.</li>
+              <li>Ship the product to the address provided in the return instructions.</li>
+            </ol>
           </section>
           
           <section className="mt-8">
             <h2 className="text-2xl font-semibold mb-4">Refunds</h2>
             <p className="text-muted-foreground">
-              Once we receive your item, we will inspect it and notify you that we have received your returned item. 
+              Once we receive your returned item, we will inspect it and notify you that we have received your returned item. 
               We will immediately notify you on the status of your refund after inspecting the item.
             </p>
             <p className="text-muted-foreground mt-4">
               If your return is approved, we will initiate a refund to your original method of payment.
               You will receive the credit within a certain amount of days, depending on your card issuer's policies.
             </p>
+            <div className="bg-primary/5 p-4 rounded-md mt-4 border border-primary/20">
+              <h3 className="text-lg font-medium mb-2">Refund Timeline</h3>
+              <p className="text-muted-foreground">
+                • Credit/Debit Card: 5-7 business days<br />
+                • UPI Payments: 1-3 business days<br />
+                • Bank Transfer: 3-5 business days
+              </p>
+            </div>
+          </section>
+          
+          <section className="mt-8">
+            <h2 className="text-2xl font-semibold mb-4">Non-Returnable Items</h2>
+            <p className="text-muted-foreground">
+              The following items cannot be returned:
+            </p>
+            <ul className="list-disc pl-6 mt-2 space-y-2 text-muted-foreground">
+              <li>Products that have been opened or used, unless defective.</li>
+              <li>Products without original packaging, labels, or proof of purchase.</li>
+              <li>Products that have passed their expiration date.</li>
+              <li>Products purchased on sale or with a discount code (unless defective).</li>
+            </ul>
           </section>
           
           <section className="mt-8">
@@ -62,7 +92,7 @@ const RefundPolicyPage: React.FC = () => {
           <section className="mt-8">
             <h2 className="text-2xl font-semibold mb-4">Contact Us</h2>
             <p className="text-muted-foreground">
-              If you have any questions about our refund policy, please contact us at:
+              If you have any questions about our return and refund policy, please contact us at:
             </p>
             <p className="text-muted-foreground mt-4">
               Email: orgifarmcare@gmail.com<br />
