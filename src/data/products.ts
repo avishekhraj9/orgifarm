@@ -355,7 +355,7 @@ export const products: Product[] = [
     description: "Unique honey infused with ginger, known for its antioxidant properties. Offers a rich, earthy flavor with potential health benefits.",
     price: 8.99,
     imageUrl: "/img/ginger_honey.png",
-    additionalImages: ["/img/ginger_honey.png", "/img/ginger_honey.png"],
+    additionalImages: ["/img/Ginger Honey (2).png", "/img/Ginger Honey (3).png"],
     category: "cat4",
     rating: 4.8,
     stock: 12
@@ -366,7 +366,7 @@ export const products: Product[] = [
     description: "Unique honey infused with karanj, known for its anti-inflammatory properties. Offers a rich, earthy flavor with potential health benefits.",
     price: 8.99,
     imageUrl: "/img/karanj_honey.png",
-    additionalImages: ["/img/Ginger Honey (2).png", "/img/Ginger Honey (3).png"],
+    additionalImages: ["/img/Karanj Honey (2).png", "/img/Karanj Honey (3).png"],
     category: "cat4",
     rating: 4.8,
     stock: 12
@@ -421,7 +421,7 @@ export const products: Product[] = [
     description: "Unique honey infused with moringa, known for its antioxidant properties. Offers a rich, earthy flavor with potential health benefits.",
     price: 8.99,
     imageUrl: "/img/moringa_honey.png",
-    additionalImages: ["/img/moringa_honey.png", "/img/moringa_honey.png"],
+    additionalImages: ["/img/Moringa Honey.png", "/img/Moringa Honey.png"],
     category: "cat4",
     rating: 4.8,
     stock: 12
@@ -454,7 +454,7 @@ export const products: Product[] = [
     description: "Unique honey infused with red flowers, known for its antioxidant properties. Offers a rich, earthy flavor with potential health benefits.",
     price: 8.99,
     imageUrl: "/img/red_honey.png",
-    additionalImages: ["/img/red_honey.png", "/img/red_honey.png"],
+    additionalImages: ["/img/Red Honey (2).png", "/img/Red Honey (3).png"],
     category: "cat4",
     rating: 4.8,
     stock: 12
