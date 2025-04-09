@@ -63,6 +63,11 @@ const Footer: React.FC = () => {
                   Terms of Service
                 </Link>
               </li>
+              <li>
+                <Link to="/refund-policy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  Refund Policy
+                </Link>
+              </li>
             </ul>
           </div>
           
