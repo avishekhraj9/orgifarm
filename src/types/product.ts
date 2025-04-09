@@ -5,6 +5,8 @@ export type Product = {
   description: string;
   price: number;
   imageUrl: string;
+  additionalImages: string[];
+  videoUrl?: string;
   category: string;
   rating: number;
   stock: number;

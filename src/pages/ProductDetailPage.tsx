@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Star, Heart, ShoppingCart, Check, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Star, Heart, ShoppingCart, Check, AlertCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ProductCard from '@/components/ProductCard';
@@ -20,12 +20,16 @@ const ProductDetailPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
   const [similarProducts, setSimilarProducts] = useState([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showVideo, setShowVideo] = useState(false);
   
   // Fetch product and similar products
   useEffect(() => {
     if (id) {
       const foundProduct = getProductById(id);
       setProduct(foundProduct);
+      setCurrentImageIndex(0);
+      setShowVideo(false);
       
       if (foundProduct) {
         // Get similar products (same category, excluding current)
@@ -42,6 +46,19 @@ const ProductDetailPage = () => {
   if (!product) {
     return null; // Will redirect in useEffect
   }
+
+  // Combine main image and additional images for the gallery
+  const allImages = [product.imageUrl, ...(product.additionalImages || [])];
+  
+  const nextImage = () => {
+    setShowVideo(false);
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % allImages.length);
+  };
+  
+  const prevImage = () => {
+    setShowVideo(false);
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + allImages.length) % allImages.length);
+  };
   
   const handleAddToCart = () => {
     setIsAdding(true);
@@ -75,13 +92,82 @@ const ProductDetailPage = () => {
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-16">
-        {/* Product Image */}
-        <div className="bg-white rounded-xl overflow-hidden border border-border shadow-sm">
-          <img 
-            src={product.imageUrl} 
-            alt={product.name} 
-            className="w-full h-auto object-cover"
-          />
+        {/* Product Image Gallery */}
+        <div className="space-y-4">
+          <div className="bg-white rounded-xl overflow-hidden border border-border shadow-sm relative aspect-square">
+            {showVideo && product.videoUrl ? (
+              <iframe 
+                src={product.videoUrl} 
+                className="w-full h-full"
+                title={`${product.name} video`} 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowFullScreen>
+              </iframe>
+            ) : (
+              <>
+                <img 
+                  src={allImages[currentImageIndex]} 
+                  alt={`${product.name} - image ${currentImageIndex + 1}`} 
+                  className="w-full h-full object-cover"
+                />
+                {allImages.length > 1 && (
+                  <>
+                    <Button 
+                      variant="outline" 
+                      size="icon"
+                      className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white"
+                      onClick={prevImage}
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="icon"
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white"
+                      onClick={nextImage}
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </>
+                )}
+              </>
+            )}
+          </div>
+          
+          {/* Thumbnail Navigation */}
+          <div className="flex gap-2 overflow-x-auto pb-2">
+            {allImages.map((image, index) => (
+              <button
+                key={`img-${index}`}
+                className={`flex-shrink-0 border-2 rounded overflow-hidden w-16 h-16 transition-all ${
+                  !showVideo && currentImageIndex === index ? 'border-primary' : 'border-transparent hover:border-gray-300'
+                }`}
+                onClick={() => {
+                  setShowVideo(false);
+                  setCurrentImageIndex(index);
+                }}
+              >
+                <img 
+                  src={image} 
+                  alt={`${product.name} thumbnail ${index + 1}`}
+                  className="w-full h-full object-cover" 
+                />
+              </button>
+            ))}
+            
+            {product.videoUrl && (
+              <button
+                className={`flex-shrink-0 border-2 rounded overflow-hidden w-16 h-16 bg-gray-100 flex items-center justify-center transition-all ${
+                  showVideo ? 'border-primary' : 'border-transparent hover:border-gray-300'
+                }`}
+                onClick={() => setShowVideo(true)}
+              >
+                <svg className="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </button>
+            )}
+          </div>
         </div>
         
         {/* Product Info */}
@@ -100,7 +186,7 @@ const ProductDetailPage = () => {
               </div>
               <span className="text-sm text-muted-foreground">({product.rating} stars)</span>
             </div>
-            <p className="text-2xl font-bold">₹{(product.price * 75).toFixed(2)}</p>
+            <p className="text-2xl font-bold">₹{(product.price * 75).toLocaleString('en-IN', { maximumFractionDigits: 2 })}</p>
           </div>
           
           <div className="border-t border-b py-6 border-border">

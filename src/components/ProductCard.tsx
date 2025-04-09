@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Product } from '@/types/product';
 import { Button } from '@/components/ui/button';
-import { ShoppingCart, Package } from 'lucide-react';
+import { ShoppingCart, Package, Image, Video } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -17,6 +17,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, className }) => {
   const { addToCart } = useCart();
   const isMobile = useIsMobile();
 
+  const hasAdditionalMedia = (product.additionalImages?.length > 0 || product.videoUrl);
+
   return (
     <div 
       className={cn(
@@ -25,12 +27,26 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, className }) => {
         className
       )}
     >
-      <Link to={`/product/${product.id}`} className="block overflow-hidden aspect-square">
+      <Link to={`/product/${product.id}`} className="block overflow-hidden aspect-square relative">
         <img 
           src={product.imageUrl} 
           alt={product.name} 
           className="w-full h-full object-cover transition-transform duration-500 ease-apple hover:scale-105"
         />
+        {hasAdditionalMedia && (
+          <div className="absolute bottom-2 right-2 flex gap-1">
+            {product.additionalImages?.length > 0 && (
+              <span className="bg-black/70 text-white rounded-full p-1">
+                <Image className="h-3 w-3" />
+              </span>
+            )}
+            {product.videoUrl && (
+              <span className="bg-black/70 text-white rounded-full p-1">
+                <Video className="h-3 w-3" />
+              </span>
+            )}
+          </div>
+        )}
       </Link>
       <div className={cn("p-5 flex flex-col flex-grow", isMobile && "p-3")}>
         <Link to={`/product/${product.id}`} className="block">

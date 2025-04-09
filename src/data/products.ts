@@ -33,6 +33,8 @@ export const products: Product[] = [
     description: "Traditional handcrafted mango pickle made with organic raw mangoes, premium spices, and cold-pressed mustard oil. A perfect blend of tangy and spicy flavors.",
     price: 2.99,
     imageUrl: "/img/diced_mango_prickle.jpg",
+    additionalImages: ["/img/diced_mango_pickle.jpg", "/img/mango_pickle_ingredients.jpg"],
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     category: "cat1",
     rating: 4.8,
     stock: 25
@@ -43,6 +45,8 @@ export const products: Product[] = [
     description: "Tangy and zesty lemon pickle prepared with organic lemons and traditional spices. Perfect accompaniment for Indian meals and snacks.",
     price: 2.89,
     imageUrl: "/img/spicy_lemon_pickle.jpg",
+    additionalImages: ["/img/lemon_pickle_jar.jpg", "/img/lemon_pickle_serving.jpg"],
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     category: "cat1",
     rating: 4.7,
     stock: 18
