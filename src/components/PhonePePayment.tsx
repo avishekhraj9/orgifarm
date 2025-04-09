@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
@@ -13,7 +13,31 @@ interface PhonePePaymentProps {
 
 const PhonePePayment: React.FC<PhonePePaymentProps> = ({ amount, onSuccess }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [mobileNumber, setMobileNumber] = useState('');
   const { user } = useAuth();
+
+  // Fetch user profile to get the mobile number
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (user) {
+        try {
+          const { data, error } = await supabase
+            .from('profiles')
+            .select('mobile_number')
+            .eq('id', user.id)
+            .single();
+          
+          if (!error && data && data.mobile_number) {
+            setMobileNumber(data.mobile_number);
+          }
+        } catch (error) {
+          console.error('Error fetching user profile:', error);
+        }
+      }
+    };
+
+    fetchUserProfile();
+  }, [user]);
 
   const initiatePayment = async () => {
     if (!user) {
@@ -33,7 +57,7 @@ const PhonePePayment: React.FC<PhonePePaymentProps> = ({ amount, onSuccess }) =>
         body: {
           amount,
           callbackUrl,
-          mobileNumber: user.phone || '',
+          mobileNumber: mobileNumber || '',
         },
       });
 
