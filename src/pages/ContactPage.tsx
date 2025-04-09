@@ -14,6 +14,7 @@ import { supabase } from '@/lib/supabase';
 interface ContactFormValues {
   name: string;
   email: string;
+  phone: string; // Added phone field
   subject: string;
   message: string;
 }
@@ -25,6 +26,7 @@ const ContactPage: React.FC = () => {
     defaultValues: {
       name: '',
       email: '',
+      phone: '', // Added default value
       subject: '',
       message: ''
     }
@@ -144,6 +146,31 @@ const ContactPage: React.FC = () => {
                         <Input
                           type="email"
                           placeholder="Your Email"
+                          className="bg-white"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                {/* Add phone field */}
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  rules={{ 
+                    pattern: {
+                      value: /^[0-9+\-\s()]{7,15}$/,
+                      message: "Please enter a valid phone number"
+                    }
+                  }}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          type="tel"
+                          placeholder="Your Phone Number (optional)"
                           className="bg-white"
                           {...field}
                         />

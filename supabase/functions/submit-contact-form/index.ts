@@ -15,7 +15,7 @@ serve(async (req) => {
 
   try {
     // Get the request body
-    const { name, email, subject, message } = await req.json();
+    const { name, email, phone, subject, message } = await req.json();
     
     // Validate required fields
     if (!name || !email || !subject || !message) {
@@ -48,6 +48,7 @@ serve(async (req) => {
         {
           name,
           email,
+          phone, // Added phone field
           subject,
           message,
           created_at: new Date().toISOString(),
