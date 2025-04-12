@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -20,8 +19,9 @@ const CheckoutPage = () => {
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [scriptLoaded, setScriptLoaded] = useState(false);
+  const [scriptError, setScriptError] = useState(false);
   
-  // Form state
   const [formData, setFormData] = useState({
     fullName: '',
     email: user?.email || '',
@@ -32,15 +32,30 @@ const CheckoutPage = () => {
     country: 'IN',
   });
 
-  // Load Razorpay script when component mounts
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-    script.async = true;
-    document.body.appendChild(script);
+    if (!document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]')) {
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.async = true;
+      
+      script.onload = () => {
+        console.log("Razorpay script loaded successfully");
+        setScriptLoaded(true);
+        setScriptError(false);
+      };
+      
+      script.onerror = () => {
+        console.error("Failed to load Razorpay script");
+        setScriptError(true);
+        toast.error("Failed to load payment gateway. Please refresh and try again.");
+      };
+      
+      document.body.appendChild(script);
+    } else {
+      setScriptLoaded(true);
+    }
     
     return () => {
-      document.body.removeChild(script);
     };
   }, []);
   
@@ -50,10 +65,10 @@ const CheckoutPage = () => {
   };
   
   const handlePaymentSuccess = (paymentId: string) => {
+    console.log("Payment successful with ID:", paymentId);
     setPaymentSuccess(true);
     setIsSubmitting(true);
     
-    // Process order finalization
     setTimeout(() => {
       clearCart();
       navigate('/order-success');
@@ -65,14 +80,12 @@ const CheckoutPage = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate form
     if (!formData.fullName || !formData.email || !formData.address || 
         !formData.city || !formData.state || !formData.zip) {
       toast.error('Please fill in all required fields');
       return;
     }
     
-    // If we're not showing Razorpay, we'll handle the form submission directly
     if (paymentSuccess) {
       setIsSubmitting(true);
       setTimeout(() => {
@@ -89,9 +102,25 @@ const CheckoutPage = () => {
     return null;
   }
   
-  // Calculate tax (8%)
   const taxAmount = total * 0.08;
   const grandTotal = total + taxAmount;
+  
+  if (scriptError) {
+    return (
+      <RequireAuth>
+        <PageLayout>
+          <div className="max-w-6xl mx-auto">
+            <h1 className="text-3xl font-bold mb-8 dark:text-gray-100">Checkout</h1>
+            <div className="p-8 bg-white dark:bg-card rounded-lg shadow text-center">
+              <h2 className="text-xl font-semibold mb-4 text-red-600">Payment Gateway Error</h2>
+              <p className="mb-4">Failed to load payment gateway. Please try refreshing the page.</p>
+              <Button onClick={() => window.location.reload()}>Refresh Page</Button>
+            </div>
+          </div>
+        </PageLayout>
+      </RequireAuth>
+    );
+  }
   
   return (
     <RequireAuth>
@@ -101,9 +130,7 @@ const CheckoutPage = () => {
           
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Shipping and Payment Form */}
               <div className="lg:col-span-2 space-y-6">
-                {/* Shipping Information */}
                 <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-border dark:border-border overflow-hidden p-6">
                   <h2 className="text-xl font-semibold mb-4 dark:text-gray-100">Shipping Information</h2>
                   
@@ -196,7 +223,6 @@ const CheckoutPage = () => {
                   </div>
                 </div>
                 
-                {/* Payment Method */}
                 <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-border dark:border-border overflow-hidden p-6">
                   <h2 className="text-xl font-semibold mb-4 dark:text-gray-100">Payment Method</h2>
                   
@@ -205,17 +231,22 @@ const CheckoutPage = () => {
                       Secure payment processed by Razorpay. Your card details are never stored on our servers.
                     </p>
                     
-                    <RazorpayPayment 
-                      amount={grandTotal}
-                      customerEmail={formData.email}
-                      customerName={formData.fullName}
-                      onSuccess={handlePaymentSuccess}
-                    />
+                    {scriptLoaded ? (
+                      <RazorpayPayment 
+                        amount={grandTotal}
+                        customerEmail={formData.email}
+                        customerName={formData.fullName}
+                        onSuccess={handlePaymentSuccess}
+                      />
+                    ) : (
+                      <div className="flex justify-center py-4">
+                        <p>Loading payment gateway...</p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
               
-              {/* Order Summary */}
               <div className="lg:col-span-1">
                 <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-border dark:border-border overflow-hidden p-6 sticky top-24">
                   <h2 className="text-xl font-semibold mb-4 dark:text-gray-100">Order Summary</h2>
