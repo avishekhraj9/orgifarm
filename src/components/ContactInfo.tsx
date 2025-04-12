@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { PhoneCall, Mail, MapPin } from 'lucide-react';
 
@@ -44,4 +43,3 @@ const ContactInfo: React.FC = () => {
 };
 
 export default ContactInfo;
-
