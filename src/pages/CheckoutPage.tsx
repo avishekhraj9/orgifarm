@@ -1,25 +1,25 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import PageLayout from '@/components/PageLayout';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import RequireAuth from '@/components/RequireAuth';
 import { toast } from 'sonner';
+import RazorpayPayment from '@/components/RazorpayPayment';
 
 const CheckoutPage = () => {
   const { items, total, clearCart } = useCart();
   const { user } = useAuth();
   const navigate = useNavigate();
   
-  const [paymentMethod, setPaymentMethod] = useState('credit');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
   
   // Form state
   const [formData, setFormData] = useState({
@@ -29,30 +29,59 @@ const CheckoutPage = () => {
     city: '',
     state: '',
     zip: '',
-    country: 'US',
-    cardName: '',
-    cardNumber: '',
-    expDate: '',
-    cvv: ''
+    country: 'IN',
   });
+
+  // Load Razorpay script when component mounts
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.async = true;
+    document.body.appendChild(script);
+    
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
+  const handlePaymentSuccess = (paymentId: string) => {
+    setPaymentSuccess(true);
     setIsSubmitting(true);
     
-    // Simulate order processing
+    // Process order finalization
     setTimeout(() => {
       clearCart();
       navigate('/order-success');
       toast.success('Order placed successfully!');
       setIsSubmitting(false);
-    }, 1500);
+    }, 1000);
+  };
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validate form
+    if (!formData.fullName || !formData.email || !formData.address || 
+        !formData.city || !formData.state || !formData.zip) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+    
+    // If we're not showing Razorpay, we'll handle the form submission directly
+    if (paymentSuccess) {
+      setIsSubmitting(true);
+      setTimeout(() => {
+        clearCart();
+        navigate('/order-success');
+        toast.success('Order placed successfully!');
+        setIsSubmitting(false);
+      }, 1000);
+    }
   };
   
   if (items.length === 0) {
@@ -155,12 +184,12 @@ const CheckoutPage = () => {
                     
                     <div className="grid gap-2">
                       <Label htmlFor="country" className="dark:text-gray-200">Country</Label>
-                      <Select defaultValue="US">
+                      <Select defaultValue="IN">
                         <SelectTrigger id="country" className="dark:bg-secondary dark:text-gray-200 dark:border-secondary">
                           <SelectValue placeholder="Select country" />
                         </SelectTrigger>
                         <SelectContent className="dark:bg-card dark:text-gray-200 dark:border-border">
-                          <SelectItem value="US">India</SelectItem>
+                          <SelectItem value="IN">India</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -171,87 +200,18 @@ const CheckoutPage = () => {
                 <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-border dark:border-border overflow-hidden p-6">
                   <h2 className="text-xl font-semibold mb-4 dark:text-gray-100">Payment Method</h2>
                   
-                  <RadioGroup 
-                    defaultValue="credit" 
-                    className="mb-6"
-                    onValueChange={setPaymentMethod}
-                  >
-                    <div className="flex items-center space-x-2 border rounded-md p-3 dark:border-border hover:bg-muted/50 dark:hover:bg-secondary/30 cursor-pointer">
-                      <RadioGroupItem value="credit" id="credit" className="dark:border-gray-500" />
-                      <Label htmlFor="credit" className="flex-1 cursor-pointer dark:text-gray-200">
-                        Credit or Debit Card
-                      </Label>
-                      <div className="flex space-x-2">
-                        <div className="h-6 w-10 bg-gray-200 dark:bg-gray-700 rounded"></div>
-                        <div className="h-6 w-10 bg-gray-200 dark:bg-gray-700 rounded"></div>
-                        <div className="h-6 w-10 bg-gray-200 dark:bg-gray-700 rounded"></div>
-                      </div>
-                    </div>
+                  <div className="mb-4">
+                    <p className="text-sm text-muted-foreground dark:text-gray-400 mb-4">
+                      Secure payment processed by Razorpay. Your card details are never stored on our servers.
+                    </p>
                     
-                    <div className="flex items-center space-x-2 border rounded-md p-3 dark:border-border hover:bg-muted/50 dark:hover:bg-secondary/30 cursor-pointer">
-                      <RadioGroupItem value="paypal" id="paypal" className="dark:border-gray-500" />
-                      <Label htmlFor="paypal" className="flex-1 cursor-pointer dark:text-gray-200">
-                        PayPal
-                      </Label>
-                      <div className="h-6 w-16 bg-blue-100 dark:bg-blue-900 rounded"></div>
-                    </div>
-                  </RadioGroup>
-                  
-                  {paymentMethod === 'credit' && (
-                    <div className="grid gap-4">
-                      <div className="grid gap-2">
-                        <Label htmlFor="cardName" className="dark:text-gray-200">Name on Card</Label>
-                        <Input 
-                          id="cardName" 
-                          name="cardName"
-                          value={formData.cardName}
-                          onChange={handleChange}
-                          className="dark:bg-secondary dark:text-gray-200 dark:border-secondary"
-                          required 
-                        />
-                      </div>
-                      
-                      <div className="grid gap-2">
-                        <Label htmlFor="cardNumber" className="dark:text-gray-200">Card Number</Label>
-                        <Input 
-                          id="cardNumber" 
-                          name="cardNumber"
-                          value={formData.cardNumber}
-                          onChange={handleChange}
-                          className="dark:bg-secondary dark:text-gray-200 dark:border-secondary"
-                          required 
-                          placeholder="1234 5678 9012 3456"
-                        />
-                      </div>
-                      
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="grid gap-2">
-                          <Label htmlFor="expDate" className="dark:text-gray-200">Expiration Date</Label>
-                          <Input 
-                            id="expDate" 
-                            name="expDate"
-                            value={formData.expDate}
-                            onChange={handleChange}
-                            className="dark:bg-secondary dark:text-gray-200 dark:border-secondary"
-                            required 
-                            placeholder="MM/YY"
-                          />
-                        </div>
-                        <div className="grid gap-2">
-                          <Label htmlFor="cvv" className="dark:text-gray-200">CVV</Label>
-                          <Input 
-                            id="cvv" 
-                            name="cvv"
-                            value={formData.cvv}
-                            onChange={handleChange}
-                            className="dark:bg-secondary dark:text-gray-200 dark:border-secondary"
-                            required 
-                            placeholder="123"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                    <RazorpayPayment 
+                      amount={grandTotal}
+                      customerEmail={formData.email}
+                      customerName={formData.fullName}
+                      onSuccess={handlePaymentSuccess}
+                    />
+                  </div>
                 </div>
               </div>
               
@@ -303,9 +263,9 @@ const CheckoutPage = () => {
                     type="submit" 
                     className="w-full" 
                     size="lg"
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || !paymentSuccess}
                   >
-                    {isSubmitting ? 'Processing...' : 'Place Order'}
+                    {isSubmitting ? 'Processing...' : 'Complete Order'}
                   </Button>
                   
                   <p className="text-xs text-muted-foreground dark:text-gray-400 text-center mt-4">
