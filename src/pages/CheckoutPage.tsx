@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -21,6 +22,7 @@ const CheckoutPage = () => {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const [scriptError, setScriptError] = useState(false);
+  const [scriptLoading, setScriptLoading] = useState(true);
   
   const [formData, setFormData] = useState({
     fullName: '',
@@ -32,8 +34,17 @@ const CheckoutPage = () => {
     country: 'IN',
   });
 
+  // Load Razorpay script
   useEffect(() => {
-    if (!document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]')) {
+    const loadRazorpayScript = () => {
+      setScriptLoading(true);
+      
+      // Remove any existing Razorpay script to avoid duplicates
+      const existingScript = document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]');
+      if (existingScript) {
+        document.body.removeChild(existingScript);
+      }
+      
       const script = document.createElement('script');
       script.src = 'https://checkout.razorpay.com/v1/checkout.js';
       script.async = true;
@@ -42,20 +53,23 @@ const CheckoutPage = () => {
         console.log("Razorpay script loaded successfully");
         setScriptLoaded(true);
         setScriptError(false);
+        setScriptLoading(false);
       };
       
       script.onerror = () => {
         console.error("Failed to load Razorpay script");
         setScriptError(true);
+        setScriptLoading(false);
         toast.error("Failed to load payment gateway. Please refresh and try again.");
       };
       
       document.body.appendChild(script);
-    } else {
-      setScriptLoaded(true);
-    }
+    };
+    
+    loadRazorpayScript();
     
     return () => {
+      // Cleanup if needed
     };
   }, []);
   
@@ -69,6 +83,7 @@ const CheckoutPage = () => {
     setPaymentSuccess(true);
     setIsSubmitting(true);
     
+    // Process order after successful payment
     setTimeout(() => {
       clearCart();
       navigate('/order-success');

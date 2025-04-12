@@ -35,6 +35,9 @@ const RazorpayPayment: React.FC<RazorpayPaymentProps> = ({
     }
 
     try {
+      // Generate a unique order ID
+      const orderId = 'ORG_' + Date.now().toString();
+      
       const options = {
         key: 'rzp_live_oxAtMy0ixubO1r', // Your Razorpay live key
         amount: amount * 100, // Razorpay takes amount in smallest currency unit (paise for INR)
@@ -42,11 +45,15 @@ const RazorpayPayment: React.FC<RazorpayPaymentProps> = ({
         name: 'Orgifarm',
         description: 'Payment for your order',
         image: '/img/Orgifarm_logo.png',
-        handler: function (response: { razorpay_payment_id: string }) {
+        order_id: orderId, // This should be generated on your server for production
+        handler: function (response: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) {
           setIsLoading(false);
           if (response.razorpay_payment_id) {
             onSuccess(response.razorpay_payment_id);
             toast.success('Payment successful!');
+            console.log('Payment successful with ID:', response.razorpay_payment_id);
+            console.log('Order ID:', response.razorpay_order_id);
+            console.log('Signature:', response.razorpay_signature);
           } else {
             toast.error('Payment failed. Please try again.');
           }
@@ -65,7 +72,7 @@ const RazorpayPayment: React.FC<RazorpayPaymentProps> = ({
           }
         },
         notes: {
-          order_id: 'ORG_' + Date.now().toString()
+          order_id: orderId
         }
       };
 
@@ -74,8 +81,15 @@ const RazorpayPayment: React.FC<RazorpayPaymentProps> = ({
       // Handle payment failures
       rzp.on('payment.failed', function (response: any) {
         setIsLoading(false);
-        toast.error(`Payment failed: ${response.error.description}`);
-        console.error('Payment failed:', response.error);
+        console.error('Payment failed response:', response.error);
+        toast.error(`Payment failed: ${response.error.description || 'Please check your payment details'}`);
+      });
+      
+      // Add event listener for any other errors
+      rzp.on('payment.error', function (error: any) {
+        setIsLoading(false);
+        console.error('Payment error:', error);
+        toast.error('Payment error occurred. Please try again.');
       });
       
       rzp.open();
