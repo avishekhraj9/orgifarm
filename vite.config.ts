@@ -14,6 +14,7 @@ export default defineConfig(({ mode }) => ({
       allow: ['..', '.', '/']
     }
   },
+  cwd: process.cwd(),
   root: process.cwd(),
   plugins: [
     react(),
