@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 interface RazorpayPaymentProps {
   amount: number;
@@ -24,7 +25,7 @@ const RazorpayPayment: React.FC<RazorpayPaymentProps> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
     setIsLoading(true);
     
     // Ensure Razorpay is loaded
@@ -35,25 +36,34 @@ const RazorpayPayment: React.FC<RazorpayPaymentProps> = ({
     }
 
     try {
-      // Generate a unique order ID
-      const orderId = 'ORG_' + Date.now().toString();
-      
+      // Create order on server via Supabase Edge Function
+      const { data: orderData, error: orderError } = await supabase.functions.invoke('create-razorpay-order', {
+        body: JSON.stringify({ 
+          amount, 
+          userId: supabase.auth.user()?.id 
+        })
+      });
+
+      if (orderError || !orderData) {
+        toast.error('Failed to create order. Please try again.');
+        setIsLoading(false);
+        return;
+      }
+
       const options = {
         key: 'rzp_live_oxAtMy0ixubO1r', // Your Razorpay live key
-        amount: amount * 100, // Razorpay takes amount in smallest currency unit (paise for INR)
+        amount: amount * 100,
         currency: 'INR',
         name: 'Orgifarm',
         description: 'Payment for your order',
         image: '/img/Orgifarm_logo.png',
-        order_id: orderId, // This should be generated on your server for production
+        order_id: orderData.orderId,
         handler: function (response: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) {
           setIsLoading(false);
           if (response.razorpay_payment_id) {
             onSuccess(response.razorpay_payment_id);
             toast.success('Payment successful!');
-            console.log('Payment successful with ID:', response.razorpay_payment_id);
-            console.log('Order ID:', response.razorpay_order_id);
-            console.log('Signature:', response.razorpay_signature);
+            console.log('Payment Details:', response);
           } else {
             toast.error('Payment failed. Please try again.');
           }
@@ -63,40 +73,29 @@ const RazorpayPayment: React.FC<RazorpayPaymentProps> = ({
           email: customerEmail,
         },
         theme: {
-          color: '#10b981', // Green color matching our theme
+          color: '#10b981',
         },
         modal: {
           ondismiss: function() {
             setIsLoading(false);
             toast.error('Payment cancelled');
           }
-        },
-        notes: {
-          order_id: orderId
         }
       };
 
       const rzp = new window.Razorpay(options);
       
-      // Handle payment failures
       rzp.on('payment.failed', function (response: any) {
         setIsLoading(false);
         console.error('Payment failed response:', response.error);
         toast.error(`Payment failed: ${response.error.description || 'Please check your payment details'}`);
       });
       
-      // Add event listener for any other errors
-      rzp.on('payment.error', function (error: any) {
-        setIsLoading(false);
-        console.error('Payment error:', error);
-        toast.error('Payment error occurred. Please try again.');
-      });
-      
       rzp.open();
     } catch (error) {
       setIsLoading(false);
-      console.error('Razorpay error:', error);
-      toast.error('There was an issue with the payment gateway. Please try again later.');
+      console.error('Razorpay integration error:', error);
+      toast.error('Payment gateway error. Please try again.');
     }
   };
 
