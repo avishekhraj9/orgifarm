@@ -24,7 +24,7 @@ const RazorpayPayment: React.FC<RazorpayPaymentProps> = ({
 }) => {
   const handlePayment = () => {
     const options = {
-      key: 'rzp_test_YourTestKeyHere', // Replace with your Razorpay key
+      key: 'rzp_live_oxAtMy0ixubO1r', // Replace with your Razorpay key
       amount: amount * 100, // Razorpay takes amount in smallest currency unit (paise for INR)
       currency: 'INR',
       name: 'Orgifarm',
