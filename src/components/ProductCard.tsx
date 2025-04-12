@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Product } from '@/types/product';
 import { Button } from '@/components/ui/button';
-import { ShoppingCart, Package, Image, Video } from 'lucide-react';
+import { ShoppingCart, Package, Image, Video, IndianRupee } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -70,8 +70,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, className }) => {
           </div>
           <span className="text-xs text-gray-500 dark:text-gray-400">({product.rating})</span>
         </div>
-        <p className={cn("font-semibold dark:text-white", isMobile ? "text-sm mb-1.5" : "text-lg mb-3")}>
-          ₹{(product.price * 75).toLocaleString('en-IN', { maximumFractionDigits: 2 })}
+        <p className={cn("font-semibold dark:text-white flex items-center", isMobile ? "text-sm mb-1.5" : "text-lg mb-3")}>
+          <IndianRupee className={cn(isMobile ? "h-3 w-3 mr-1" : "h-4 w-4 mr-1")} />
+          {product.price.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
         </p>
         <div className={cn("flex items-center text-xs mb-2", product.stock > 10 ? "text-green-600" : product.stock > 0 ? "text-amber-500" : "text-red-500")}>
           <Package className={cn(isMobile ? "h-3 w-3 mr-1" : "h-4 w-4 mr-2")} /> 
