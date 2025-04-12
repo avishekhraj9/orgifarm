@@ -33,8 +33,8 @@ const ContactInfo: React.FC = () => {
           <div>
             <h3 className="font-medium">Address</h3>
             <p className="text-muted-foreground">
-              VILL-BIRODIH, TOLA-BIRODIH PANCH-BISENI KALA,<br />
-              GOLA, ROHTAS, Bihar, India - 821310.
+              Vasudev Bhawan, Vill-Birodih, Post-Pauni,<br />
+              Dist-Rohtas, Bihar, 821310.
             </p>
           </div>
         </div>
@@ -44,3 +44,4 @@ const ContactInfo: React.FC = () => {
 };
 
 export default ContactInfo;
+
