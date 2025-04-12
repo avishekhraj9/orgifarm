@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Star, Heart, ShoppingCart, Check, AlertCircle, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -23,7 +22,6 @@ const ProductDetailPage = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showVideo, setShowVideo] = useState(false);
   
-  // Fetch product and similar products
   useEffect(() => {
     if (id) {
       const foundProduct = getProductById(id);
@@ -32,7 +30,6 @@ const ProductDetailPage = () => {
       setShowVideo(false);
       
       if (foundProduct) {
-        // Get similar products (same category, excluding current)
         const similar = products
           .filter(p => p.category === foundProduct.category && p.id !== foundProduct.id)
           .slice(0, 4);
@@ -44,10 +41,9 @@ const ProductDetailPage = () => {
   }, [id, navigate]);
   
   if (!product) {
-    return null; // Will redirect in useEffect
+    return null;
   }
 
-  // Combine main image and additional images for the gallery
   const allImages = [product.imageUrl, ...(product.additionalImages || [])];
   
   const nextImage = () => {
@@ -63,7 +59,6 @@ const ProductDetailPage = () => {
   const handleAddToCart = () => {
     setIsAdding(true);
     
-    // Simulate a slight delay for the animation
     setTimeout(() => {
       addToCart(product, quantity);
       setIsAdding(false);
@@ -92,7 +87,6 @@ const ProductDetailPage = () => {
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-16">
-        {/* Product Image Gallery */}
         <div className="space-y-4">
           <div className="bg-white rounded-xl overflow-hidden border border-border shadow-sm relative aspect-square">
             {showVideo && product.videoUrl ? (
@@ -134,7 +128,6 @@ const ProductDetailPage = () => {
             )}
           </div>
           
-          {/* Thumbnail Navigation */}
           <div className="flex gap-2 overflow-x-auto pb-2">
             {allImages.map((image, index) => (
               <button
@@ -170,7 +163,6 @@ const ProductDetailPage = () => {
           </div>
         </div>
         
-        {/* Product Info */}
         <div className="space-y-6">
           <div>
             <h1 className="text-3xl font-semibold mb-3">{product.name}</h1>
@@ -186,7 +178,7 @@ const ProductDetailPage = () => {
               </div>
               <span className="text-sm text-muted-foreground">({product.rating} stars)</span>
             </div>
-            <p className="text-2xl font-bold">₹{(product.price * 75).toLocaleString('en-IN', { maximumFractionDigits: 2 })}</p>
+            <p className="text-2xl font-bold">₹{product.price.toLocaleString('en-IN', { maximumFractionDigits: 2 })}</p>
           </div>
           
           <div className="border-t border-b py-6 border-border">
@@ -252,7 +244,6 @@ const ProductDetailPage = () => {
         </div>
       </div>
       
-      {/* Product Details Tabs */}
       <div className="mb-16">
         <Tabs defaultValue="details">
           <TabsList className="w-full max-w-md mx-auto grid grid-cols-3">
@@ -332,7 +323,6 @@ const ProductDetailPage = () => {
               </div>
               
               <div className="space-y-4">
-                {/* Sample reviews */}
                 <div className="border-b pb-4">
                   <div className="flex items-center mb-2">
                     <div className="flex text-yellow-400 mr-2">
@@ -374,7 +364,6 @@ const ProductDetailPage = () => {
         </Tabs>
       </div>
       
-      {/* Similar Products */}
       {similarProducts.length > 0 && (
         <div className="mb-6">
           <h2 className="text-2xl font-bold mb-6">You May Also Like</h2>

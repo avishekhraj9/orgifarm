@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -72,10 +73,9 @@ const CheckoutPage = () => {
     return null;
   }
   
-  // Convert price to Rupees
-  const totalInRupees = total * 75;
-  const taxInRupees = totalInRupees * 0.08;
-  const grandTotalInRupees = totalInRupees + taxInRupees;
+  // Calculate tax (8%)
+  const taxAmount = total * 0.08;
+  const grandTotal = total + taxAmount;
   
   return (
     <RequireAuth>
@@ -292,7 +292,7 @@ const CheckoutPage = () => {
                           </div>
                         </div>
                         <div className="text-sm font-medium dark:text-gray-200">
-                          ₹{(item.product.price * item.quantity * 75).toFixed(2)}
+                          ₹{(item.product.price * item.quantity).toFixed(2)}
                         </div>
                       </div>
                     ))}
@@ -303,7 +303,7 @@ const CheckoutPage = () => {
                   <div className="space-y-2 mb-4">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground dark:text-gray-400">Subtotal</span>
-                      <span className="dark:text-gray-300">₹{totalInRupees.toFixed(2)}</span>
+                      <span className="dark:text-gray-300">₹{total.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground dark:text-gray-400">Shipping</span>
@@ -311,7 +311,7 @@ const CheckoutPage = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground dark:text-gray-400">Tax</span>
-                      <span className="dark:text-gray-300">₹{taxInRupees.toFixed(2)}</span>
+                      <span className="dark:text-gray-300">₹{taxAmount.toFixed(2)}</span>
                     </div>
                   </div>
                   
@@ -319,12 +319,12 @@ const CheckoutPage = () => {
                   
                   <div className="flex justify-between font-semibold text-lg mb-6">
                     <span className="dark:text-gray-100">Total</span>
-                    <span className="dark:text-gray-100">₹{grandTotalInRupees.toFixed(2)}</span>
+                    <span className="dark:text-gray-100">₹{grandTotal.toFixed(2)}</span>
                   </div>
                   
                   {paymentMethod === 'phonepe' ? (
                     <PhonePePayment 
-                      amount={grandTotalInRupees} 
+                      amount={grandTotal} 
                       onSuccess={handlePhonePeSuccess} 
                     />
                   ) : (

@@ -82,7 +82,7 @@ const CartPage = () => {
                     {/* Price */}
                     <div className="col-span-2 text-center md:text-center dark:text-gray-300">
                       <div className="md:hidden inline-block font-medium mr-2 dark:text-gray-400">Price:</div>
-                      ₹{(item.product.price * 75).toFixed(2)}
+                      ₹{item.product.price.toFixed(2)}
                     </div>
                     
                     {/* Quantity */}
@@ -99,7 +99,7 @@ const CartPage = () => {
                     {/* Total */}
                     <div className="col-span-2 md:text-right font-semibold dark:text-gray-200">
                       <div className="md:hidden inline-block font-medium mr-2 dark:text-gray-400">Total:</div>
-                      ₹{(item.product.price * item.quantity * 75).toFixed(2)}
+                      ₹{(item.product.price * item.quantity).toFixed(2)}
                     </div>
                   </div>
                 </div>
@@ -115,7 +115,7 @@ const CartPage = () => {
                   <div className="space-y-2 mb-4">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Subtotal</span>
-                      <span className="dark:text-gray-300">₹{(total * 75).toFixed(2)}</span>
+                      <span className="dark:text-gray-300">₹{total.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Shipping</span>
@@ -127,7 +127,7 @@ const CartPage = () => {
                   
                   <div className="flex justify-between font-semibold text-lg mb-6">
                     <span className="dark:text-gray-200">Total</span>
-                    <span className="dark:text-gray-200">₹{(total * 75).toFixed(2)}</span>
+                    <span className="dark:text-gray-200">₹{total.toFixed(2)}</span>
                   </div>
                   
                   <div className="space-y-4">
