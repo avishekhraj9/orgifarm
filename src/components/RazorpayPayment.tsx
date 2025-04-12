@@ -30,7 +30,7 @@ const RazorpayPayment: React.FC<RazorpayPaymentProps> = ({
     
     // Ensure Razorpay is loaded
     if (!window.Razorpay) {
-      toast.error('Payment gateway not loaded properly. Please refresh the page.');
+      toast.error('Payment gateway not loaded. Please refresh the page.');
       setIsLoading(false);
       return;
     }
@@ -45,20 +45,25 @@ const RazorpayPayment: React.FC<RazorpayPaymentProps> = ({
       });
 
       if (orderError || !orderData) {
-        toast.error('Failed to create order. Please try again.');
+        toast.error(`Failed to create order: ${orderError?.message || 'Unknown error'}`);
+        console.error('Order creation error:', orderError);
         setIsLoading(false);
         return;
       }
 
       const options = {
-        key: 'rzp_live_oxAtMy0ixubO1r', // Your Razorpay live key
-        amount: amount * 100,
+        key: Deno.env.get('RAZORPAY_KEY_ID'), // Use environment variable
+        amount: orderData.amount,
         currency: 'INR',
         name: 'Orgifarm',
         description: 'Payment for your order',
         image: '/img/Orgifarm_logo.png',
         order_id: orderData.orderId,
-        handler: function (response: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) {
+        handler: function (response: { 
+          razorpay_payment_id: string; 
+          razorpay_order_id: string; 
+          razorpay_signature: string 
+        }) {
           setIsLoading(false);
           if (response.razorpay_payment_id) {
             onSuccess(response.razorpay_payment_id);

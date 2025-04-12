@@ -3,6 +3,11 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import Razorpay from 'https://esm.sh/razorpay@2.9.2'
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+}
+
 // Initialize Razorpay with environment variables
 const razorpay = new Razorpay({
   key_id: Deno.env.get('RAZORPAY_KEY_ID')!,
@@ -10,18 +15,40 @@ const razorpay = new Razorpay({
 })
 
 serve(async (req) => {
+  // Handle CORS preflight requests
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+
   // Ensure only POST requests are handled
   if (req.method !== 'POST') {
-    return new Response('Method not allowed', { status: 405 })
+    return new Response('Method not allowed', { 
+      status: 405,
+      headers: corsHeaders 
+    })
   }
 
   try {
     // Parse request body
     const { amount, userId } = await req.json()
 
+    // Validate input
+    if (!amount || amount <= 0) {
+      return new Response(JSON.stringify({ 
+        error: 'Invalid amount',
+        details: 'Amount must be a positive number' 
+      }), {
+        status: 400,
+        headers: { 
+          ...corsHeaders,
+          'Content-Type': 'application/json' 
+        }
+      })
+    }
+
     // Create Razorpay order
     const razorpayOrder = await razorpay.orders.create({
-      amount: amount * 100, // Convert to paise
+      amount: Math.round(amount * 100), // Convert to paise, ensure whole number
       currency: 'INR',
       receipt: `order_receipt_${Date.now()}`,
       notes: { 
@@ -30,18 +57,32 @@ serve(async (req) => {
       }
     })
 
+    console.log('Razorpay Order Created:', {
+      orderId: razorpayOrder.id,
+      amount: razorpayOrder.amount
+    })
+
     // Return the Razorpay order details
     return new Response(JSON.stringify({
       orderId: razorpayOrder.id,
       amount: razorpayOrder.amount
     }), {
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 
+        ...corsHeaders,
+        'Content-Type': 'application/json' 
+      }
     })
   } catch (error) {
     console.error('Order creation error:', error)
-    return new Response(JSON.stringify({ error: 'Failed to create order' }), {
+    return new Response(JSON.stringify({ 
+      error: 'Failed to create order',
+      details: error.message || 'Unknown error occurred'
+    }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 
+        ...corsHeaders,
+        'Content-Type': 'application/json' 
+      }
     })
   }
 })
