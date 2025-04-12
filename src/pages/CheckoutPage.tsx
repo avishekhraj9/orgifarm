@@ -42,7 +42,7 @@ const CheckoutPage = () => {
       // Remove any existing Razorpay script to avoid duplicates
       const existingScript = document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]');
       if (existingScript) {
-        document.body.removeChild(existingScript);
+        existingScript.remove();
       }
       
       const script = document.createElement('script');

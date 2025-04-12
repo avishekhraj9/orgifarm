@@ -8,10 +8,15 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
+// Initialize Supabase client
+const supabaseUrl = Deno.env.get('SUPABASE_URL') || '';
+const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY') || '';
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
 // Initialize Razorpay with environment variables
 const razorpay = new Razorpay({
-  key_id: Deno.env.get('RAZORPAY_KEY_ID')!,
-  key_secret: Deno.env.get('RAZORPAY_KEY_SECRET')!
+  key_id: Deno.env.get('RAZORPAY_KEY_ID') || '',
+  key_secret: Deno.env.get('RAZORPAY_KEY_SECRET') || ''
 })
 
 serve(async (req) => {
@@ -46,6 +51,19 @@ serve(async (req) => {
       })
     }
 
+    if (!userId) {
+      return new Response(JSON.stringify({ 
+        error: 'User ID is required',
+        details: 'Please login to continue' 
+      }), {
+        status: 400,
+        headers: { 
+          ...corsHeaders,
+          'Content-Type': 'application/json' 
+        }
+      })
+    }
+
     // Create Razorpay order
     const razorpayOrder = await razorpay.orders.create({
       amount: Math.round(amount * 100), // Convert to paise, ensure whole number
@@ -61,6 +79,24 @@ serve(async (req) => {
       orderId: razorpayOrder.id,
       amount: razorpayOrder.amount
     })
+
+    // Store order in database
+    const { data: orderData, error: orderError } = await supabase
+      .from('orders')
+      .insert({
+        user_id: userId,
+        razorpay_order_id: razorpayOrder.id,
+        amount: amount,
+        status: 'created'
+      })
+      .select()
+      .single();
+    
+    if (orderError) {
+      console.error('Error storing order in database:', orderError);
+    } else {
+      console.log('Order stored in database:', orderData);
+    }
 
     // Return the Razorpay order details
     return new Response(JSON.stringify({

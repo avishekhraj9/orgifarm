@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from '@/lib/supabase';
 
 interface RazorpayPaymentProps {
   amount: number;
@@ -38,10 +38,10 @@ const RazorpayPayment: React.FC<RazorpayPaymentProps> = ({
     try {
       // Create order on server via Supabase Edge Function
       const { data: orderData, error: orderError } = await supabase.functions.invoke('create-razorpay-order', {
-        body: JSON.stringify({ 
+        body: { 
           amount, 
-          userId: supabase.auth.user()?.id 
-        })
+          userId: (await supabase.auth.getUser()).data.user?.id 
+        }
       });
 
       if (orderError || !orderData) {
@@ -51,8 +51,10 @@ const RazorpayPayment: React.FC<RazorpayPaymentProps> = ({
         return;
       }
 
+      console.log('Received order data:', orderData);
+
       const options = {
-        key: Deno.env.get('RAZORPAY_KEY_ID'), // Use environment variable
+        key: "rzp_test_zXqg1XEWvvACMG", // Use test key for development
         amount: orderData.amount,
         currency: 'INR',
         name: 'Orgifarm',
