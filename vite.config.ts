@@ -7,13 +7,14 @@ import { componentTagger } from "lovable-tagger";
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {
-    host: "::",
+    host: "localhost",
     port: 8080,
     fs: {
       // Allow serving files from one level up to the project root
-      allow: ['..', '.']
+      allow: ['..', '.', '/']
     }
   },
+  root: process.cwd(),
   plugins: [
     react(),
     mode === 'development' &&
