@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Trash2, ShoppingBag } from 'lucide-react';
@@ -54,7 +53,6 @@ const CartPage = () => {
               {items.map((item) => (
                 <div key={item.product.id} className="border-t first:border-t-0 dark:border-border">
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 items-center">
-                    {/* Product */}
                     <div className="col-span-6 flex gap-4">
                       <div className="w-20 h-20 rounded-md border overflow-hidden shrink-0 dark:border-border">
                         <img 
@@ -79,13 +77,11 @@ const CartPage = () => {
                       </div>
                     </div>
                     
-                    {/* Price */}
                     <div className="col-span-2 text-center md:text-center dark:text-gray-300">
                       <div className="md:hidden inline-block font-medium mr-2 dark:text-gray-400">Price:</div>
                       ₹{item.product.price.toFixed(2)}
                     </div>
                     
-                    {/* Quantity */}
                     <div className="col-span-2 flex justify-center">
                       <div className="md:hidden inline-block font-medium mr-2 dark:text-gray-400">Quantity:</div>
                       <QuantityInput
@@ -96,7 +92,6 @@ const CartPage = () => {
                       />
                     </div>
                     
-                    {/* Total */}
                     <div className="col-span-2 md:text-right font-semibold dark:text-gray-200">
                       <div className="md:hidden inline-block font-medium mr-2 dark:text-gray-400">Total:</div>
                       ₹{(item.product.price * item.quantity).toFixed(2)}
@@ -106,7 +101,6 @@ const CartPage = () => {
               ))}
             </div>
             
-            {/* Cart Summary */}
             <div className="md:flex md:justify-end">
               <div className="md:w-1/2 lg:w-1/3">
                 <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-border overflow-hidden p-6">

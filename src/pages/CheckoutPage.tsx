@@ -12,7 +12,6 @@ import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import RequireAuth from '@/components/RequireAuth';
 import { toast } from 'sonner';
-import PhonePePayment from '@/components/PhonePePayment';
 
 const CheckoutPage = () => {
   const { items, total, clearCart } = useCart();
@@ -21,7 +20,6 @@ const CheckoutPage = () => {
   
   const [paymentMethod, setPaymentMethod] = useState('credit');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [transactionId, setTransactionId] = useState('');
   
   // Form state
   const [formData, setFormData] = useState({
@@ -46,26 +44,15 @@ const CheckoutPage = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // If PhonePe is selected, don't do the traditional flow - it's handled by the component
-    if (paymentMethod === 'phonepe') {
-      return;
-    }
-    
     setIsSubmitting(true);
     
-    // Simulate order processing for other payment methods
+    // Simulate order processing
     setTimeout(() => {
       clearCart();
       navigate('/order-success');
       toast.success('Order placed successfully!');
       setIsSubmitting(false);
     }, 1500);
-  };
-  
-  const handlePhonePeSuccess = (txnId: string) => {
-    setTransactionId(txnId);
-    // Store in localStorage so we can retrieve it on callback
-    localStorage.setItem('currentTransactionId', txnId);
   };
   
   if (items.length === 0) {
@@ -202,16 +189,6 @@ const CheckoutPage = () => {
                     </div>
                     
                     <div className="flex items-center space-x-2 border rounded-md p-3 dark:border-border hover:bg-muted/50 dark:hover:bg-secondary/30 cursor-pointer">
-                      <RadioGroupItem value="phonepe" id="phonepe" className="dark:border-gray-500" />
-                      <Label htmlFor="phonepe" className="flex-1 cursor-pointer dark:text-gray-200">
-                        PhonePe
-                      </Label>
-                      <div className="h-6 w-16 bg-purple-100 dark:bg-purple-900 rounded flex items-center justify-center">
-                        <span className="text-xs font-bold text-purple-800 dark:text-purple-200">PhonePe</span>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center space-x-2 border rounded-md p-3 dark:border-border hover:bg-muted/50 dark:hover:bg-secondary/30 cursor-pointer">
                       <RadioGroupItem value="paypal" id="paypal" className="dark:border-gray-500" />
                       <Label htmlFor="paypal" className="flex-1 cursor-pointer dark:text-gray-200">
                         PayPal
@@ -322,21 +299,14 @@ const CheckoutPage = () => {
                     <span className="dark:text-gray-100">₹{grandTotal.toFixed(2)}</span>
                   </div>
                   
-                  {paymentMethod === 'phonepe' ? (
-                    <PhonePePayment 
-                      amount={grandTotal} 
-                      onSuccess={handlePhonePeSuccess} 
-                    />
-                  ) : (
-                    <Button 
-                      type="submit" 
-                      className="w-full" 
-                      size="lg"
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? 'Processing...' : 'Place Order'}
-                    </Button>
-                  )}
+                  <Button 
+                    type="submit" 
+                    className="w-full" 
+                    size="lg"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? 'Processing...' : 'Place Order'}
+                  </Button>
                   
                   <p className="text-xs text-muted-foreground dark:text-gray-400 text-center mt-4">
                     By placing your order, you agree to our Terms of Service and Privacy Policy.
