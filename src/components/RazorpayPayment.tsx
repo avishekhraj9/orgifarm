@@ -36,6 +36,8 @@ const RazorpayPayment: React.FC<RazorpayPaymentProps> = ({
     }
 
     try {
+      console.log('Creating order with amount:', amount);
+      
       // Create order on server via Supabase Edge Function
       const { data: orderData, error: orderError } = await supabase.functions.invoke('create-razorpay-order', {
         body: { 
@@ -43,10 +45,17 @@ const RazorpayPayment: React.FC<RazorpayPaymentProps> = ({
           userId: (await supabase.auth.getUser()).data.user?.id 
         }
       });
-
-      if (orderError || !orderData) {
-        toast.error(`Failed to create order: ${orderError?.message || 'Unknown error'}`);
-        console.error('Order creation error:', orderError);
+      
+      if (orderError) {
+        console.error('Order creation error details:', orderError);
+        toast.error(`Failed to create order: ${orderError.message || 'Unknown error'}`);
+        setIsLoading(false);
+        return;
+      }
+      
+      if (!orderData) {
+        console.error('No order data received');
+        toast.error('Failed to create order: No response from server');
         setIsLoading(false);
         return;
       }

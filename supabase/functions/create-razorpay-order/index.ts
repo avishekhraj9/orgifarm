@@ -27,15 +27,19 @@ serve(async (req) => {
 
   // Ensure only POST requests are handled
   if (req.method !== 'POST') {
-    return new Response('Method not allowed', { 
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), { 
       status: 405,
-      headers: corsHeaders 
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     })
   }
 
   try {
     // Parse request body
-    const { amount, userId } = await req.json()
+    const requestData = await req.json();
+    const { amount, userId } = requestData;
+    
+    console.log('Received order request:', { amount, userId });
+    console.log('Razorpay credentials available:', !!Deno.env.get('RAZORPAY_KEY_ID') && !!Deno.env.get('RAZORPAY_KEY_SECRET'));
 
     // Validate input
     if (!amount || amount <= 0) {
@@ -44,10 +48,7 @@ serve(async (req) => {
         details: 'Amount must be a positive number' 
       }), {
         status: 400,
-        headers: { 
-          ...corsHeaders,
-          'Content-Type': 'application/json' 
-        }
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       })
     }
 
@@ -57,10 +58,7 @@ serve(async (req) => {
         details: 'Please login to continue' 
       }), {
         status: 400,
-        headers: { 
-          ...corsHeaders,
-          'Content-Type': 'application/json' 
-        }
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       })
     }
 
@@ -103,10 +101,7 @@ serve(async (req) => {
       orderId: razorpayOrder.id,
       amount: razorpayOrder.amount
     }), {
-      headers: { 
-        ...corsHeaders,
-        'Content-Type': 'application/json' 
-      }
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     })
   } catch (error) {
     console.error('Order creation error:', error)
@@ -115,10 +110,7 @@ serve(async (req) => {
       details: error.message || 'Unknown error occurred'
     }), {
       status: 500,
-      headers: { 
-        ...corsHeaders,
-        'Content-Type': 'application/json' 
-      }
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     })
   }
 })
