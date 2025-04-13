@@ -38,8 +38,12 @@ serve(async (req) => {
     const requestData = await req.json();
     const { amount, userId } = requestData;
     
+    // Enhanced logging for debugging
     console.log('Received order request:', { amount, userId });
-    console.log('Razorpay credentials available:', !!Deno.env.get('RAZORPAY_KEY_ID') && !!Deno.env.get('RAZORPAY_KEY_SECRET'));
+    console.log('Razorpay credentials validation:', {
+      keyIdPresent: !!Deno.env.get('RAZORPAY_KEY_ID'),
+      keySecretPresent: !!Deno.env.get('RAZORPAY_KEY_SECRET')
+    });
 
     // Validate input
     if (!amount || amount <= 0) {
@@ -114,3 +118,4 @@ serve(async (req) => {
     })
   }
 })
+
