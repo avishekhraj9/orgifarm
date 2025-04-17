@@ -11,13 +11,36 @@ const corsHeaders = {
 // Initialize Supabase client
 const supabaseUrl = Deno.env.get('SUPABASE_URL') || '';
 const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY') || '';
+
+// Get Razorpay credentials
+const razorpayKeyId = Deno.env.get('RAZORPAY_KEY_ID') || '';
+const razorpayKeySecret = Deno.env.get('RAZORPAY_KEY_SECRET') || '';
+
+// Add entry point logging
+console.log('Edge Function initialized with:');
+console.log(`- Supabase URL: ${supabaseUrl ? 'Present' : 'Missing'}`);
+console.log(`- Supabase Anon Key: ${supabaseAnonKey ? 'Present' : 'Missing'}`);
+console.log(`- Razorpay Key ID: ${razorpayKeyId ? 'Present' : 'Missing'}`);
+console.log(`- Razorpay Key Secret: ${razorpayKeySecret ? 'Present' : 'Missing'}`);
+
+// Create Supabase client
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-// Initialize Razorpay with environment variables
-const razorpay = new Razorpay({
-  key_id: Deno.env.get('RAZORPAY_KEY_ID') || '',
-  key_secret: Deno.env.get('RAZORPAY_KEY_SECRET') || ''
-})
+// Initialize Razorpay - only create instance if credentials are present
+let razorpay;
+try {
+  if (razorpayKeyId && razorpayKeySecret) {
+    razorpay = new Razorpay({
+      key_id: razorpayKeyId,
+      key_secret: razorpayKeySecret
+    });
+    console.log('Razorpay client initialized successfully');
+  } else {
+    console.error('Razorpay credentials missing, client not initialized');
+  }
+} catch (error) {
+  console.error('Failed to initialize Razorpay client:', error);
+}
 
 serve(async (req) => {
   // Handle CORS preflight requests
@@ -34,17 +57,18 @@ serve(async (req) => {
   }
 
   try {
+    // Check if Razorpay client is initialized
+    if (!razorpay) {
+      throw new Error('Razorpay client not initialized. Please check environment variables.');
+    }
+
     // Parse request body
     const requestData = await req.json();
     const { amount, userId } = requestData;
     
     // Enhanced logging for debugging
     console.log('Received order request:', { amount, userId });
-    console.log('Razorpay credentials validation:', {
-      keyIdPresent: !!Deno.env.get('RAZORPAY_KEY_ID'),
-      keySecretPresent: !!Deno.env.get('RAZORPAY_KEY_SECRET')
-    });
-
+    
     // Validate input
     if (!amount || amount <= 0) {
       return new Response(JSON.stringify({ 
@@ -118,4 +142,3 @@ serve(async (req) => {
     })
   }
 })
-

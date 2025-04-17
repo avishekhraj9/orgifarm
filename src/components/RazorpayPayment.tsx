@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { supabase } from '@/lib/supabase';
+import { AlertCircle } from 'lucide-react';
 
 interface RazorpayPaymentProps {
   amount: number;
@@ -24,12 +25,15 @@ const RazorpayPayment: React.FC<RazorpayPaymentProps> = ({
   onSuccess
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handlePayment = async () => {
     setIsLoading(true);
+    setError(null);
     
     // Ensure Razorpay is loaded
     if (!window.Razorpay) {
+      setError('Payment gateway not loaded. Please refresh the page.');
       toast.error('Payment gateway not loaded. Please refresh the page.');
       setIsLoading(false);
       return;
@@ -38,16 +42,27 @@ const RazorpayPayment: React.FC<RazorpayPaymentProps> = ({
     try {
       console.log('Creating order with amount:', amount);
       
+      // Get current user
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        setError('User not authenticated. Please login to continue.');
+        toast.error('Please login to continue.');
+        setIsLoading(false);
+        return;
+      }
+      
       // Create order on server via Supabase Edge Function
       const { data: orderData, error: orderError } = await supabase.functions.invoke('create-razorpay-order', {
         body: { 
           amount, 
-          userId: (await supabase.auth.getUser()).data.user?.id 
+          userId: user.id 
         }
       });
       
       if (orderError) {
         console.error('Order creation error details:', orderError);
+        setError(`Failed to create order: ${orderError.message || 'Unknown error'}`);
         toast.error(`Failed to create order: ${orderError.message || 'Unknown error'}`);
         setIsLoading(false);
         return;
@@ -55,6 +70,7 @@ const RazorpayPayment: React.FC<RazorpayPaymentProps> = ({
       
       if (!orderData) {
         console.error('No order data received');
+        setError('Failed to create order: No response from server');
         toast.error('Failed to create order: No response from server');
         setIsLoading(false);
         return;
@@ -111,12 +127,19 @@ const RazorpayPayment: React.FC<RazorpayPaymentProps> = ({
     } catch (error) {
       setIsLoading(false);
       console.error('Razorpay integration error:', error);
+      setError('Payment gateway error. Please try again.');
       toast.error('Payment gateway error. Please try again.');
     }
   };
 
   return (
     <div className="mt-4">
+      {error && (
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md flex items-start">
+          <AlertCircle className="h-5 w-5 text-red-500 mr-2 flex-shrink-0 mt-0.5" />
+          <p className="text-sm text-red-600">{error}</p>
+        </div>
+      )}
       <Button 
         onClick={handlePayment}
         className="w-full" 
