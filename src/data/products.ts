@@ -31,7 +31,7 @@ export const products: Product[] = [
     id: "1",
     name: "Diced Mango Pickle",
     description: "Traditional handcrafted mango pickle made with organic raw mangoes, premium spices, and cold-pressed mustard oil. A perfect blend of tangy and spicy flavors.",
-    price: 225,
+    price: 2,
     imageUrl: "/img/diced_mango_prickle.jpg",
     additionalImages: ["/img/diced_mango_pickle.jpg", "/img/mango_pickle_ingredients.jpg"],
     
