@@ -8,7 +8,7 @@ import { componentTagger } from "lovable-tagger";
 export default defineConfig(({ mode }) => ({
   server: {
     host: "localhost",
-    port: 8081,
+    port: 8080,
     fs: {
       // Allow serving files from one level up to the project root
       allow: ['..', '.', '/']
