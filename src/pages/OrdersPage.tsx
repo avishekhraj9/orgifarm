@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import PageLayout from '@/components/PageLayout';
@@ -16,6 +15,7 @@ import {
   TableRow 
 } from '@/components/ui/table';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { toast } from 'sonner';
 
 const OrdersPage = () => {
   const { user } = useAuth();
@@ -27,26 +27,83 @@ const OrdersPage = () => {
       if (!user) return;
       
       try {
-        // This is a placeholder - in a real app, you would fetch actual orders from Supabase
-        // For now, we'll just simulate loading state and then show an empty list
-        setTimeout(() => {
-          setOrders([]);
-          setIsLoading(false);
-        }, 1000);
-        
-        // When you have an orders table, you can use this code:
-        /*
-        const { data, error } = await supabase
+        // First fetch orders
+        const { data: ordersData, error: ordersError } = await supabase
           .from('orders')
           .select('*')
-          .eq('userId', user.id)
-          .order('createdAt', { ascending: false });
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false });
           
-        if (error) throw error;
-        setOrders(data || []);
-        */
+        if (ordersError) throw ordersError;
+
+        // Then fetch order items for each order
+        const ordersWithItems = await Promise.all(
+          ordersData.map(async (order) => {
+            const { data: itemsData, error: itemsError } = await supabase
+              .from('order_items')
+              .select(`
+                id,
+                product_id,
+                quantity,
+                price,
+                product:products (
+                  id,
+                  name,
+                  image_url
+                )
+              `)
+              .eq('order_id', order.id);
+
+            if (itemsError) {
+              console.error('Error fetching order items:', itemsError);
+              return {
+                id: order.id,
+                userId: order.user_id,
+                total: order.amount,
+                status: order.status as OrderStatus,
+                createdAt: order.created_at,
+                items: [],
+                shippingAddress: {
+                  name: order.shipping_name || '',
+                  street: order.shipping_street || '',
+                  city: order.shipping_city || '',
+                  state: order.shipping_state || '',
+                  postalCode: order.shipping_postal_code || '',
+                  country: order.shipping_country || ''
+                },
+                paymentMethod: 'Razorpay'
+              };
+            }
+
+            return {
+              id: order.id,
+              userId: order.user_id,
+              total: order.amount,
+              status: order.status as OrderStatus,
+              createdAt: order.created_at,
+              items: itemsData?.map(item => ({
+                productId: item.product_id,
+                productName: item.product?.name || 'Unknown Product',
+                quantity: item.quantity,
+                price: item.price
+              })) || [],
+              shippingAddress: {
+                name: order.shipping_name || '',
+                street: order.shipping_street || '',
+                city: order.shipping_city || '',
+                state: order.shipping_state || '',
+                postalCode: order.shipping_postal_code || '',
+                country: order.shipping_country || ''
+              },
+              paymentMethod: 'Razorpay'
+            };
+          })
+        );
+        
+        setOrders(ordersWithItems);
       } catch (error) {
         console.error('Error fetching orders:', error);
+        toast.error('Failed to load orders. Please try again later.');
       } finally {
         setIsLoading(false);
       }
@@ -118,7 +175,7 @@ const OrdersPage = () => {
                           addSuffix: true 
                         })}
                       </TableCell>
-                      <TableCell>${order.total.toFixed(2)}</TableCell>
+                      <TableCell>₹{order.total.toFixed(2)}</TableCell>
                       <TableCell>
                         <Badge variant="outline" className={getStatusColor(order.status)}>
                           {order.status}

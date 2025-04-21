@@ -1,4 +1,3 @@
-
 export type Product = {
   id: string;
   name: string;
@@ -12,15 +11,24 @@ export type Product = {
   stock: number;
 };
 
+export type OrderStatus = 'processing' | 'shipped' | 'delivered' | 'cancelled';
+
 export type Order = {
   id: string;
   userId: string;
   items: OrderItem[];
   total: number;
-  status: 'processing' | 'shipped' | 'delivered';
+  status: OrderStatus;
   createdAt: string;
-  shippingAddress: Address;
-  paymentMethod: string;
+  shippingAddress: {
+    name: string;
+    street: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+  };
+  paymentMethod: PaymentMethod;
 };
 
 export type OrderItem = {

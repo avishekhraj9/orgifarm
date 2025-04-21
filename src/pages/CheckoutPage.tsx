@@ -11,6 +11,7 @@ import { useAuth } from '@/context/AuthContext';
 import RequireAuth from '@/components/RequireAuth';
 import { toast } from 'sonner';
 import RazorpayPayment from '@/components/RazorpayPayment';
+import { supabase } from '@/lib/supabase';
 
 const CheckoutPage = () => {
   const { items, total, clearCart } = useCart();
@@ -64,17 +65,70 @@ const CheckoutPage = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
   
-  const handlePaymentSuccess = (paymentId: string) => {
+  const handlePaymentSuccess = async (paymentId: string) => {
     console.log("Payment successful with ID:", paymentId);
     setPaymentSuccess(true);
     setIsSubmitting(true);
     
-    setTimeout(() => {
+    try {
+      // Store order in Supabase
+      const { data: orderData, error: orderError } = await supabase
+        .from('orders')
+        .insert([
+          {
+            user_id: user?.id,
+            amount: grandTotal,
+            razorpay_order_id: paymentId,
+            status: 'processing',
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            shipping_name: formData.fullName,
+            shipping_street: formData.address,
+            shipping_city: formData.city,
+            shipping_state: formData.state,
+            shipping_postal_code: formData.zip,
+            shipping_country: formData.country
+          }
+        ])
+        .select()
+        .single();
+
+      if (orderError) {
+        console.error('Error storing order:', orderError);
+        toast.error('Failed to store order details. Please contact support.');
+        return;
+      }
+
+      // Store order items
+      const orderItems = items.map(item => ({
+        order_id: orderData.id,
+        product_id: item.product.id,
+        quantity: item.quantity,
+        price: item.product.price,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }));
+
+      const { error: itemsError } = await supabase
+        .from('order_items')
+        .insert(orderItems);
+
+      if (itemsError) {
+        console.error('Error storing order items:', itemsError);
+        toast.error('Failed to store order items. Please contact support.');
+        return;
+      }
+
+      console.log('Order and items stored successfully:', orderData);
       clearCart();
-      navigate('/order-success');
+      navigate('/order-success', { state: { orderId: orderData.id } });
       toast.success('Order placed successfully!');
+    } catch (error) {
+      console.error('Error processing order:', error);
+      toast.error('An error occurred while processing your order. Please contact support.');
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
   
   const handleSubmit = (e: React.FormEvent) => {
