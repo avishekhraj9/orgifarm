@@ -81,13 +81,7 @@ const CheckoutPage = () => {
             razorpay_order_id: paymentId,
             status: 'processing',
             created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            shipping_name: formData.fullName,
-            shipping_street: formData.address,
-            shipping_city: formData.city,
-            shipping_state: formData.state,
-            shipping_postal_code: formData.zip,
-            shipping_country: formData.country
+            updated_at: new Date().toISOString()
           }
         ])
         .select()
@@ -99,27 +93,7 @@ const CheckoutPage = () => {
         return;
       }
 
-      // Store order items
-      const orderItems = items.map(item => ({
-        order_id: orderData.id,
-        product_id: item.product.id,
-        quantity: item.quantity,
-        price: item.product.price,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      }));
-
-      const { error: itemsError } = await supabase
-        .from('order_items')
-        .insert(orderItems);
-
-      if (itemsError) {
-        console.error('Error storing order items:', itemsError);
-        toast.error('Failed to store order items. Please contact support.');
-        return;
-      }
-
-      console.log('Order and items stored successfully:', orderData);
+      console.log('Order stored successfully:', orderData);
       clearCart();
       navigate('/order-success', { state: { orderId: orderData.id } });
       toast.success('Order placed successfully!');

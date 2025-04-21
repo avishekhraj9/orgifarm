@@ -45,12 +45,12 @@ const OrdersPage = () => {
           createdAt: order.created_at || new Date().toISOString(),
           items: [], // We'll need to add order items in a separate table later
           shippingAddress: {
-            name: order.name || 'N/A',
-            street: order.address_street || 'N/A',
-            city: order.address_city || 'N/A',
-            state: order.address_state || 'N/A',
-            postalCode: order.address_postal_code || 'N/A',
-            country: order.address_country || 'N/A'
+            name: 'N/A',
+            street: 'N/A',
+            city: 'N/A',
+            state: 'N/A',
+            postalCode: 'N/A',
+            country: 'N/A'
           },
           paymentMethod: 'Razorpay'
         })) || [];
