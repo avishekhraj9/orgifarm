@@ -6,7 +6,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  // Explicitly set root directory with absolute path to ensure package.json can be found
+  // Set root to process.cwd() to find package.json in the current working directory
   root: process.cwd(),
   server: {
     host: "0.0.0.0",
@@ -15,10 +15,10 @@ export default defineConfig(({ mode }) => ({
     hmr: {
       clientPort: 8080
     },
-    // Add additional server configuration to help with package resolution
+    // Add file system options to help with package resolution
     fs: {
       strict: false,
-      allow: ['..']
+      allow: ['..', '/']
     }
   },
   plugins: [
@@ -35,5 +35,9 @@ export default defineConfig(({ mode }) => ({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
+  },
+  // Add this to help with file resolution
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom'],
   }
 }));
