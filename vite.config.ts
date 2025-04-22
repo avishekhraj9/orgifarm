@@ -11,10 +11,9 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
     fs: {
       // Allow serving files from one level up to the project root
-      allow: ['..', '.', '/']
+      allow: ['..', '.']
     }
   },
-  // Remove cwd and root properties as they might be causing the issue
   plugins: [
     react(),
     mode === 'development' &&
