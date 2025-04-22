@@ -25,4 +25,8 @@ export default defineConfig(({ mode }) => ({
     },
   },
   base: '/', // Ensure assets are loaded from the root path
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true,
+  }
 }));
