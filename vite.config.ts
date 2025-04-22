@@ -14,8 +14,7 @@ export default defineConfig(({ mode }) => ({
       allow: ['..', '.', '/']
     }
   },
-  cwd: process.cwd(),
-  root: process.cwd(),
+  // Remove cwd and root properties as they might be causing the issue
   plugins: [
     react(),
     mode === 'development' &&
